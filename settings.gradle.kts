@@ -19,5 +19,14 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "Recipia"
+
 include(":app")
+include(":core:common")
+include(":core:navigation")
+include(":core:network")
+include(":core:ui")
+include(":feature:recipe_list:recipe_list_impl")
+include(":feature:recipe_list:recipe_list_api")
