@@ -34,7 +34,7 @@ android {
 dependencies {
     // Modules
     implementation(projects.core.ui)
-    implementation(projects.feature.recipeList.recipeListImpl)
+    implementation(projects.feature.mainScreen.impl)
 
     // Libs
     implementation(libs.coreKtx)
