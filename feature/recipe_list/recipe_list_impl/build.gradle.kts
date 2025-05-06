@@ -16,6 +16,7 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.core.common)
     implementation(projects.core.ui)
     api(projects.feature.recipeList.recipeListApi)
 

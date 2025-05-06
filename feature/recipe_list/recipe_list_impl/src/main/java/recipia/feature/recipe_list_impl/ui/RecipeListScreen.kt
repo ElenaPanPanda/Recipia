@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import recipia.feature.recipe_list_impl.ShortRecipe
+import core.common.model.ShortRecipe
 import recipia.feature.recipe_list_impl.ui.components.RecipeItem
 
 @Composable
