@@ -16,6 +16,7 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.core.ui)
     api(projects.feature.recipeList.recipeListApi)
 
     // Libs
@@ -25,6 +26,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.coil.compose)
 
     // DI
     implementation(libs.hilt)

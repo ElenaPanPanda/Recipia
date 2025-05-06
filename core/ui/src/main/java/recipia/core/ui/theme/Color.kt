@@ -8,6 +8,9 @@ val basil = Color(0xFF388E3C)
 val softLemon = Color(0xFFFFF176)
 val creamWhite = Color(0xFFFFFDE7)
 val olive = Color(0xFF8D6E63)
+val likeYellow = Color(0xFFFFC107)
+val likeBackground = Color(0xDDFFF8E1)
+val softBlack = Color(0xDD000000)
 
 // set 2
 val tomatoRed = Color(0xFFE57373)

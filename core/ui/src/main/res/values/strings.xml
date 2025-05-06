@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_ui_liked">Liked</string>
+    <string name="core_ui_not_liked">Not liked</string>
+</resources>
