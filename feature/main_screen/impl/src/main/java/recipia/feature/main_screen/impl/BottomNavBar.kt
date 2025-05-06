@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,17 +16,40 @@ import recipia.core.ui.icons.Icons
 import recipia.core.ui.theme.basil
 import recipia.core.ui.theme.freshGreen
 import recipia.core.ui.theme.snowWhite
+import recipia.feature.add_recipe.api.AddRecipeRoutingContract
+import recipia.feature.recipe_list_api.RecipeListRoutingContract
 
 @Composable
 fun BottomNavBar(
     selectedIndex: Int,
-    onItemSelected: (Int, MenuItem) -> Unit
+    onItemSelected: (Int, Any) -> Unit
 ) {
     val navigationItems = listOf(
-        NavigationItem("Recipes", icon = Icons.collections1, MenuItem.RecipeList),
-        NavigationItem("Add recipe", icon = Icons.addRecipe, MenuItem.AddRecipe),
-        NavigationItem("Recipes", icon = Icons.collections1, MenuItem.RecipeList),
-        NavigationItem("Add recipe", icon = Icons.addRecipe, MenuItem.AddRecipe)
+        NavigationItem(
+            title = stringResource(id = R.string.main_screen_recipes),
+            icon = Icons.recipes,
+            screen = RecipeListRoutingContract.RecipeList
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.main_screen_collections),
+            icon = Icons.collections1,
+            screen = RecipeListRoutingContract.RecipeList
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.main_screen_add),
+            icon = Icons.addRecipe,
+            screen = AddRecipeRoutingContract.AddRecipe
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.main_screen_calendar),
+            icon = Icons.collections1,
+            screen = RecipeListRoutingContract.RecipeList
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.main_screen_groceries),
+            icon = Icons.groceryList,
+            screen = AddRecipeRoutingContract.AddRecipe
+        )
     )
 
     NavigationBar(containerColor = snowWhite) {
@@ -43,7 +67,7 @@ fun BottomNavBar(
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = snowWhite,
                     unselectedIconColor = basil,
-                    indicatorColor = freshGreen
+                    indicatorColor = freshGreen,
                 ),
             )
         }

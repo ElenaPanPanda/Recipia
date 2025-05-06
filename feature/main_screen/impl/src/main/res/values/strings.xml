@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_screen_recipes">Recipes</string>
+    <string name="main_screen_collections">Collections</string>
+    <string name="main_screen_add">Add</string>
+    <string name="main_screen_calendar">Calendar</string>
+    <string name="main_screen_groceries">Groceries</string>
+</resources>
