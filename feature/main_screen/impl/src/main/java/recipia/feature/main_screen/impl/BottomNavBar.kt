@@ -42,7 +42,7 @@ fun BottomNavBar(
         ),
         NavigationItem(
             title = stringResource(id = R.string.main_screen_calendar),
-            icon = Icons.collections1,
+            icon = Icons.calendar,
             screen = RecipeListRoutingContract.RecipeList
         ),
         NavigationItem(
@@ -52,7 +52,10 @@ fun BottomNavBar(
         )
     )
 
-    NavigationBar(containerColor = snowWhite) {
+    NavigationBar(
+        tonalElevation = 10.dp,
+        containerColor = snowWhite,
+    ) {
         navigationItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selectedIndex == index,
