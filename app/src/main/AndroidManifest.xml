@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_recipe_book_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipia"
+        android:name="core.common.recipia.RecipiaApplication"
         tools:targetApi="34">
         <activity
             android:name="core.common.recipia.MainActivity"
