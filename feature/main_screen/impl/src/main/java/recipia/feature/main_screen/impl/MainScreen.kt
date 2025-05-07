@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import recipia.feature.add_recipe.impl.addRecipeScreen
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
-import recipia.feature.recipe_list_impl.recipeListScreen
+import recipia.feature.recipe_list_impl.navigation.recipeListScreen
 
 @Composable
 fun MainScreen() {

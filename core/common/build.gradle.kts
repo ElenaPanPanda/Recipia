@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "recipia.core.common"
+    namespace = "com.example.recipia.core.common"
 
     buildFeatures {
         viewBinding = true

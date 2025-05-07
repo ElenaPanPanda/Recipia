@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "recipia.feature.recipe_list_impl"
+    namespace = "com.example.recipia.feature.addrecipe.impl"
 
     buildFeatures {
         compose = true
@@ -16,9 +16,7 @@ android {
 
 dependencies {
     // Modules
-    implementation(projects.core.common)
-    implementation(projects.core.ui)
-    api(projects.feature.recipeList.recipeListApi)
+    api(projects.feature.addrecipe.api)
 
     // Libs
     implementation(libs.coreKtx)
@@ -27,12 +25,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.coil.compose)
 
     // DI
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)
-
-    // network
-    implementation(libs.retrofit)
 }

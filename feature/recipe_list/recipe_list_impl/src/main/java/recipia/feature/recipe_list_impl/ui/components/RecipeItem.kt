@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
-import recipia.core.ui.components.Like
-import recipia.core.ui.theme.snowWhite
-import recipia.core.ui.theme.softBlack
+import com.example.recipia.core.ui.components.Like
+import com.example.recipia.core.ui.theme.snowWhite
+import com.example.recipia.core.ui.theme.softBlack
 
 @Composable
 fun RecipeItem(

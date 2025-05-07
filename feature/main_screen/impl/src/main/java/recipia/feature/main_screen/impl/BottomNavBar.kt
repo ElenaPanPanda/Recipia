@@ -12,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import recipia.core.ui.icons.Icons
-import recipia.core.ui.theme.basil
-import recipia.core.ui.theme.freshGreen
-import recipia.core.ui.theme.snowWhite
+import com.example.recipia.core.ui.icons.Icons
+import com.example.recipia.core.ui.theme.basil
+import com.example.recipia.core.ui.theme.freshGreen
+import com.example.recipia.core.ui.theme.snowWhite
 import recipia.feature.add_recipe.api.AddRecipeRoutingContract
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
 

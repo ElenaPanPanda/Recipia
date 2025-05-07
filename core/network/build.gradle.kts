@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "recipia.core.network"
+    namespace = "com.example.recipia.core.network"
 
     buildFeatures {
         buildConfig = true
