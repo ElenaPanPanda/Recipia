@@ -5,5 +5,5 @@ import retrofit2.http.GET
 
 internal interface RecipeListNetworkApi {
     @GET("recipes/short")
-    suspend fun getRecipes(): Result<RecipeListResponse>
+    suspend fun getRecipes(): RecipeListResponse
 }
