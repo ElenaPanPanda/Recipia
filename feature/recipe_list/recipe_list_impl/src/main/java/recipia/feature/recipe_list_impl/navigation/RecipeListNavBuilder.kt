@@ -6,8 +6,13 @@ import androidx.navigation.compose.composable
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
 import recipia.feature.recipe_list_impl.ui.RecipeListScreen
 
-fun NavGraphBuilder.recipeListScreen(navController: NavHostController) {
+fun NavGraphBuilder.recipeListScreen(
+    onShowSnackBar: (String) -> Unit,
+    navController: NavHostController
+) {
     composable<RecipeListRoutingContract.RecipeList> {
-        RecipeListScreen()
+        RecipeListScreen(
+            onShowSnackBar = { message -> onShowSnackBar(message) }
+        )
     }
 }
