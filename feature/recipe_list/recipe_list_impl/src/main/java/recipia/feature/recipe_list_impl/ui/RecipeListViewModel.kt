@@ -3,6 +3,7 @@ package recipia.feature.recipe_list_impl.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.ui.R as uiR
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +42,11 @@ class RecipeListViewModel @Inject constructor(
             val recipes = getRecipesUseCase.getRecipes()
             _uiState.update { it.copy(isLoading = true, recipes = recipes) }
         } catch (e: Exception) {
-            _uiEffect.emit(RecipeListEffect.ShowSnackBar("Something went wrong")) // TODO: Move to res
+            _uiEffect.emit(
+                RecipeListEffect.ShowSnackBar(
+                    stringProvider.getString(uiR.string.core_ui_common_error)
+                )
+            )
         }
     }
 
