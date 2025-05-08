@@ -1,0 +1,86 @@
+package recipia.feature.recipe_list_impl.ui
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.ui.R as uiR
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import recipia.feature.recipe_list_impl.domain.usecase.GetRecipesUseCase
+import recipia.feature.recipe_list_impl.domain.usecase.LikeRecipeUseCase
+import recipia.feature.recipe_list_impl.ui.RecipeListEvent.OnLikeClicked
+import javax.inject.Inject
+
+@HiltViewModel
+class RecipeListViewModel @Inject constructor(
+    private val stringProvider: StringResProvider,
+    private val getRecipesUseCase: GetRecipesUseCase,
+    private val likeRecipeUseCase: LikeRecipeUseCase,
+) : ViewModel() {
+    private val _uiState = MutableStateFlow(RecipeListState())
+    val uiState: StateFlow<RecipeListState> = _uiState.asStateFlow()
+
+    private val _uiEffect = MutableSharedFlow<RecipeListEffect>()
+    val uiEffect: SharedFlow<RecipeListEffect> = _uiEffect.asSharedFlow()
+
+    fun obtainEvent(event: RecipeListEvent) {
+        when (event) {
+            is OnLikeClicked -> onLikeClicked(event.recipeId)
+        }
+    }
+
+    init {
+        getRecipes()
+    }
+
+    private fun getRecipes() = viewModelScope.launch {
+        try {
+            val recipes = getRecipesUseCase.getRecipes()
+            _uiState.update { it.copy(isLoading = true, recipes = recipes) }
+        } catch (e: Exception) {
+            _uiEffect.emit(
+                RecipeListEffect.ShowSnackBar(
+                    stringProvider.getString(uiR.string.core_ui_common_error)
+                )
+            )
+        }
+    }
+
+    private fun onLikeClicked(recipeId: String) = viewModelScope.launch {
+        changeLike(recipeId)
+
+        try {
+            val recipe = _uiState.value.recipes.find { it.id == recipeId }
+                ?: throw Exception("Recipe not found")
+            likeRecipeUseCase.likeRecipe(recipeId, recipe)
+        } catch (e: Exception) {
+            changeLike(recipeId)
+            _uiEffect.emit(
+                RecipeListEffect.ShowSnackBar(
+                    stringProvider.getString(uiR.string.core_ui_common_error)
+                )
+            )
+        }
+    }
+
+    private fun changeLike(recipeId: String) {
+        _uiState.update {
+            it.copy(
+                recipes = it.recipes.map { recipe ->
+                    if (recipe.id == recipeId) {
+                        recipe.copy(isFavorite = !recipe.isFavorite)
+                    } else {
+                        recipe
+                    }
+                }
+            )
+        }
+    }
+}

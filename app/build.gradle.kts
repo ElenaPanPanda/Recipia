@@ -33,6 +33,7 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.core.network)
     implementation(projects.core.ui)
     implementation(projects.feature.mainScreen.impl)
 
