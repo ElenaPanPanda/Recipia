@@ -7,7 +7,6 @@ import javax.inject.Inject
 internal class GetRecipesUseCaseImpl @Inject constructor(
     private val mapper: RecipeListMapper,
     private val repository: RecipeListRepository
-) :
-    GetRecipesUseCase {
+) : GetRecipesUseCase {
     override suspend fun getRecipes() = mapper.convert(repository.getRecipes())
 }

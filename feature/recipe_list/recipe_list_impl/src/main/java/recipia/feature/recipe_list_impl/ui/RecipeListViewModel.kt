@@ -14,12 +14,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import recipia.feature.recipe_list_impl.domain.usecase.GetRecipesUseCase
+import recipia.feature.recipe_list_impl.domain.usecase.LikeRecipeUseCase
+import recipia.feature.recipe_list_impl.ui.RecipeListEvent.OnLikeClicked
 import javax.inject.Inject
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val stringProvider: StringResProvider,
     private val getRecipesUseCase: GetRecipesUseCase,
+    private val likeRecipeUseCase: LikeRecipeUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RecipeListState())
     val uiState: StateFlow<RecipeListState> = _uiState.asStateFlow()
@@ -29,7 +32,7 @@ class RecipeListViewModel @Inject constructor(
 
     fun obtainEvent(event: RecipeListEvent) {
         when (event) {
-            is RecipeListEvent.OnLikeClicked -> onLikeClicked(event.recipeId)
+            is OnLikeClicked -> onLikeClicked(event.recipeId)
         }
     }
 
@@ -50,5 +53,34 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    private fun onLikeClicked(recipeId: String) {}
+    private fun onLikeClicked(recipeId: String) = viewModelScope.launch {
+        changeLike(recipeId)
+
+        try {
+            val recipe = _uiState.value.recipes.find { it.id == recipeId }
+                ?: throw Exception("Recipe not found")
+            likeRecipeUseCase.likeRecipe(recipeId, recipe)
+        } catch (e: Exception) {
+            changeLike(recipeId)
+            _uiEffect.emit(
+                RecipeListEffect.ShowSnackBar(
+                    stringProvider.getString(uiR.string.core_ui_common_error)
+                )
+            )
+        }
+    }
+
+    private fun changeLike(recipeId: String) {
+        _uiState.update {
+            it.copy(
+                recipes = it.recipes.map { recipe ->
+                    if (recipe.id == recipeId) {
+                        recipe.copy(isFavorite = !recipe.isFavorite)
+                    } else {
+                        recipe
+                    }
+                }
+            )
+        }
+    }
 }

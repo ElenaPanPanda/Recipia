@@ -1,5 +1,8 @@
 package com.example.recipia.core.common.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class FullRecipe(
     val id: String,
     val title: String,

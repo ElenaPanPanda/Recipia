@@ -32,6 +32,7 @@ import com.example.recipia.core.ui.theme.softBlack
 fun RecipeItem(
     title: String,
     imageUrl: String,
+    onLikeClicked: () -> Unit,
     modifier: Modifier = Modifier,
     isFavorite: Boolean = false,
 ) {
@@ -61,7 +62,8 @@ fun RecipeItem(
                     isLiked = isFavorite,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(top = 8.dp, end = 8.dp)
+                        .padding(top = 8.dp, end = 8.dp),
+                    onClick = onLikeClicked
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -85,12 +87,14 @@ private fun RecipeItemPreview() {
             title = "Title",
             imageUrl = "",
             isFavorite = true,
+            onLikeClicked = {},
         )
         Spacer(modifier = Modifier.width(8.dp))
         RecipeItem(
             title = "Title",
             imageUrl = "",
             isFavorite = false,
+            onLikeClicked = {},
         )
     }
 }

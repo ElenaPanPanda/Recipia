@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -15,6 +16,7 @@ android {
 
 dependencies {
     implementation(libs.coreKtx)
+    implementation(libs.kotlinx.serialization)
     api(libs.timber)
 
     // DI
