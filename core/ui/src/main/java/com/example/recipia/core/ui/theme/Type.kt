@@ -27,7 +27,14 @@ val poppins = FontFamily(
 )
 
 @Immutable
-data class Typography(
+data class AppTypography(
+    val labell: TextStyle = TextStyle(
+        fontFamily = poppins,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.sp,
+    ),
 
 
 

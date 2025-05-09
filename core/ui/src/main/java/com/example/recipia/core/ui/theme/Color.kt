@@ -12,7 +12,6 @@ val olive = Color(0xFF8D6E63)
 val likeYellow = Color(0xFFFFC107)
 val likeBackground = Color(0xDDFFF8E1)
 val softBlack = Color(0xDD000000)
-val snowWhite = Color(0xFFFFFFFF)
 
 // new colors
 val DarkBlue = Color(0xFF001219) // Primary text, dark backgrounds
@@ -25,9 +24,9 @@ val BurntOrange = Color(0xFFCA6702) // Secondary accent (e.g., tags, some button
 val DarkOrange = Color(0xFFBB3E03) // Hover/active state for burnt orange
 val DarkRed = Color(0xFFAE2012) // Error/destructive actions
 val DeepRed = Color(0xFF9B2226) // Hover/active state for dark red
+val snowWhite = Color(0xFFFFFFFF)
 
-val AppBackground = Color(0xFFFBF9F3) // Main app background (lighter beige)
-val CardBackground = Color(0xFFFFFFFF) // Default card/input background (white)
+val LighterBeige = Color(0xFFFBF9F3) // Main app background (lighter beige)
 val TextMuted = Color(0xFF736a5a) // Muted text (e.g., recipe counts, placeholders)
 val SheetHandle = Color(0xFFb0a89a) // Handle for bottom sheets
 val DividerColor = Color(0xFFe0dacd) // Subtle dividers
