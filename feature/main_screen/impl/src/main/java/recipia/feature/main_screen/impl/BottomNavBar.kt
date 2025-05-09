@@ -27,7 +27,7 @@ fun BottomNavBar(
     val navigationItems = listOf(
         NavigationItem(
             title = stringResource(id = R.string.main_screen_recipes),
-            icon = Icons.recipes,
+            icon = Icons.cross,
             screen = RecipeListRoutingContract.RecipeList
         ),
         NavigationItem(

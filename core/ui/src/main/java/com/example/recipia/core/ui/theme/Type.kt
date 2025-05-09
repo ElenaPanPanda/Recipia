@@ -8,14 +8,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.R
 
+// TODO: remove with fonts files
 val roboto = FontFamily(
     Font(R.font.roboto_bold, FontWeight.Bold),
     Font(R.font.roboto_medium, FontWeight.Medium),
     Font(R.font.roboto_regular, FontWeight.Normal),
 )
 
+val playDisplay = FontFamily(
+    Font(R.font.playfair_display_bold, FontWeight.Bold),
+    Font(R.font.playfair_display_extrabold, FontWeight.Bold),
+)
+
+val poppins = FontFamily(
+    Font(R.font.poppins, FontWeight.Normal),
+    Font(R.font.poppins_medium, FontWeight.Medium),
+    Font(R.font.poppins_semibold, FontWeight.SemiBold),
+)
+
 @Immutable
 data class Typography(
+
+
+
+
+    // TODO: remove
     /** Title3 Regular 1 */
     val title3Regular: TextStyle = TextStyle(
         fontFamily = roboto,
