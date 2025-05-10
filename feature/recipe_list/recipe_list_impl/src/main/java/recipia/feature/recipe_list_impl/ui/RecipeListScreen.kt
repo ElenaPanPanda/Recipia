@@ -1,19 +1,27 @@
 package recipia.feature.recipe_list_impl.ui
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.recipia.core.ui.theme.placeholderColorSet
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.ShowSnackBar
+import recipia.feature.recipe_list_impl.ui.components.AppHorizontalDivider
+import recipia.feature.recipe_list_impl.ui.components.CategoriesBar
 import recipia.feature.recipe_list_impl.ui.components.RecipeItem
+import recipia.feature.recipe_list_impl.ui.components.RecipeListTopBar
 
 @Composable
 fun RecipeListScreen(
@@ -31,17 +39,38 @@ fun RecipeListScreen(
         }
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-        items(state.recipes) { recipe ->
-            RecipeItem(
-                title = recipe.title,
-                imageUrl = recipe.imageUrl,
-                rating = 0 // TODO: use recipe rating
-            )
+    Column {
+        RecipeListTopBar(
+            onSearchClick = {},
+            onAddClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+        CategoriesBar(
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            onCategorySelected = { category -> event(RecipeListEvent.OnCategorySelected(category)) }
+        )
+        AppHorizontalDivider()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            items(state.filteredRecipes, key = { recipe -> recipe.id }) { recipe ->
+                val placeholderColor = remember { placeholderColorSet.random() }
+                RecipeItem(
+                    title = recipe.title,
+                    imageUrl = recipe.imageUrl,
+                    placeholderColor = placeholderColor, // TODO: add placeholder color to recipe
+                    rating = 5 // TODO: use recipe rating
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
         }
     }
 }

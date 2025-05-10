@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkTeal
-import com.example.recipia.core.ui.theme.DividerColor
+import com.example.recipia.core.ui.theme.DividerNavBarColor
 import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.snowWhite
 import com.example.recipia.core.ui.utils.NoRippleInteractionSource
@@ -36,22 +36,22 @@ fun BottomNavBar(
     val bottomNavItems = listOf(
         NavigationItem(
             title = "Recipes",
-            icon = Icons.listAltNav,
+            icon = Icons.recipes,
             screen = RecipeListRoutingContract.RecipeList
         ),
         NavigationItem(
             title = "Collections",
-            icon = Icons.bookmarkNav,
+            icon = Icons.bookmark,
             screen = AddRecipeRoutingContract.AddRecipe
         ),
         NavigationItem(
             title = "Calendar",
-            icon = Icons.calendarAltNav,
+            icon = Icons.calendar,
             screen = RecipeListRoutingContract.RecipeList
         ),
         NavigationItem(
             title = "Groceries",
-            icon = Icons.shoppingBasketNav,
+            icon = Icons.groceries,
             screen = AddRecipeRoutingContract.AddRecipe
         )
     )
@@ -59,7 +59,7 @@ fun BottomNavBar(
     NavigationBar(
         modifier = Modifier
             .border(
-                border = BorderStroke(1.dp, DividerColor),
+                border = BorderStroke(1.dp, DividerNavBarColor),
                 shape = RectangleShape
             ),
         containerColor = snowWhite.copy(alpha = 0.98f),
@@ -74,7 +74,7 @@ fun BottomNavBar(
                     Icon(
                         imageVector = ImageVector.vectorResource(id = item.icon),
                         contentDescription = item.title,
-                        modifier = Modifier.size(20.dp),
+                        modifier = Modifier.size(24.dp),
                     )
                 },
                 label = {

@@ -2,6 +2,7 @@ package recipia.feature.recipe_list_impl.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipia.core.common.model.RecipeCategory
 import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.example.recipia.core.ui.R as uiR
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import recipia.feature.recipe_list_impl.domain.usecase.GetRecipesUseCase
 import recipia.feature.recipe_list_impl.domain.usecase.LikeRecipeUseCase
-import recipia.feature.recipe_list_impl.ui.RecipeListEvent.OnLikeClicked
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +32,7 @@ class RecipeListViewModel @Inject constructor(
 
     fun obtainEvent(event: RecipeListEvent) {
         when (event) {
-            is OnLikeClicked -> onLikeClicked(event.recipeId)
+            is RecipeListEvent.OnCategorySelected -> onSelectedCategory(event.category)
         }
     }
 
@@ -43,7 +43,13 @@ class RecipeListViewModel @Inject constructor(
     private fun getRecipes() = viewModelScope.launch {
         try {
             val recipes = getRecipesUseCase.getRecipes()
-            _uiState.update { it.copy(isLoading = true, recipes = recipes) }
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    recipes = recipes,
+                    filteredRecipes = recipes
+                )
+            }
         } catch (e: Exception) {
             _uiEffect.emit(
                 RecipeListEffect.ShowSnackBar(
@@ -53,34 +59,17 @@ class RecipeListViewModel @Inject constructor(
         }
     }
 
-    private fun onLikeClicked(recipeId: String) = viewModelScope.launch {
-        changeLike(recipeId)
+    private fun onSelectedCategory(category: RecipeCategory) {
+        _uiState.update { it.copy(selectedCategory = category) }
 
-        try {
-            val recipe = _uiState.value.recipes.find { it.id == recipeId }
-                ?: throw Exception("Recipe not found")
-            likeRecipeUseCase.likeRecipe(recipeId, recipe)
-        } catch (e: Exception) {
-            changeLike(recipeId)
-            _uiEffect.emit(
-                RecipeListEffect.ShowSnackBar(
-                    stringProvider.getString(uiR.string.core_ui_common_error)
-                )
-            )
-        }
-    }
-
-    private fun changeLike(recipeId: String) {
-        _uiState.update {
-            it.copy(
-                recipes = it.recipes.map { recipe ->
-                    if (recipe.id == recipeId) {
-                        recipe.copy(isFavorite = !recipe.isFavorite)
-                    } else {
-                        recipe
-                    }
+        when (category) {
+            RecipeCategory.ALL -> _uiState.update { it.copy(filteredRecipes = uiState.value.recipes) }
+            else -> {
+                val filteredRecipes = uiState.value.recipes.filter { recipe ->
+                    recipe.rawCategories.contains(category)
                 }
-            )
+                _uiState.update { it.copy(filteredRecipes = filteredRecipes) }
+            }
         }
     }
 }

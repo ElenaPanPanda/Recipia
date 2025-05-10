@@ -2,18 +2,6 @@ package com.example.recipia.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// TODO: remove
-// set 1
-val freshGreen = Color(0xFF81C784)
-val basil = Color(0xFF388E3C)
-val softLemon = Color(0xFFFFF176)
-val creamWhite = Color(0xFFFFFDE7)
-val olive = Color(0xFF8D6E63)
-val likeYellow = Color(0xFFFFC107)
-val likeBackground = Color(0xDDFFF8E1)
-val softBlack = Color(0xDD000000)
-
-// new colors
 val DarkBlue = Color(0xFF001219) // Primary text, dark backgrounds
 val DarkTeal = Color(0xFF005F73) // Secondary text, titles, accents
 val MediumTeal = Color(0xFF0A9396) // Primary accent, buttons, active states
@@ -29,9 +17,13 @@ val snowWhite = Color(0xFFFFFFFF)
 val LighterBeige = Color(0xFFFBF9F3) // Main app background (lighter beige)
 val TextMuted = Color(0xFF736a5a) // Muted text (e.g., recipe counts, placeholders)
 val SheetHandle = Color(0xFFb0a89a) // Handle for bottom sheets
-val DividerColor = Color(0xFFe0dacd) // Subtle dividers
+val DividerNavBarColor = Color(0xFFe0dacd) // Subtle dividers
 val StarEmpty = Color(0xFFd1ccc0) // Color for empty rating stars
+val dividerColor = Color(0xFFd1c5a2)
 
 val DisabledBackground = Color(0xFFe0e0e0)
 val DisabledText = Color(0xFFa0a0a0)
 val DisabledBorder = Color(0xFFc0c0c0)
+
+val placeholderColorSet =
+    listOf(DarkTeal, MediumTeal, LightTeal, GoldOrange, BurntOrange, DarkOrange, DarkRed, DeepRed)
