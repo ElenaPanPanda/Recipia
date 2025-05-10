@@ -3,10 +3,11 @@ plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
-    namespace = "recipia.core.common"
+    namespace = "com.example.recipia.core.common"
 
     buildFeatures {
         viewBinding = true
@@ -14,7 +15,11 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation(projects.core.ui)
+
     implementation(libs.coreKtx)
+    implementation(libs.kotlinx.serialization)
     api(libs.timber)
 
     // DI

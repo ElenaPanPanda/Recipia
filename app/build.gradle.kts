@@ -33,8 +33,10 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.core.network)
     implementation(projects.core.ui)
-    implementation(projects.feature.recipeList.recipeListImpl)
+    implementation(projects.feature.mainScreen.impl)
+    implementation(projects.feature.recipedetails.impl)
 
     // Libs
     implementation(libs.coreKtx)

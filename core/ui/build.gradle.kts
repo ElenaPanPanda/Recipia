@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "recipia.core.ui"
+    namespace = "com.example.recipia.core.ui"
 
     buildFeatures {
         compose = true
