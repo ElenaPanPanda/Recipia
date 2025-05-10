@@ -7,17 +7,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalTypography = staticCompositionLocalOf { Typography() }
+val LocalTypography = staticCompositionLocalOf { AppTypography() }
 
 @VisibleForTesting
-val LightDefaultColorScheme = lightColorScheme(background = creamWhite)
+val LightDefaultColorScheme = lightColorScheme(background = LighterBeige)
 
 @Composable
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = LightDefaultColorScheme
-    val typography = Typography()
+    val typography = AppTypography()
 
     CompositionLocalProvider(
         LocalTypography provides typography,

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="core_common_categories_all">All</string>
+    <string name="core_common_categories_bakery">Bakery</string>
+    <string name="core_common_categories_breakfast">Breakfast</string>
+    <string name="core_common_categories_dessert">Dessert</string>
+    <string name="core_common_categories_meat">Meat</string>
+    <string name="core_common_categories_vegetables">Vegetables</string>
+    <string name="core_common_categories_drinks">Drinks</string>
+    <string name="core_common_categories_main_course">Main course</string>
+    <string name="core_common_categories_soup">Soup</string>
+</resources>
