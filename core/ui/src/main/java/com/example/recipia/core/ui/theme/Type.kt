@@ -16,27 +16,32 @@ val roboto = FontFamily(
 )
 
 val playDisplay = FontFamily(
-    Font(R.font.playfair_display_bold, FontWeight.Bold),
-    Font(R.font.playfair_display_extrabold, FontWeight.Bold),
+    Font(R.font.playfair_display_bold, FontWeight.Bold), // 700
+    Font(R.font.playfair_display_extrabold, FontWeight.Bold), // 800
 )
 
 val poppins = FontFamily(
-    Font(R.font.poppins, FontWeight.Normal),
-    Font(R.font.poppins_medium, FontWeight.Medium),
-    Font(R.font.poppins_semibold, FontWeight.SemiBold),
+    Font(R.font.poppins, FontWeight.Normal), // 400
+    Font(R.font.poppins_medium, FontWeight.Medium), // 500
+    Font(R.font.poppins_semibold, FontWeight.SemiBold), // 600
 )
 
 @Immutable
 data class AppTypography(
-    val labell: TextStyle = TextStyle(
-        fontFamily = poppins,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.sp,
+    val playDisplayBold: TextStyle = TextStyle(
+        fontFamily = playDisplay,
+        fontWeight = FontWeight.Bold,
     ),
 
+    val poppinsSemiBold: TextStyle = TextStyle(
+        fontFamily = poppins,
+        fontWeight = FontWeight.SemiBold,
+    ),
 
+    val poppinsMedium: TextStyle = TextStyle(
+        fontFamily = poppins,
+        fontWeight = FontWeight.Medium,
+    ),
 
 
     // TODO: remove

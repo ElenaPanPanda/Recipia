@@ -19,7 +19,7 @@ object Icons {
     val search = R.drawable.ic_search
     val shoppingBasketNav = R.drawable.ic_shopping_basket_nav
     val starEmpty = R.drawable.ic_star_empty
-    val starFilled = R.drawable.ic_star_filled
+    val starFilled = R.drawable.ic_rating_star_filled
     val starHalf = R.drawable.ic_star_half
     val trash = R.drawable.ic_trash
     val utensils = R.drawable.ic_utensils

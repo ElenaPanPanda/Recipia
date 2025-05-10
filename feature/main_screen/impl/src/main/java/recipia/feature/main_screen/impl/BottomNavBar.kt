@@ -1,7 +1,7 @@
 package recipia.feature.main_screen.impl
 
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -11,56 +11,63 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.icons.Icons
-import com.example.recipia.core.ui.theme.LighterBeige
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkTeal
+import com.example.recipia.core.ui.theme.DividerColor
 import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.snowWhite
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import com.example.recipia.core.ui.utils.NoRippleInteractionSource
 import recipia.feature.add_recipe.api.AddRecipeRoutingContract
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
-
-val bottomNavItems = listOf(
-    NavigationItem(
-        title = "Recipes",
-        icon = Icons.listAltNav,
-        screen = RecipeListRoutingContract.RecipeList
-    ),
-    NavigationItem(
-        title = "Collections",
-        icon = Icons.bookmarkNav,
-        screen = AddRecipeRoutingContract.AddRecipe
-    ),
-    NavigationItem(
-        title = "Calendar",
-        icon = Icons.calendarAltNav,
-        screen = RecipeListRoutingContract.RecipeList
-    ),
-    NavigationItem(
-        title = "Groceries",
-        icon = Icons.shoppingBasketNav,
-        screen = AddRecipeRoutingContract.AddRecipe
-    )
-)
 
 @Composable
 fun BottomNavBar(
     selectedIndex: Int,
     onItemSelected: (Int, Any) -> Unit
 ) {
+    val bottomNavItems = listOf(
+        NavigationItem(
+            title = "Recipes",
+            icon = Icons.listAltNav,
+            screen = RecipeListRoutingContract.RecipeList
+        ),
+        NavigationItem(
+            title = "Collections",
+            icon = Icons.bookmarkNav,
+            screen = AddRecipeRoutingContract.AddRecipe
+        ),
+        NavigationItem(
+            title = "Calendar",
+            icon = Icons.calendarAltNav,
+            screen = RecipeListRoutingContract.RecipeList
+        ),
+        NavigationItem(
+            title = "Groceries",
+            icon = Icons.shoppingBasketNav,
+            screen = AddRecipeRoutingContract.AddRecipe
+        )
+    )
+
     NavigationBar(
-        containerColor = snowWhite,
+        modifier = Modifier
+            .border(
+                border = BorderStroke(1.dp, DividerColor),
+                shape = RectangleShape
+            ),
+        containerColor = snowWhite.copy(alpha = 0.98f),
         contentColor = MediumTeal,
-        tonalElevation = 14.dp
     ) {
         bottomNavItems.forEachIndexed { index, item ->
+            val isSelected = selectedIndex == index
             NavigationBarItem(
-                selected = selectedIndex == index,
+                selected = isSelected,
                 onClick = { onItemSelected(index, item.screen) },
                 icon = {
                     Icon(
@@ -72,7 +79,14 @@ fun BottomNavBar(
                 label = {
                     Text(
                         text = item.title,
-                        style = AppTypography().labell
+                        style = if (isSelected) AppTypography().poppinsSemiBold.copy(
+                            fontSize = 12.sp,
+                            lineHeight = 16.sp,
+                        )
+                        else AppTypography().poppinsMedium.copy(
+                            fontSize = 12.sp,
+                            lineHeight = 14.sp,
+                        )
                     )
                 },
                 interactionSource = remember { NoRippleInteractionSource },
@@ -82,15 +96,9 @@ fun BottomNavBar(
                     unselectedIconColor = MediumTeal,
                     selectedTextColor = DarkTeal,
                     unselectedTextColor = MediumTeal,
-                    indicatorColor = LighterBeige
+                    indicatorColor = Color.Transparent
                 )
             )
         }
     }
-}
-
-object NoRippleInteractionSource : MutableInteractionSource {
-    override val interactions: Flow<Interaction> = emptyFlow()
-    override suspend fun emit(interaction: Interaction) {}
-    override fun tryEmit(interaction: Interaction): Boolean = true
 }

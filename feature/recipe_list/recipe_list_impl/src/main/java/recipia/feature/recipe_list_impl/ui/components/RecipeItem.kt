@@ -1,100 +1,84 @@
 package recipia.feature.recipe_list_impl.ui.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import com.example.recipia.core.ui.components.Like
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.example.recipia.core.ui.theme.AppTypography
+import com.example.recipia.core.ui.theme.DarkBlue
 import com.example.recipia.core.ui.theme.snowWhite
-import com.example.recipia.core.ui.theme.softBlack
 
 @Composable
 fun RecipeItem(
     title: String,
     imageUrl: String,
-    onLikeClicked: () -> Unit,
+    rating: Int,
     modifier: Modifier = Modifier,
-    isFavorite: Boolean = false,
 ) {
     Card(
         modifier = modifier
-            .padding(8.dp)
             .fillMaxWidth()
-            .height(220.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
+            .height(140.dp)
+            .padding(vertical = 10.dp),
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = snowWhite)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Box {
-                Image(
-                    painter = rememberAsyncImagePainter(model = imageUrl),
-                    contentDescription = title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .height(160.dp)
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                )
-                Like(
-                    isLiked = isFavorite,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(top = 8.dp, end = 8.dp),
-                    onClick = onLikeClicked
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = title,
-                style = Typography().labelLarge,
-                color = softBlack,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(horizontal = 12.dp)
+        Row(modifier = Modifier.fillMaxSize()) {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = title,
+                modifier = Modifier
+                    .width(120.dp)
+                    .fillMaxHeight()
+                    .clip(
+                        RoundedCornerShape(
+                            topStart = 12.dp,
+                            bottomStart = 12.dp
+                        )
+                    ),
+                contentScale = ContentScale.Crop,
+                // TODO: add placeholders
+                // You can add placeholder and error drawables for AsyncImage
+                // placeholder = painterResource(id = R.drawable.placeholder_image_recipe),
+                // error = painterResource(id = R.drawable.placeholder_image_recipe)
             )
-        }
-    }
-}
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = title,
+                    style = AppTypography().playDisplayBold.copy(
+                        fontSize = 18.sp,lineHeight = (1.4 * 18).sp,
+                    ),
+                    color = DarkBlue,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-@Preview(showBackground = true)
-@Composable
-private fun RecipeItemPreview() {
-    Row(modifier = Modifier.padding(8.dp)) {
-        RecipeItem(
-            title = "Title",
-            imageUrl = "",
-            isFavorite = true,
-            onLikeClicked = {},
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        RecipeItem(
-            title = "Title",
-            imageUrl = "",
-            isFavorite = false,
-            onLikeClicked = {},
-        )
+                StarRatingDisplay(rating = rating)
+            }
+        }
     }
 }
