@@ -1,11 +1,13 @@
 package recipia.feature.recipe_list_impl.ui
 
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -13,13 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import recipia.feature.recipe_list_impl.ui.components.RecipeItem
+import recipia.feature.recipe_list_impl.ui.RecipeListEffect.NavigateToRecipeDetails
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.ShowSnackBar
-import recipia.feature.recipe_list_impl.ui.RecipeListEvent.OnLikeClicked
+import recipia.feature.recipe_list_impl.ui.components.AppHorizontalDivider
+import recipia.feature.recipe_list_impl.ui.components.CategoriesBar
+import recipia.feature.recipe_list_impl.ui.components.RecipeItem
+import recipia.feature.recipe_list_impl.ui.components.RecipeListTopBar
 
 @Composable
 fun RecipeListScreen(
     onShowSnackBar: (String) -> Unit,
+    navigateToRecipeDetails: (String) -> Unit,
     viewModel: RecipeListViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -29,23 +35,43 @@ fun RecipeListScreen(
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is ShowSnackBar -> onShowSnackBar(effect.message)
+                is NavigateToRecipeDetails -> navigateToRecipeDetails(effect.recipeId)
             }
         }
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
-        items(state.recipes) { recipe ->
-            RecipeItem(
-                title = recipe.title,
-                imageUrl = recipe.imageUrl,
-                isFavorite = recipe.isFavorite,
-                modifier = Modifier.padding(4.dp),
-                onLikeClicked = { event(OnLikeClicked(recipe.id)) }
-            )
+    Column {
+        RecipeListTopBar(
+            onSearchClick = {},
+            onAddClick = {},
+            modifier = Modifier.fillMaxWidth()
+        )
+        CategoriesBar(
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            onCategorySelected = { category -> event(RecipeListEvent.OnCategorySelected(category)) }
+        )
+        AppHorizontalDivider()
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+        ) {
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            items(state.filteredRecipes, key = { recipe -> recipe.id }) { recipe ->
+                RecipeItem(
+                    title = recipe.title,
+                    imageUrl = recipe.imageUrl,
+                    placeholderColor = recipe.placeholderColor.color,
+                    rating = recipe.rating,
+                    onClick = { event(RecipeListEvent.OnRecipeClick(recipe.id)) }
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
         }
     }
 }

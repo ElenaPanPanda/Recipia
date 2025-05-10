@@ -20,7 +20,9 @@ import recipia.feature.recipe_list_api.RecipeListRoutingContract
 import recipia.feature.recipe_list_impl.navigation.recipeListScreen
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    navigateToRecipeDetails: (String) -> Unit
+) {
     val childNavController = rememberNavController()
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -43,7 +45,7 @@ fun MainScreen() {
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        ) { contentPadding ->
+    ) { contentPadding ->
         NavHost(
             navController = childNavController,
             startDestination = RecipeListRoutingContract.RecipeList,
@@ -55,7 +57,9 @@ fun MainScreen() {
                         snackbarHostState.showSnackbar(message)
                     }
                 },
-                childNavController)
+                navigateToRecipeDetails = navigateToRecipeDetails,
+                childNavController,
+            )
             addRecipeScreen(childNavController)
         }
     }

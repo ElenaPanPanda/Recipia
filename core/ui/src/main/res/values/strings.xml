@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="core_ui_liked">Liked</string>
-    <string name="core_ui_not_liked">Not liked</string>
+    <string name="core_ui_app_name">Recipia</string>
+    <string name="core_ui_search_recipes">Search Recipes</string>
+    <string name="core_ui_add_new_recipe">Add New Recipe</string>
     <string name="core_ui_common_error">Something went wrong</string>
 </resources>

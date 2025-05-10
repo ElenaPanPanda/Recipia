@@ -11,8 +11,10 @@ internal class RecipeListMapperImpl @Inject constructor() : RecipeListMapper {
                 ShortRecipe(
                     id = recipe.id,
                     title = recipe.title,
-                    isFavorite = recipe.isFavorite,
+                    //isFavorite = recipe.isFavorite,
+                    rating = recipe.rating,
                     imageUrl = recipe.imageUrl,
+                    placeholderColor = recipe.placeholderColor,
                     rawCategories = recipe.rawCategories,
                 )
             }

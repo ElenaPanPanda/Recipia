@@ -12,9 +12,4 @@ internal class RecipeListRepositoryImpl @Inject constructor(private val api: Rec
         withContext(Dispatchers.IO) {
             api.getRecipes()
         }
-
-    override suspend fun likeRecipe(recipeId: String, recipe: ShortRecipeDto) =
-        withContext(Dispatchers.IO) {
-            api.likeRecipe(recipeId, recipe)
-        }
 }

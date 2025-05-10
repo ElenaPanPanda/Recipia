@@ -2,40 +2,25 @@ package com.example.recipia.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// set 1
-val freshGreen = Color(0xFF81C784)
-val basil = Color(0xFF388E3C)
-val softLemon = Color(0xFFFFF176)
-val creamWhite = Color(0xFFFFFDE7)
-val olive = Color(0xFF8D6E63)
-val likeYellow = Color(0xFFFFC107)
-val likeBackground = Color(0xDDFFF8E1)
-val softBlack = Color(0xDD000000)
-
-// set 2
-val tomatoRed = Color(0xFFE57373)
-val clayBrown = Color(0xFF6D4C41)
-val burntOrange = Color(0xFFFF8A65)
-val wheat = Color(0xFFFFF3E0)
-val sage = Color(0xFFA1887F)
-
-// set 3
-val charcoal = Color(0xFF424242)
+val DarkBlue = Color(0xFF001219) // Primary text, dark backgrounds
+val DarkTeal = Color(0xFF005F73) // Secondary text, titles, accents
+val MediumTeal = Color(0xFF0A9396) // Primary accent, buttons, active states
+val LightTeal = Color(0xFF94D2BD) // Borders, subtle accents, unselected chip borders
+val Beige = Color(0xFFE9D8A6) // Text on dark backgrounds, some UI elements
+val GoldOrange = Color(0xFFEE9B00) // Highlight accent (e.g., filled stars)
+val BurntOrange = Color(0xFFCA6702) // Secondary accent (e.g., tags, some buttons)
+val DarkOrange = Color(0xFFBB3E03) // Hover/active state for burnt orange
+val DarkRed = Color(0xFFAE2012) // Error/destructive actions
+val DeepRed = Color(0xFF9B2226) // Hover/active state for dark red
 val snowWhite = Color(0xFFFFFFFF)
-val mistGrey = Color(0xFFBDBDBD)
-val warmSand = Color(0xFFF5F5DC)
-val copperAccent = Color(0xFFB87333)
 
-// set 4
-val strawberry = Color(0xFFFFCDD2)
-val vanillaCream = Color(0xFFFFF8E1)
-val mint = Color(0xFFB2EBF2)
-val blueberry = Color(0xFFD1C4E9)
-val icingGrey = Color(0xFFE0E0E0)
+val LighterBeige = Color(0xFFFBF9F3) // Main app background (lighter beige)
+val TextMuted = Color(0xFF736a5a) // Muted text (e.g., recipe counts, placeholders)
+val SheetHandle = Color(0xFFb0a89a) // Handle for bottom sheets
+val DividerNavBarColor = Color(0xFFe0dacd) // Subtle dividers
+val StarEmpty = Color(0xFFd1ccc0) // Color for empty rating stars
+val dividerColor = Color(0xFFd1c5a2)
 
-// set 5
-val chiliRed = Color(0xFFD32F2F)
-val saffron = Color(0xFFFFC107)
-val cuminBrown = Color(0xFF5D4037)
-val cardamonGreen = Color(0xFF689F38)
-val smokeBlack = Color(0xFF212121)
+val DisabledBackground = Color(0xFFe0e0e0)
+val DisabledText = Color(0xFFa0a0a0)
+val DisabledBorder = Color(0xFFc0c0c0)

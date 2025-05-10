@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.feature.recipeList.recipeListImpl)
     implementation(projects.feature.addrecipe.impl)
+    implementation(projects.feature.recipedetails.api)
     api(projects.feature.mainScreen.api)
 
     // Libs
@@ -25,4 +26,5 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.bundles.compose)
     implementation(libs.androidx.navigation.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }
