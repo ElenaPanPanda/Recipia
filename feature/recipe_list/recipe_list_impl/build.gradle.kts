@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // DI
     implementation(libs.hilt)

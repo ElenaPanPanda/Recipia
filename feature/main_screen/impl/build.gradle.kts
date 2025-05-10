@@ -25,4 +25,5 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.bundles.compose)
     implementation(libs.androidx.navigation.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

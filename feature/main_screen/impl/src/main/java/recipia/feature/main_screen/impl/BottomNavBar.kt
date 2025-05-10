@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.icons.Icons
@@ -101,4 +102,13 @@ fun BottomNavBar(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BottomNavBarPreview() {
+    BottomNavBar(
+        selectedIndex = 0,
+        onItemSelected = { _, _ -> }
+    )
 }
