@@ -44,7 +44,7 @@ class RecipeListViewModel @Inject constructor(
             val recipes = getRecipesUseCase.getRecipes()
             _uiState.update {
                 it.copy(
-                    isLoading = true,
+                    isLoading = false,
                     recipes = recipes,
                     filteredRecipes = recipes
                 )
