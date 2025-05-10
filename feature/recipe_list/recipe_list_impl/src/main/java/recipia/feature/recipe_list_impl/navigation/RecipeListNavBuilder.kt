@@ -8,11 +8,13 @@ import recipia.feature.recipe_list_impl.ui.RecipeListScreen
 
 fun NavGraphBuilder.recipeListScreen(
     onShowSnackBar: (String) -> Unit,
+    navigateToRecipeDetails: (String) -> Unit,
     navController: NavHostController
 ) {
     composable<RecipeListRoutingContract.RecipeList> {
         RecipeListScreen(
-            onShowSnackBar = { message -> onShowSnackBar(message) }
+            onShowSnackBar = { message -> onShowSnackBar(message) },
+            navigateToRecipeDetails = navigateToRecipeDetails,
         )
     }
 }

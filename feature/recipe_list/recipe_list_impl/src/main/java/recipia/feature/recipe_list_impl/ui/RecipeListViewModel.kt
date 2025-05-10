@@ -31,6 +31,7 @@ class RecipeListViewModel @Inject constructor(
     fun obtainEvent(event: RecipeListEvent) {
         when (event) {
             is RecipeListEvent.OnCategorySelected -> onSelectedCategory(event.category)
+            is RecipeListEvent.OnRecipeClick -> navigateToRecipeDetails(event.recipeId)
         }
     }
 
@@ -69,5 +70,9 @@ class RecipeListViewModel @Inject constructor(
                 _uiState.update { it.copy(filteredRecipes = filteredRecipes) }
             }
         }
+    }
+
+    private fun navigateToRecipeDetails(recipeId: String) = viewModelScope.launch {
+        _uiEffect.emit(RecipeListEffect.NavigateToRecipeDetails(recipeId))
     }
 }

@@ -36,6 +36,7 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.ui)
     implementation(projects.feature.mainScreen.impl)
+    implementation(projects.feature.recipedetails.impl)
 
     // Libs
     implementation(libs.coreKtx)

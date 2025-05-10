@@ -46,6 +46,7 @@ fun RecipeItem(
     imageUrl: String,
     placeholderColor: Color,
     rating: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var displayFallback by remember(imageUrl) { mutableStateOf(imageUrl.isBlank()) }
@@ -57,7 +58,8 @@ fun RecipeItem(
             .padding(vertical = 10.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(containerColor = snowWhite)
+        colors = CardDefaults.cardColors(containerColor = snowWhite),
+        onClick = onClick
     ) {
         Row(modifier = Modifier.fillMaxSize()) {
             if (displayFallback) {
@@ -130,6 +132,7 @@ private fun RecipeItemPreview() {
         imageUrl = "",
         placeholderColor = MediumTeal,
         rating = 5,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp),
+        onClick = {},
     )
 }

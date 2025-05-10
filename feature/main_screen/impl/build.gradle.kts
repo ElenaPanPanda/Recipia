@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.feature.recipeList.recipeListImpl)
     implementation(projects.feature.addrecipe.impl)
+    implementation(projects.feature.recipedetails.api)
     api(projects.feature.mainScreen.api)
 
     // Libs
