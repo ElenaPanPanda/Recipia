@@ -24,6 +24,3 @@ val dividerColor = Color(0xFFd1c5a2)
 val DisabledBackground = Color(0xFFe0e0e0)
 val DisabledText = Color(0xFFa0a0a0)
 val DisabledBorder = Color(0xFFc0c0c0)
-
-val placeholderColorSet =
-    listOf(DarkTeal, MediumTeal, LightTeal, GoldOrange, BurntOrange, DarkOrange, DarkRed, DeepRed)

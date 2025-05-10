@@ -15,6 +15,9 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation(projects.core.ui)
+
     implementation(libs.coreKtx)
     implementation(libs.kotlinx.serialization)
     api(libs.timber)

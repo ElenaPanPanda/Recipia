@@ -11,12 +11,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.recipia.core.ui.theme.placeholderColorSet
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.ShowSnackBar
 import recipia.feature.recipe_list_impl.ui.components.AppHorizontalDivider
 import recipia.feature.recipe_list_impl.ui.components.CategoriesBar
@@ -60,12 +58,11 @@ fun RecipeListScreen(
                 Spacer(modifier = Modifier.height(12.dp))
             }
             items(state.filteredRecipes, key = { recipe -> recipe.id }) { recipe ->
-                val placeholderColor = remember { placeholderColorSet.random() }
                 RecipeItem(
                     title = recipe.title,
                     imageUrl = recipe.imageUrl,
-                    placeholderColor = placeholderColor, // TODO: add placeholder color to recipe
-                    rating = 5 // TODO: use recipe rating
+                    placeholderColor = recipe.placeholderColor.color,
+                    rating = recipe.rating,
                 )
             }
             item {

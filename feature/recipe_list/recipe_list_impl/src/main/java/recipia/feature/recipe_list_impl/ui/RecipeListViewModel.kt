@@ -15,14 +15,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import recipia.feature.recipe_list_impl.domain.usecase.GetRecipesUseCase
-import recipia.feature.recipe_list_impl.domain.usecase.LikeRecipeUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val stringProvider: StringResProvider,
-    private val getRecipesUseCase: GetRecipesUseCase,
-    private val likeRecipeUseCase: LikeRecipeUseCase,
+    private val getRecipesUseCase: GetRecipesUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RecipeListState())
     val uiState: StateFlow<RecipeListState> = _uiState.asStateFlow()
