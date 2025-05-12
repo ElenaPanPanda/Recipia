@@ -59,11 +59,11 @@ fun IngredientItem(
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(
-                    id = if (ingredient.addedToList) Icons.doneCheckmark
-                    else Icons.cartArrowDown
+                    id = if (ingredient.addedToList) Icons.check
+                    else Icons.shoppingCartAdd
                 ),
                 contentDescription = "Add ${ingredient.ingredient}",
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(20.dp)
             )
         }
     }

@@ -46,7 +46,7 @@ fun ActionToolBarButton(
             imageVector = ImageVector.vectorResource(id = iconRes),
             contentDescription = text,
             tint = iconColor,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.height(5.dp))
         Text(

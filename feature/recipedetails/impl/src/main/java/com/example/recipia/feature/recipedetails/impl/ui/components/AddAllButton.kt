@@ -32,7 +32,7 @@ fun AddAllButton(
             .padding(8.dp)
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = Icons.cartPlus),
+            imageVector = ImageVector.vectorResource(id = Icons.shoppingCartAdd),
             contentDescription = null,
             modifier = Modifier
                 .size(20.dp)

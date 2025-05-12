@@ -46,7 +46,7 @@ fun OutlinedButton(
                 imageVector = leadingIcon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(18.dp)
+                    .size(28.dp)
                     .padding(end = 8.dp)
             )
         }
@@ -63,7 +63,7 @@ fun OutlinedButtonPreview() {
     OutlinedButton(
         text = "Start Cooking",
         onClick = {},
-        leadingIcon = ImageVector.vectorResource(id = Icons.utensils),
+        leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
         modifier = Modifier
             .fillMaxWidth()
             .padding(24.dp)

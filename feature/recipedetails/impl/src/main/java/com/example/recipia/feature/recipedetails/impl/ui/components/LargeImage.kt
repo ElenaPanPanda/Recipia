@@ -41,7 +41,7 @@ fun LargeImage(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(Icons.recipes),
+                imageVector = ImageVector.vectorResource(Icons.pan),
                 contentDescription = null,
                 tint = snowWhite,
                 modifier = Modifier.size(64.dp),

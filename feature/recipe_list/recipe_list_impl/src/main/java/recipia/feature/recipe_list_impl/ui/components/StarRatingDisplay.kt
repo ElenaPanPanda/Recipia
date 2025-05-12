@@ -46,7 +46,7 @@ fun StarRatingDisplay(
                 imageVector = ImageVector.vectorResource(starIcon),
                 contentDescription = null,
                 tint = tintColor,
-                modifier = Modifier.size(14.4.dp)
+                modifier = Modifier.size(18.dp)
             )
             if (i < numStars) {
                 Spacer(modifier = Modifier.width(2.dp))

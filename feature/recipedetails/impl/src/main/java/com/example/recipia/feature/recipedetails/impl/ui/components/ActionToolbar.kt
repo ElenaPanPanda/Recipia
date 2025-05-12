@@ -58,13 +58,13 @@ fun ActionToolbar(
                     iconColor = MediumTeal
                 )
                 ActionToolBarButton(
-                    iconRes = Icons.calendarCheck,
+                    iconRes = Icons.calendarAdd,
                     text = stringResource(id = uiR.string.core_ui_calendar),
                     onClick = onCalendarClicked,
                     iconColor = BurntOrange
                 )
                 ActionToolBarButton(
-                    iconRes = Icons.starHalf,
+                    iconRes = Icons.share,
                     text = stringResource(id = uiR.string.core_ui_share),
                     onClick = onShareClicked,
                     iconColor = GoldOrange
