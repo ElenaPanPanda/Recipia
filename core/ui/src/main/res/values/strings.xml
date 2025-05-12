@@ -9,6 +9,7 @@
     <string name="core_ui_share">Share</string>
     <string name="core_ui_delete">Delete</string>
     <string name="core_ui_add_start_cooking">Start Cooking</string>
+    <string name="core_ui_categories">Categories</string>
     <string name="core_ui_ingredients">Ingredients</string>
     <string name="core_ui_add_all">Add All</string>
     <string name="core_ui_instructions">Instructions</string>

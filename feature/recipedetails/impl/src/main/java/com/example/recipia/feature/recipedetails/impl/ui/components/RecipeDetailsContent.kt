@@ -73,6 +73,17 @@ fun RecipeDetailsContent(
                 onDeleteClicked = { event(RecipeDetailsEvent.OnDeleteClicked(state.recipe.id)) }
             )
             //}
+
+            if (state.recipe.rawCategories.isNotEmpty()) {
+                CategoriesSection(
+                    categories = state.recipe.rawCategories,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 20.dp, bottom = 32.dp)
+                )
+            }
+
             if (state.recipe.ingredients.isNotEmpty()) {
                 IngredientsSection(
                     ingredients = state.recipe.ingredients,
