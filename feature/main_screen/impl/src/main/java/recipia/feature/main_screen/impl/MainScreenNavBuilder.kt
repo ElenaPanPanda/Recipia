@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.recipia.feature.recipedetails.api.RecipeDetailsRoutingContract
+import recipia.feature.add_recipe.api.AddRecipeRoutingContract
 import recipia.feature.main_screen.api.MainScreenRoutingContract
 
 fun NavGraphBuilder.mainScreen(navController: NavController) {
@@ -15,6 +16,9 @@ fun NavGraphBuilder.mainScreen(navController: NavController) {
                         recipeId = recipeId
                     )
                 )
+            },
+            navigateToAddRecipe = {
+                navController.navigate(AddRecipeRoutingContract.AddRecipe)
             }
         )
     }

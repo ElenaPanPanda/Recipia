@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import recipia.feature.recipe_list_impl.ui.RecipeListEffect.NavigateToAddRecipe
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.NavigateToRecipeDetails
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.ShowSnackBar
 import com.example.recipia.core.ui.components.AppHorizontalDivider
@@ -26,6 +27,7 @@ import recipia.feature.recipe_list_impl.ui.components.RecipeListTopBar
 fun RecipeListScreen(
     onShowSnackBar: (String) -> Unit,
     navigateToRecipeDetails: (String) -> Unit,
+    navigateToAddRecipe: () -> Unit,
     viewModel: RecipeListViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -36,6 +38,7 @@ fun RecipeListScreen(
             when (effect) {
                 is ShowSnackBar -> onShowSnackBar(effect.message)
                 is NavigateToRecipeDetails -> navigateToRecipeDetails(effect.recipeId)
+                is NavigateToAddRecipe -> navigateToAddRecipe()
             }
         }
     }
@@ -43,7 +46,7 @@ fun RecipeListScreen(
     Column {
         RecipeListTopBar(
             onSearchClick = {},
-            onAddClick = {},
+            onAddClick = { event(RecipeListEvent.OnAddRecipeClicked) },
             modifier = Modifier.fillMaxWidth()
         )
         CategoriesBar(
@@ -66,7 +69,7 @@ fun RecipeListScreen(
                     imageUrl = recipe.imageUrl,
                     placeholderColor = recipe.placeholderColor.color,
                     rating = recipe.rating,
-                    onClick = { event(RecipeListEvent.OnRecipeClick(recipe.id)) }
+                    onClick = { event(RecipeListEvent.OnRecipeClicked(recipe.id)) }
                 )
             }
             item {

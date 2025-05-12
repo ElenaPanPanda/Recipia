@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.recipia.feature.recipedetails.impl.navigation.recipeDetailsScreen
+import recipia.feature.add_recipe.impl.addRecipeScreen
 import recipia.feature.main_screen.api.MainScreenRoutingContract
 import recipia.feature.main_screen.impl.mainScreen
 
@@ -16,6 +17,7 @@ fun NavigationHost() {
         startDestination = MainScreenRoutingContract.MainScreen
     ) {
         mainScreen(navController)
-        recipeDetailsScreen(navController)
+        recipeDetailsScreen()
+        addRecipeScreen()
     }
 }

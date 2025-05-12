@@ -4,5 +4,6 @@ import com.example.recipia.core.common.model.RecipeCategory
 
 sealed interface RecipeListEvent {
     data class OnCategorySelected(val category: RecipeCategory) : RecipeListEvent
-    data class OnRecipeClick(val recipeId: String) : RecipeListEvent
+    data class OnRecipeClicked(val recipeId: String) : RecipeListEvent
+    data object OnAddRecipeClicked : RecipeListEvent
 }
