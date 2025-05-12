@@ -1,20 +1,15 @@
 package com.example.recipia.feature.recipedetails.impl.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.recipia.core.ui.components.ErrorScreen
+import com.example.recipia.core.ui.components.LoadingScreen
+import com.example.recipia.feature.recipedetails.impl.ui.components.RecipeDetailsContent
 
 @Composable
 fun RecipeDetailsScreen(
@@ -33,16 +28,13 @@ fun RecipeDetailsScreen(
         }
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) { contentPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text(
-                text = "recipeId is ${state.recipeId}",
-                modifier = Modifier
-                    .padding(contentPadding)
-                    .align(Alignment.Center)
-            )
-        }
+    when (state) {
+        is RecipeDetailsState.Loading -> LoadingScreen()
+        is RecipeDetailsState.Error -> ErrorScreen((state as RecipeDetailsState.Error).message)
+        is RecipeDetailsState.Success -> RecipeDetailsContent(
+            state = state as RecipeDetailsState.Success,
+            event = event,
+            snackbarHostState = snackbarHostState,
+        )
     }
 }

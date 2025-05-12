@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
 data class FullRecipe(
     val id: String,
     val title: String,
-    //val isFavorite: Boolean,
     val rating: Int,
     val imageUrl: String,
     val placeholderColor: PlaceholderColor,

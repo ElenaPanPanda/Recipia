@@ -66,13 +66,13 @@ fun RecipeListTopBar(
                         indication = null
                     )
                     .padding(8.dp)
-                    .size(20.dp)
+                    .size(24.dp)
             )
 
             Spacer(modifier = Modifier.width(6.dp))
 
             Icon(
-                imageVector = ImageVector.vectorResource(id = Icons.plus),
+                imageVector = ImageVector.vectorResource(id = Icons.addCircle),
                 contentDescription = stringResource(id = uiR.string.core_ui_add_new_recipe),
                 tint = DarkTeal,
                 modifier = Modifier

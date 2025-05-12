@@ -1,11 +1,9 @@
 package com.example.recipia.feature.recipedetails.impl.ui
 
-import androidx.compose.runtime.Stable
-import com.example.recipia.core.common.model.FullRecipe
+import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecipe
 
-@Stable
-data class RecipeDetailsState(
-    val isLoading: Boolean = false,
-    val recipeId: String = "",
-    val recipe: FullRecipe? = null,
-)
+sealed interface RecipeDetailsState {
+    data object Loading : RecipeDetailsState
+    data class Error(val message: String) : RecipeDetailsState
+    data class Success(val recipe: DetailedRecipe) : RecipeDetailsState
+}

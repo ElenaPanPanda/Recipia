@@ -17,4 +17,5 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.androidx.material3)
     implementation(libs.bundles.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 }

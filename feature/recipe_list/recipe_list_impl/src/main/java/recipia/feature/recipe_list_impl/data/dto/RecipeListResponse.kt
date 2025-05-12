@@ -11,7 +11,6 @@ data class RecipeListResponse(val recipes: List<ShortRecipeDto>)
 data class ShortRecipeDto(
     val id: String,
     val title: String,
-    //val isFavorite: Boolean,
     val rating: Int,
     val imageUrl: String,
     val placeholderColor: PlaceholderColor,
