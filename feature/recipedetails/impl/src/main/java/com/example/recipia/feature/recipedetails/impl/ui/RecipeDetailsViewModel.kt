@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
-import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,7 +25,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private val recipeId: String = savedStateHandle["recipeId"]
         ?: throw IllegalStateException("recipeId is null")
 
-    private val _uiState = MutableStateFlow(RecipeDetailsState())
+    private val _uiState = MutableStateFlow<RecipeDetailsState>(RecipeDetailsState.Loading)
     val uiState: StateFlow<RecipeDetailsState> = _uiState.asStateFlow()
 
     private val _uiEffect = MutableSharedFlow<RecipeDetailsEffect>()
@@ -34,31 +33,35 @@ class RecipeDetailsViewModel @Inject constructor(
 
     fun obtainEvent(event: RecipeDetailsEvent) {
         when (event) {
-            is RecipeDetailsEvent.OnEditClick -> onEditClick(event.recipeId)
-            is RecipeDetailsEvent.OnDeleteClick -> onDeleteClick(event.recipeId)
+            is RecipeDetailsEvent.OnEditClicked -> onEditClick(event.recipeId)
+            is RecipeDetailsEvent.OnSaveClicked -> onSaveClick(event.recipeId)
+            is RecipeDetailsEvent.OnCalendarClicked -> onCalendarClick(event.recipeId)
+            is RecipeDetailsEvent.OnShareClicked -> onShareClick(event.recipeId)
+            is RecipeDetailsEvent.OnDeleteClicked -> onDeleteClick(event.recipeId)
         }
     }
 
     init {
-        _uiState.update { it.copy(recipeId = recipeId) }
-        loadRecipe()
+        loadRecipe(recipeId)
     }
 
-    private fun loadRecipe() = viewModelScope.launch {
+    private fun loadRecipe(recipeId: String) = viewModelScope.launch {
         try {
-            val recipe = getRecipeUseCase.getRecipe(uiState.value.recipeId)
-            _uiState.update { it.copy(isLoading = false, recipe = recipe) }
+            val recipe = getRecipeUseCase.getRecipe(recipeId)
+            _uiState.update { RecipeDetailsState.Success(recipe = recipe) }
         } catch (e: Exception) {
             e.printStackTrace()
-            _uiEffect.emit(
-                RecipeDetailsEffect.ShowSnackBar(
-                    stringProvider.getString(uiR.string.core_ui_common_error)
-                )
-            )
+            _uiState.update { RecipeDetailsState.Error(message = "Recipe not found") } // TODO: localize
         }
     }
 
     private fun onEditClick(recipeId: String) {} // TODO: Navigate to edit screen
+
+    private fun onSaveClick(recipeId: String) {} // TODO: Save recipe
+
+    private fun onCalendarClick(recipeId: String) {} // TODO: Navigate to calendar screen
+
+    private fun onShareClick(recipeId: String) {} // TODO: Share recipe
 
     private fun onDeleteClick(recipeId: String) {} // TODO: Delete recipe
 }

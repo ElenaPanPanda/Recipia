@@ -1,7 +1,7 @@
 package com.example.recipia.feature.recipedetails.impl.domain.usecase
 
-import com.example.recipia.core.common.model.FullRecipe
+import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecipe
 
 interface GetRecipeUseCase {
-    suspend fun getRecipe(id: String): FullRecipe
+    suspend fun getRecipe(id: String): DetailedRecipe
 }

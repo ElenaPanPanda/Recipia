@@ -17,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.NavigateToRecipeDetails
 import recipia.feature.recipe_list_impl.ui.RecipeListEffect.ShowSnackBar
-import recipia.feature.recipe_list_impl.ui.components.AppHorizontalDivider
+import com.example.recipia.core.ui.components.AppHorizontalDivider
 import recipia.feature.recipe_list_impl.ui.components.CategoriesBar
 import recipia.feature.recipe_list_impl.ui.components.RecipeItem
 import recipia.feature.recipe_list_impl.ui.components.RecipeListTopBar

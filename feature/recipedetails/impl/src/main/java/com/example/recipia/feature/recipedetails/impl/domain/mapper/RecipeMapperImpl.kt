@@ -1,19 +1,26 @@
 package com.example.recipia.feature.recipedetails.impl.domain.mapper
 
-import com.example.recipia.core.common.model.FullRecipe
 import com.example.recipia.feature.recipedetails.impl.data.dto.GetRecipeResponse
+import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
+import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecipe
 import javax.inject.Inject
 
 internal class RecipeMapperImpl @Inject constructor() : RecipeMapper {
-    override fun convert(response: GetRecipeResponse): FullRecipe {
+    override fun convert(response: GetRecipeResponse): DetailedRecipe {
         with(response) {
-            return FullRecipe(
+            return DetailedRecipe(
                 id = recipe.id,
                 title = recipe.title,
                 rating = recipe.rating,
                 imageUrl = recipe.imageUrl,
                 placeholderColor = recipe.placeholderColor,
-                ingredients = recipe.ingredients,
+                ingredients = recipe.ingredients.map { ingredient ->
+                    DetailedIngredient(
+                        amount = ingredient.amount,
+                        ingredient = ingredient.ingredient,
+                        addedToList = false,
+                    )
+                },
                 rawCategories = recipe.rawCategories,
                 instructions = recipe.instructions,
             )

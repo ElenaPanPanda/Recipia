@@ -9,7 +9,7 @@ import com.example.recipia.core.ui.R
 
 val playDisplay = FontFamily(
     Font(R.font.playfair_display_bold, FontWeight.Bold), // 700
-    Font(R.font.playfair_display_extrabold, FontWeight.Bold), // 800
+    Font(R.font.playfair_display_extrabold, FontWeight.ExtraBold), // 800
 )
 
 val poppins = FontFamily(
@@ -23,6 +23,16 @@ data class AppTypography(
     val playDisplayBold: TextStyle = TextStyle(
         fontFamily = playDisplay,
         fontWeight = FontWeight.Bold,
+    ),
+
+    val playDisplayExtraBold: TextStyle = TextStyle(
+        fontFamily = playDisplay,
+        fontWeight = FontWeight.ExtraBold,
+    ),
+
+    val poppinsNormal: TextStyle = TextStyle(
+        fontFamily = poppins,
+        fontWeight = FontWeight.Normal,
     ),
 
     val poppinsMedium: TextStyle = TextStyle(
