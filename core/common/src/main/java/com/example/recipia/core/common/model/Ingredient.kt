@@ -1,9 +1,10 @@
 package com.example.recipia.core.common.model
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Ingredient(
-    val amount: String,
-    val ingredient: String,
+    @SerialName("amount") val amount: String,
+    @SerialName("ingredient") val ingredient: String,
 )
