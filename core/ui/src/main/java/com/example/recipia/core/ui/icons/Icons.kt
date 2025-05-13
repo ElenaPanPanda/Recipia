@@ -20,4 +20,5 @@ object Icons {
     val trash = R.drawable.ic_trash
     val shoppingCartAdd = R.drawable.ic_shopping_cart_add
     val check = R.drawable.ic_check
+    val cancel = R.drawable.ic_close
 }

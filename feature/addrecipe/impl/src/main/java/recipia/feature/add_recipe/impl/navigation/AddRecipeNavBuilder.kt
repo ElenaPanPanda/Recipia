@@ -1,4 +1,4 @@
-package recipia.feature.add_recipe.impl
+package recipia.feature.add_recipe.impl.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable

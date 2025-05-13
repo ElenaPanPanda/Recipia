@@ -3,7 +3,6 @@ package com.example.recipia.feature.recipedetails.impl.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipeDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val stringProvider: StringResProvider,
     private val getRecipeUseCase: GetRecipeUseCase,
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle["recipeId"]
