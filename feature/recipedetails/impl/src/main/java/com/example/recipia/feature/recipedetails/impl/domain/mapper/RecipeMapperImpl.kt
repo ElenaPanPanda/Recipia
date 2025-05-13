@@ -1,7 +1,5 @@
 package com.example.recipia.feature.recipedetails.impl.domain.mapper
 
-import com.example.recipia.core.common.model.Ingredient
-import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.feature.recipedetails.impl.data.dto.GetRecipeResponse
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
@@ -10,41 +8,28 @@ import javax.inject.Inject
 
 internal class RecipeMapperImpl @Inject constructor() : RecipeMapper {
     override fun convert(response: GetRecipeResponse): DetailedRecipe {
-        fun mapIngredientList(networkItems: List<Ingredient>): List<DetailedIngredient> {
-            return networkItems.map { networkIngredient ->
-                DetailedIngredient(
-                    amount = networkIngredient.amount,
-                    ingredient = networkIngredient.ingredient,
-                    addedToList = false
-                )
-            }
+        with(response) {
+            return DetailedRecipe(
+                id = recipe.id,
+                title = recipe.title,
+                rating = recipe.rating,
+                imageUrl = recipe.imageUrl,
+                placeholderColor = recipe.placeholderColor,
+                ingredients = recipe.ingredients.map { ingredientSection ->
+                   DetailedIngredientSection(
+                       title = ingredientSection.title,
+                       ingredientsList = ingredientSection.ingredientsList.map { ingredient ->
+                           DetailedIngredient(
+                               amount = ingredient.amount,
+                               ingredient = ingredient.ingredient,
+                               addedToList = false,
+                           )
+                       }
+                   )
+                },
+                rawCategories = recipe.rawCategories,
+                instructions = recipe.instructions,
+            )
         }
-
-        val detailedIngredientSections = response.recipe.ingredients.map { networkSection ->
-            when (networkSection) {
-                is IngredientSection.Group -> {
-                    DetailedIngredientSection.Group(
-                        title = networkSection.title,
-                        items = mapIngredientList(networkSection.items)
-                    )
-                }
-                is IngredientSection.Ungrouped -> {
-                    DetailedIngredientSection.Ungrouped(
-                        items = mapIngredientList(networkSection.items)
-                    )
-                }
-            }
-        }
-
-        return DetailedRecipe(
-            id = response.recipe.id,
-            title = response.recipe.title,
-            rating = response.recipe.rating,
-            imageUrl = response.recipe.imageUrl,
-            placeholderColor = response.recipe.placeholderColor,
-            ingredients = detailedIngredientSections,
-            rawCategories = response.recipe.rawCategories,
-            instructions = response.recipe.instructions,
-        )
     }
 }

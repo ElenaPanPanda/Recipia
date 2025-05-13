@@ -27,7 +27,6 @@ import com.example.recipia.core.ui.components.OutlinedButton
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsState
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsEvent
 
@@ -102,28 +101,14 @@ fun RecipeDetailsContent(
 
             if (state.recipe.ingredients.isNotEmpty()) {
                 state.recipe.ingredients.forEach { detailedIngredientSection ->
-                    when (detailedIngredientSection) {
-                        is DetailedIngredientSection.Group -> {
-                            IngredientsSection(
-                                ingredients = detailedIngredientSection.items,
-                                onAddIngredient = { },
-                                onAddAllIngredients = { },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 16.dp, end = 8.dp, bottom = 32.dp)
-                            )
-                        }
-                        is DetailedIngredientSection.Ungrouped -> {
-                            IngredientsSection(
-                                ingredients = detailedIngredientSection.items,
-                                onAddIngredient = { },
-                                onAddAllIngredients = { },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(start = 16.dp, end = 8.dp, bottom = 32.dp)
-                            )
-                        }
-                    }
+                    IngredientsSection(
+                        ingredients = detailedIngredientSection.ingredientsList,
+                        onAddIngredient = { },
+                        onAddAllIngredients = { },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 8.dp, bottom = 32.dp)
+                    )
                 }
             }
 
