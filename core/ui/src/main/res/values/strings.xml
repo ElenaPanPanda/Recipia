@@ -3,6 +3,7 @@
     <string name="core_ui_app_name">Recipia</string>
     <string name="core_ui_search_recipes">Search Recipes</string>
     <string name="core_ui_add_new_recipe">Add New Recipe</string>
+    <string name="core_ui_selected">Selected</string>
     <string name="core_ui_edit">Edit</string>
     <string name="core_ui_save">Save</string>
     <string name="core_ui_cancel">Cancel</string>

@@ -52,11 +52,7 @@ fun AppInputField(
     Column(modifier = modifier) {
         if (title != null) {
             Row(modifier = Modifier.padding(bottom = 10.dp)) {
-                Text(
-                    text = title,
-                    style = AppTypography().playDisplayBold.copy(fontSize = 17.6.sp),
-                    color = DarkTeal,
-                )
+                AppTitle(text = title)
                 if (isMandatory) {
                     Text(
                         text = " *",

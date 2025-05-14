@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +17,7 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
     fun obtainEvent(event: AddRecipeEvent) {
         when (event) {
             is AddRecipeEvent.OnTitleInputChanged -> changeTitleInput(event.value)
+            is AddRecipeEvent.OnCategorySelected -> changeCategoriesState(event.category)
             is AddRecipeEvent.OnInstructionsInputChanged -> changeInstructionsInput(event.value)
             is AddRecipeEvent.OnSaveClicked -> saveRecipe()
         }
@@ -29,6 +31,17 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
         } else {
             _uiState.update { it.copy(enabledSaveButton = false) }
         }
+    }
+
+    private fun changeCategoriesState(category: CategoryForChoose) {
+        val updatedCategories = _uiState.value.categories.map {
+            if (it?.category == category.category) {
+                it.copy(isSelected = !it.isSelected)
+            } else {
+                it?.copy()
+            }
+        }
+        _uiState.update { it.copy(categories = updatedCategories) }
     }
 
     private fun changeInstructionsInput(value: String) {

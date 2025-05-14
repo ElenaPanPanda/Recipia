@@ -51,10 +51,13 @@ fun AddRecipeScreen(
                 hint = stringResource(id = R.string.core_ui_recipe_title_hint), // TODO: move to local res
                 isMandatory = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                modifier = Modifier.padding(16.dp)
             )
-            AddCategoriesSection(state.categories)
+            AddCategoriesSection(
+                categories = state.categories,
+                onSelectedCategory = { category -> event(AddRecipeEvent.OnCategorySelected(category)) },
+                modifier = Modifier.padding(16.dp)
+            )
             AddIngredientsSection()
             AppInputField(
                 value = state.instructionsInput,
@@ -63,9 +66,7 @@ fun AddRecipeScreen(
                 hint = stringResource(id = R.string.core_ui_instructions_hint), // TODO: move to local res
                 singleLine = false,
                 minLines = 8,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 16.dp)
+                modifier = Modifier.padding(16.dp)
             )
         }
     }
