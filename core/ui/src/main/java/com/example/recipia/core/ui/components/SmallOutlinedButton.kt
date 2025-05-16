@@ -1,8 +1,7 @@
 package com.example.recipia.core.ui.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,8 +21,9 @@ import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.MediumTeal
 
+// TODO: Make sure it is needed
 @Composable
-fun OutlinedButton(
+fun SmallOutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -33,39 +33,43 @@ fun OutlinedButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.height(48.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = contentColor,
         ),
         border = BorderStroke(1.5.dp, contentColor),
-        enabled = enabled,
+        enabled = enabled
     ) {
         if (leadingIcon != null) {
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(28.dp)
-                    .padding(end = 8.dp)
+                    .size(20.dp)
+                    .padding(end = 4.dp)
             )
         }
         Text(
             text = text,
-            style = AppTypography().poppinsSemiBold.copy(fontSize = 16.sp)
+            style = AppTypography().poppinsSemiBold.copy(fontSize = 12.sp)
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun OutlinedButtonPreview() {
-    OutlinedButton(
-        text = "Start Cooking",
-        onClick = {},
-        leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp)
-    )
+private fun SmallOutlinedButtonPreview() {
+    Row (modifier = Modifier.padding(12.dp)) {
+        SmallOutlinedButton(
+            text = "Start Cooking",
+            onClick = {},
+            modifier = Modifier.padding(end = 8.dp)
+        )
+        SmallOutlinedButton(
+            text = "Start Cooking",
+            leadingIcon = ImageVector.vectorResource(id = Icons.add),
+            onClick = {},
+        )
+    }
 }

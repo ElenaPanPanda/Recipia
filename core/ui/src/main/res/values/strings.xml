@@ -19,6 +19,7 @@
     <string name="core_ui_recipe_title_hint">e.g., Spiced Pumpkin Stew</string>
     <string name="core_ui_instructions_title">Description &amp; Instructions</string>
     <string name="core_ui_instructions_hint">Write your recipe steps, notes, and any other details here…</string>
+    <string name="core_ui_ingredients_title_hint">Ingredients Title (e.g., For the Crust)</string>
 
     <string name="core_ui_common_error">Something went wrong</string>
 </resources>

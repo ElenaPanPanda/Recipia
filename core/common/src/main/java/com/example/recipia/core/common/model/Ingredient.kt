@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Ingredient(
     @SerialName("amount") val amount: String,
-    @SerialName("ingredient") val ingredient: String,
+    @SerialName("ingredient") val name: String,
 )

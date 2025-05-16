@@ -7,6 +7,7 @@ object Icons {
     val bookmark = R.drawable.ic_bookmark
     val calendar = R.drawable.ic_calendar
     val groceries = R.drawable.ic_groceries
+    val add = R.drawable.ic_add
     val addCircle = R.drawable.ic_add_circle
     val search = R.drawable.ic_search
     val starEmpty = R.drawable.ic_star_empty

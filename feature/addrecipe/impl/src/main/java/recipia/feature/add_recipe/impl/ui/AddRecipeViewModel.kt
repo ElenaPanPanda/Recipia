@@ -18,6 +18,9 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
         when (event) {
             is AddRecipeEvent.OnTitleInputChanged -> changeTitleInput(event.value)
             is AddRecipeEvent.OnCategorySelected -> changeCategoriesState(event.category)
+            is AddRecipeEvent.OnIngredientTitleValueChange ->
+                changeIngredientTitleValue(event.value, event.index)
+
             is AddRecipeEvent.OnInstructionsInputChanged -> changeInstructionsInput(event.value)
             is AddRecipeEvent.OnSaveClicked -> saveRecipe()
         }
@@ -42,6 +45,12 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
             }
         }
         _uiState.update { it.copy(categories = updatedCategories) }
+    }
+
+    private fun changeIngredientTitleValue(value: String, index: Int) {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        updatedIngredients[index] = updatedIngredients[index].copy(title = value)
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
     }
 
     private fun changeInstructionsInput(value: String) {

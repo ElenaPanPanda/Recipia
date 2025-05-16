@@ -21,7 +21,7 @@ internal class RecipeMapperImpl @Inject constructor() : RecipeMapper {
                        ingredientsList = ingredientSection.ingredientsList.map { ingredient ->
                            DetailedIngredient(
                                amount = ingredient.amount,
-                               ingredient = ingredient.ingredient,
+                               ingredient = ingredient.name,
                                addedToList = false,
                            )
                        }

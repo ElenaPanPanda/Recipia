@@ -22,9 +22,7 @@ fun AddCategoriesSection(
     onSelectedCategory: (CategoryForChoose) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column(modifier = modifier) {
         AppTitle(
             text = stringResource(id = uiR.string.core_ui_categories),
             modifier = Modifier.padding(bottom = 10.dp)

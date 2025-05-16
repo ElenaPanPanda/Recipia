@@ -58,7 +58,14 @@ fun AddRecipeScreen(
                 onSelectedCategory = { category -> event(AddRecipeEvent.OnCategorySelected(category)) },
                 modifier = Modifier.padding(16.dp)
             )
-            AddIngredientsSection()
+            AddIngredientsSection(
+                ingredients = state.ingredients,
+                onIngredientValueChange = { value, index ->
+                    event(AddRecipeEvent.OnIngredientTitleValueChange(value, index))
+                },
+                onAddIngredientsGroupClicked = { },
+                modifier = Modifier.padding(16.dp)
+            )
             AppInputField(
                 value = state.instructionsInput,
                 onValueChange = { value -> event(AddRecipeEvent.OnInstructionsInputChanged(value)) },

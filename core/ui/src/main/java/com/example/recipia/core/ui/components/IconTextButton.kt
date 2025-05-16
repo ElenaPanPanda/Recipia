@@ -1,4 +1,4 @@
-package com.example.recipia.feature.recipedetails.impl.ui.components
+package com.example.recipia.core.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -21,18 +21,20 @@ import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.BurntOrange
 
 @Composable
-fun AddAllButton(
+fun IconTextButton(
     text: String,
+    icon: ImageVector,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
             .padding(8.dp)
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = Icons.shoppingCartAdd),
+            imageVector = icon,
             contentDescription = null,
             modifier = Modifier
                 .size(20.dp)
@@ -53,8 +55,9 @@ fun AddAllButton(
 @Preview(showBackground = true)
 @Composable
 private fun AddAllButtonPreview() {
-    AddAllButton(
+    IconTextButton(
         text = "Add All",
+        icon = ImageVector.vectorResource(id = Icons.shoppingCartAdd),
         onClick = {},
     )
 }
