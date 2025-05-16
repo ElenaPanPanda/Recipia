@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +27,7 @@ fun IconTextButton(
     icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    contentColor: Color = BurntOrange
 ) {
     Row(
         modifier = modifier
@@ -40,13 +42,13 @@ fun IconTextButton(
                 .size(20.dp)
                 .padding(end = 4.dp)
                 .align(Alignment.CenterVertically),
-            tint = BurntOrange
+            tint = contentColor
         )
 
         Text(
             text = text,
             style = AppTypography().poppinsSemiBold.copy(fontSize = 12.sp),
-            color = BurntOrange,
+            color = contentColor,
             modifier = Modifier.align(Alignment.CenterVertically)
         )
     }

@@ -17,11 +17,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import com.example.recipia.core.ui.R
+import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppInputField
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.DarkRed
 import com.example.recipia.core.ui.theme.LightTeal
+import com.example.recipia.feature.addrecipe.impl.R
 
 @Composable
 fun IngredientsInputFieldsBlock(
@@ -44,21 +45,21 @@ fun IngredientsInputFieldsBlock(
             AppInputField(
                 value = ingredientValue,
                 onValueChange = onIngredientValueChange,
-                hint = "Ingredient name", // TODO: Move to local res
+                hint = stringResource(R.string.add_recipe_ingredient_name_hint),
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppInputField(
                     value = amountValue,
                     onValueChange = onAmountValueChange,
-                    hint = "Amount (e.g., 1 cup, 100g)", // TODO: Move to local res
+                    hint = stringResource(R.string.add_recipe_ingredient_amount_hint),
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 8.dp)
                 )
                 Icon(
                     imageVector = ImageVector.vectorResource(Icons.cancel),
-                    contentDescription = stringResource(R.string.core_ui_cancel),
+                    contentDescription = stringResource(uiR.string.core_ui_cancel),
                     tint = DarkRed,
                     modifier = Modifier
                         .clickable(onClick = onRemoveClick)

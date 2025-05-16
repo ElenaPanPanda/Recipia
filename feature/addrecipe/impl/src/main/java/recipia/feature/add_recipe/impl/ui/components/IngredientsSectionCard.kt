@@ -2,7 +2,9 @@ package recipia.feature.add_recipe.impl.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +14,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -22,12 +26,16 @@ import com.example.recipia.core.ui.components.IconTextButton
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.DarkBlue
 import com.example.recipia.core.ui.theme.LightTeal
+import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.snowWhite
+import com.example.recipia.feature.addrecipe.impl.R
 
 @Composable
 fun IngredientsSectionCard(
     ingredientSection: IngredientSection,
     onIngredientTitleValueChange: (String) -> Unit,
+    onIngredientNameValueChange: (String, Int) -> Unit,
+    onIngredientAmountValueChange: (String, Int) -> Unit,
     onIngredientRemoveClicked: (Int) -> Unit,
     onAddIngredientClicked: () -> Unit,
     onRemoveCardClicked: () -> Unit,
@@ -45,34 +53,38 @@ fun IngredientsSectionCard(
             contentDescription = null,
             tint = DarkBlue.copy(alpha = 0.5f),
             modifier = Modifier
+                .padding(top = 10.dp, end = 10.dp)
+                .clip(RoundedCornerShape(8.dp))
                 .clickable(onClick = onRemoveCardClicked)
-                .padding(top = 16.dp, end = 16.dp)
+                .padding(4.dp)
                 .size(24.dp)
                 .align(Alignment.End)
         )
         IngredientTitleInputField(
             value = ingredientSection.title ?: "",
             onValueChange = onIngredientTitleValueChange,
-            hint = "Optional: Group title (e.g., Dough)",
+            hint = stringResource(R.string.add_recipe_recipe_title_hint),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp)
         )
         ingredientSection.ingredientsList.forEachIndexed { index, ingredient ->
+            if (index != 0) Spacer(modifier = Modifier.height(8.dp))
             IngredientsInputFieldsBlock(
                 ingredientValue = ingredient.name,
-                onIngredientValueChange = { onIngredientTitleValueChange(it) },
+                onIngredientValueChange = { onIngredientNameValueChange(it, index) },
                 amountValue = ingredient.amount,
-                onAmountValueChange = { onIngredientTitleValueChange(it) },
+                onAmountValueChange = { onIngredientAmountValueChange(it, index) },
                 onRemoveClick = { onIngredientRemoveClicked(index) },
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
         IconTextButton(
-            text = "Add Ingredient", // TODO: Move to local res
+            text = stringResource(R.string.add_recipe_add_ingredient),
             icon = ImageVector.vectorResource(Icons.add),
             onClick = onAddIngredientClicked,
+            contentColor = MediumTeal,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
         )
     }
@@ -90,6 +102,8 @@ private fun IngredientsSectionCardPreview() {
             ),
         ),
         onIngredientTitleValueChange = {},
+        onIngredientNameValueChange = { _, _ -> },
+        onIngredientAmountValueChange = { _, _ -> },
         onIngredientRemoveClicked = {},
         onAddIngredientClicked = {},
         onRemoveCardClicked = {},

@@ -28,7 +28,7 @@ fun AddCategoriesSection(
             modifier = Modifier.padding(bottom = 10.dp)
         )
         FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             categories.forEach { category ->

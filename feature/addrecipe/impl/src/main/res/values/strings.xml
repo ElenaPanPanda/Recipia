@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_recipe_instructions_title">Description &amp; Instructions</string>
+    <string name="add_recipe_recipe_title">Recipe Title</string>
+    <string name="add_recipe_recipe_title_hint">e.g., Spiced Pumpkin Stew</string>
+    <string name="add_recipe_instructions_hint">Write your recipe steps, notes, and any other details here…</string>
+    <string name="add_recipe_add_ingredients_group">Add Ingredients Group</string>
+    <string name="add_recipe_title_hint">Optional: Group title (e.g., Dough)</string>
+    <string name="add_recipe_add_ingredient">Add Ingredient</string>
+    <string name="add_recipe_ingredient_name_hint">Ingredient name</string>
+    <string name="add_recipe_ingredient_amount_hint">Amount (e.g., 1 cup, 100g)</string>
+</resources>

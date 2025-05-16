@@ -73,7 +73,7 @@ fun RecipeDetailsContent(
             )
 
             OutlinedButton(
-                text = stringResource(id = R.string.core_ui_add_start_cooking),
+                text = stringResource(id = R.string.core_ui_start_cooking),
                 onClick = {},
                 leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
                 modifier = Modifier

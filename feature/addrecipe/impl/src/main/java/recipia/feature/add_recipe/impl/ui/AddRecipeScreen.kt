@@ -12,11 +12,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.recipia.core.ui.R
 import com.example.recipia.core.ui.components.AppInputField
+import com.example.recipia.feature.addrecipe.impl.R
 import recipia.feature.add_recipe.impl.ui.components.AddCategoriesSection
 import recipia.feature.add_recipe.impl.ui.components.AddIngredientsSection
 import recipia.feature.add_recipe.impl.ui.components.AddRecipeTopBar
@@ -47,10 +48,13 @@ fun AddRecipeScreen(
             AppInputField(
                 value = state.titleInput,
                 onValueChange = { value -> event(AddRecipeEvent.OnTitleInputChanged(value)) },
-                title = stringResource(id = R.string.core_ui_recipe_title), // TODO: move to local res
-                hint = stringResource(id = R.string.core_ui_recipe_title_hint), // TODO: move to local res
+                title = stringResource(id = R.string.add_recipe_recipe_title),
+                hint = stringResource(id = R.string.add_recipe_recipe_title_hint),
                 isMandatory = true,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    capitalization = KeyboardCapitalization.Sentences
+                ),
                 modifier = Modifier.padding(16.dp)
             )
             AddCategoriesSection(
@@ -60,17 +64,49 @@ fun AddRecipeScreen(
             )
             AddIngredientsSection(
                 ingredients = state.ingredients,
-                onIngredientValueChange = { value, index ->
+                onIngredientTitleValueChange = { value, index ->
                     event(AddRecipeEvent.OnIngredientTitleValueChange(value, index))
                 },
-                onAddIngredientsGroupClicked = { },
+                onIngredientNameValueChange = { value, ingredientsGroupIndex, ingredientIndex ->
+                    event(
+                        AddRecipeEvent.OnIngredientNameValueChange(
+                            value,
+                            ingredientsGroupIndex,
+                            ingredientIndex
+                        )
+                    )
+                },
+                onIngredientAmountValueChange = { value, ingredientsGroupIndex, ingredientIndex ->
+                    event(
+                        AddRecipeEvent.OnIngredientAmountValueChange(
+                            value,
+                            ingredientsGroupIndex,
+                            ingredientIndex
+                        )
+                    )
+                },
+                onIngredientRemoveClicked = { ingredientsGroupIndex, ingredientIndex ->
+                    event(
+                        AddRecipeEvent.OnIngredientRemoveClicked(
+                            ingredientsGroupIndex,
+                            ingredientIndex
+                        )
+                    )
+                },
+                onAddIngredientClicked = { ingredientsGroupIndex ->
+                    event(AddRecipeEvent.OnAddIngredientClicked(ingredientsGroupIndex))
+                },
+                onRemoveIngredientsCardClicked = { ingredientsGroupIndex ->
+                    event(AddRecipeEvent.OnRemoveIngredientsCardClicked(ingredientsGroupIndex))
+                },
+                onAddIngredientsGroupClicked = { event(AddRecipeEvent.OnAddIngredientsGroupClicked) },
                 modifier = Modifier.padding(16.dp)
             )
             AppInputField(
                 value = state.instructionsInput,
                 onValueChange = { value -> event(AddRecipeEvent.OnInstructionsInputChanged(value)) },
-                title = stringResource(id = R.string.core_ui_instructions_title), // TODO: move to local res
-                hint = stringResource(id = R.string.core_ui_instructions_hint), // TODO: move to local res
+                title = stringResource(id = R.string.add_recipe_instructions_title),
+                hint = stringResource(id = R.string.add_recipe_instructions_hint),
                 singleLine = false,
                 minLines = 8,
                 modifier = Modifier.padding(16.dp)

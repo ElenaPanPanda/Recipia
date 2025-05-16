@@ -18,11 +18,17 @@ import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppTitle
 import com.example.recipia.core.ui.components.OutlinedButton
 import com.example.recipia.core.ui.icons.Icons
+import com.example.recipia.feature.addrecipe.impl.R
 
 @Composable
 fun AddIngredientsSection(
     ingredients: List<IngredientSection>,
-    onIngredientValueChange: (String, Int) -> Unit,
+    onIngredientTitleValueChange: (String, Int) -> Unit,
+    onIngredientNameValueChange: (String, Int, Int) -> Unit,
+    onIngredientAmountValueChange: (String, Int, Int) -> Unit,
+    onIngredientRemoveClicked: (Int, Int) -> Unit,
+    onAddIngredientClicked: (Int) -> Unit,
+    onRemoveIngredientsCardClicked: (Int) -> Unit,
     onAddIngredientsGroupClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -33,21 +39,22 @@ fun AddIngredientsSection(
         )
 
         ingredients.forEachIndexed { index, ingredientSection ->
-            if (index > 0) {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
+            if (index > 0) Spacer(modifier = Modifier.height(24.dp))
+
             IngredientsSectionCard(
                 ingredientSection = ingredientSection,
-                onIngredientTitleValueChange = { },
-                onIngredientRemoveClicked = { },
-                onAddIngredientClicked = { },
-                onRemoveCardClicked = { }
+                onIngredientTitleValueChange = { onIngredientTitleValueChange(it, index) },
+                onIngredientNameValueChange = { value, ingredientIndex -> onIngredientNameValueChange(value, index, ingredientIndex) },
+                onIngredientAmountValueChange = { value, ingredientIndex -> onIngredientAmountValueChange(value, index, ingredientIndex) },
+                onIngredientRemoveClicked = { ingredientIndex -> onIngredientRemoveClicked(index, ingredientIndex) },
+                onAddIngredientClicked = { onAddIngredientClicked(index) },
+                onRemoveCardClicked = { onRemoveIngredientsCardClicked(index) },
             )
         }
 
         OutlinedButton(
-            text = "Add Ingredients group", // TODO: Move to local res
-            onClick = { },
+            text = stringResource(R.string.add_recipe_add_ingredients_group),
+            onClick = onAddIngredientsGroupClicked,
             leadingIcon = ImageVector.vectorResource(Icons.add),
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,31 +71,24 @@ private fun AddIngredientsSectionPreview() {
             IngredientSection(
                 title = "",
                 ingredientsList = listOf(
-                    Ingredient(
-                        amount = "300g",
-                        name = "Potato"
-                    ),
-                    Ingredient(
-                        amount = "",
-                        name = "",
-                    ),
+                    Ingredient(amount = "300g", name = "Potato"),
+                    Ingredient(amount = "", name = ""),
                 )
             ),
             IngredientSection(
                 title = "For baking:",
                 ingredientsList = listOf(
-                    Ingredient(
-                        amount = "300g",
-                        name = "Potato"
-                    ),
-                    Ingredient(
-                        amount = "",
-                        name = "",
-                    ),
+                    Ingredient(amount = "300g", name = "Potato"),
+                    Ingredient(amount = "", name = ""),
                 )
             ),
         ),
-        onIngredientValueChange = { _, _ -> },
+        onIngredientTitleValueChange = { _, _ -> },
+        onIngredientNameValueChange = { _, _, _ -> },
+        onIngredientAmountValueChange = { _, _, _ -> },
+        onIngredientRemoveClicked = { _, _ -> },
+        onAddIngredientClicked = { },
+        onRemoveIngredientsCardClicked = { },
         onAddIngredientsGroupClicked = { },
         modifier = Modifier.padding(16.dp)
     )

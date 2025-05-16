@@ -3,6 +3,8 @@ package com.example.recipia.feature.recipedetails.impl.ui
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.ui.R
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecipeDetailsViewModel @Inject constructor(
+    private val stringProvider: StringResProvider,
     savedStateHandle: SavedStateHandle,
     private val getRecipeUseCase: GetRecipeUseCase,
 ) : ViewModel() {
@@ -49,17 +52,21 @@ class RecipeDetailsViewModel @Inject constructor(
             _uiState.update { RecipeDetailsState.Success(recipe = recipe) }
         } catch (e: Exception) {
             e.printStackTrace()
-            _uiState.update { RecipeDetailsState.Error(message = "Recipe not found") } // TODO: localize
+            _uiState.update {
+                RecipeDetailsState.Error(
+                    message = stringProvider.getString(R.string.core_ui_recipe_not_found_error)
+                )
+            }
         }
     }
 
-    private fun onEditClick(recipeId: String) {} // TODO: Navigate to edit screen
+    private fun onEditClick(recipeId: String) {}
 
-    private fun onSaveClick(recipeId: String) {} // TODO: Save recipe
+    private fun onSaveClick(recipeId: String) {}
 
-    private fun onCalendarClick(recipeId: String) {} // TODO: Navigate to calendar screen
+    private fun onCalendarClick(recipeId: String) {}
 
-    private fun onShareClick(recipeId: String) {} // TODO: Share recipe
+    private fun onShareClick(recipeId: String) {}
 
-    private fun onDeleteClick(recipeId: String) {} // TODO: Delete recipe
+    private fun onDeleteClick(recipeId: String) {}
 }

@@ -1,6 +1,8 @@
 package recipia.feature.add_recipe.impl.ui
 
 import androidx.lifecycle.ViewModel
+import com.example.recipia.core.common.model.Ingredient
+import com.example.recipia.core.common.model.IngredientSection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,6 +23,26 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
             is AddRecipeEvent.OnIngredientTitleValueChange ->
                 changeIngredientTitleValue(event.value, event.index)
 
+            is AddRecipeEvent.OnIngredientNameValueChange -> changeIngredientNameValue(
+                event.value,
+                event.ingredientsGroupIndex,
+                event.ingredientIndex
+            )
+
+            is AddRecipeEvent.OnIngredientAmountValueChange -> changeIngredientAmountValue(
+                event.value,
+                event.ingredientsGroupIndex,
+                event.ingredientIndex
+            )
+
+            is AddRecipeEvent.OnIngredientRemoveClicked -> removeIngredient(
+                event.ingredientsGroupIndex,
+                event.ingredientIndex
+            )
+
+            is AddRecipeEvent.OnAddIngredientClicked -> addIngredient(event.ingredientsGroupIndex)
+            is AddRecipeEvent.OnRemoveIngredientsCardClicked -> removeIngredientsCard(event.ingredientsGroupIndex)
+            is AddRecipeEvent.OnAddIngredientsGroupClicked -> addIngredientsGroup()
             is AddRecipeEvent.OnInstructionsInputChanged -> changeInstructionsInput(event.value)
             is AddRecipeEvent.OnSaveClicked -> saveRecipe()
         }
@@ -28,7 +50,6 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
 
     private fun changeTitleInput(value: String) {
         _uiState.update { it.copy(titleInput = value) }
-        // TODO: validate?
         if (value.isNotEmpty()) {
             _uiState.update { it.copy(enabledSaveButton = true) }
         } else {
@@ -50,6 +71,83 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
     private fun changeIngredientTitleValue(value: String, index: Int) {
         val updatedIngredients = _uiState.value.ingredients.toMutableList()
         updatedIngredients[index] = updatedIngredients[index].copy(title = value)
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
+    }
+
+    private fun changeIngredientNameValue(
+        value: String,
+        ingredientsGroupIndex: Int,
+        ingredientIndex: Int
+    ) {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        val updatedIngredientSection = updatedIngredients[ingredientsGroupIndex]
+        updatedIngredients[ingredientsGroupIndex] = updatedIngredientSection.copy(
+            ingredientsList = updatedIngredientSection.ingredientsList.mapIndexed { index, ingredient ->
+                if (index == ingredientIndex) {
+                    ingredient.copy(name = value)
+                } else {
+                    ingredient.copy()
+                }
+            }
+        )
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
+    }
+
+    private fun changeIngredientAmountValue(
+        value: String,
+        ingredientsGroupIndex: Int,
+        ingredientIndex: Int
+    ) {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        val updatedIngredientSection = updatedIngredients[ingredientsGroupIndex]
+        updatedIngredients[ingredientsGroupIndex] = updatedIngredientSection.copy(
+            ingredientsList = updatedIngredientSection.ingredientsList.mapIndexed { index, ingredient ->
+                if (index == ingredientIndex) {
+                    ingredient.copy(amount = value)
+                } else {
+                    ingredient.copy()
+                }
+            }
+        )
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
+    }
+
+    private fun removeIngredient(ingredientsGroupIndex: Int, ingredientIndex: Int) {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        val updatedIngredientSection = updatedIngredients[ingredientsGroupIndex]
+        updatedIngredients[ingredientsGroupIndex] = updatedIngredientSection.copy(
+            ingredientsList = updatedIngredientSection.ingredientsList.filterIndexed { index, _ ->
+                index != ingredientIndex
+            }
+        )
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
+    }
+
+    private fun addIngredient(ingredientsGroupIndex: Int) {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        val updatedIngredientSection = updatedIngredients[ingredientsGroupIndex]
+        updatedIngredients[ingredientsGroupIndex] = updatedIngredientSection.copy(
+            ingredientsList = updatedIngredientSection.ingredientsList.toMutableList().apply {
+                add(Ingredient(amount = "", name = ""))
+            }
+        )
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
+    }
+
+    private fun removeIngredientsCard(ingredientsGroupIndex: Int) {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        updatedIngredients.removeAt(ingredientsGroupIndex)
+        _uiState.update { it.copy(ingredients = updatedIngredients) }
+    }
+
+    private fun addIngredientsGroup() {
+        val updatedIngredients = _uiState.value.ingredients.toMutableList()
+        updatedIngredients.add(
+            IngredientSection(
+                title = "",
+                ingredientsList = listOf(Ingredient(amount = "", name = ""))
+            )
+        )
         _uiState.update { it.copy(ingredients = updatedIngredients) }
     }
 
