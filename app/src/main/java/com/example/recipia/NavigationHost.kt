@@ -18,6 +18,6 @@ fun NavigationHost() {
     ) {
         mainScreen(navController)
         recipeDetailsScreen()
-        addRecipeScreen()
+        addRecipeScreen(navController)
     }
 }

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -18,6 +19,7 @@ dependencies {
     // Modules
     implementation(projects.core.common)
     implementation(projects.core.ui)
+    implementation(projects.feature.recipedetails.api)
     api(projects.feature.addrecipe.api)
 
     // Libs
@@ -27,8 +29,13 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.kotlinx.serialization)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // DI
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)
+
+    // network
+    implementation(libs.retrofit)
 }

@@ -1,20 +1,36 @@
 package recipia.feature.add_recipe.impl.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.recipia.core.common.model.FullRecipe
 import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.common.model.IngredientSection
+import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.ui.R
+import com.example.recipia.core.ui.model.PlaceholderColor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
+import recipia.feature.add_recipe.impl.domain.usecase.AddRecipeUseCase
 import javax.inject.Inject
 
 @HiltViewModel
-class AddRecipeViewModel @Inject constructor() : ViewModel() {
+class AddRecipeViewModel @Inject constructor(
+    private val stringProvider: StringResProvider,
+    private val addRecipeUseCase: AddRecipeUseCase,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(AddRecipeState())
     val uiState: StateFlow<AddRecipeState> = _uiState.asStateFlow()
+
+    private val _uiEffect = MutableSharedFlow<AddRecipeEffect>()
+    val uiEffect: SharedFlow<AddRecipeEffect> = _uiEffect.asSharedFlow()
 
     fun obtainEvent(event: AddRecipeEvent) {
         when (event) {
@@ -155,5 +171,24 @@ class AddRecipeViewModel @Inject constructor() : ViewModel() {
         _uiState.update { it.copy(instructionsInput = value) }
     }
 
-    private fun saveRecipe() {}
+    private fun saveRecipe() = viewModelScope.launch {
+        val recipe = FullRecipe(
+            id = "",
+            title = _uiState.value.titleInput,
+            rating = 0,
+            imageUrl = "",
+            placeholderColor = PlaceholderColor.entries.random(),
+            ingredients = _uiState.value.ingredients,
+            rawCategories = _uiState.value.categories.mapNotNull { it?.category },
+            instructions = _uiState.value.instructionsInput
+        )
+
+        try {
+            val newId = addRecipeUseCase.addRecipe(recipe)
+            _uiEffect.emit(AddRecipeEffect.NavigateToRecipeDetails(newId))
+        } catch (e: Exception) {
+            e.printStackTrace()
+            _uiEffect.emit(AddRecipeEffect.ShowSnackBar(stringProvider.getString(R.string.core_ui_common_error)))
+        }
+    }
 }

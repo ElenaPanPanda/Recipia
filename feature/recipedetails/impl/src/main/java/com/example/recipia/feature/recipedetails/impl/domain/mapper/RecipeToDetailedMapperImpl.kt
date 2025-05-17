@@ -6,7 +6,7 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngre
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecipe
 import javax.inject.Inject
 
-internal class RecipeMapperImpl @Inject constructor() : RecipeMapper {
+internal class RecipeToDetailedMapperImpl @Inject constructor() : RecipeToDetailedMapper {
     override fun convert(response: GetRecipeResponse): DetailedRecipe {
         with(response) {
             return DetailedRecipe(

@@ -7,8 +7,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -24,20 +28,31 @@ import recipia.feature.add_recipe.impl.ui.components.AddRecipeTopBar
 
 @Composable
 fun AddRecipeScreen(
-    viewModel: AddRecipeViewModel = hiltViewModel()
+    viewModel: AddRecipeViewModel = hiltViewModel(),
+    navigateToRecipeDetails: (String) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val event: (AddRecipeEvent) -> Unit = viewModel::obtainEvent
-
+    val snackbarHostState = remember { SnackbarHostState() }
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is AddRecipeEffect.ShowSnackBar -> snackbarHostState.showSnackbar(effect.message)
+                is AddRecipeEffect.NavigateToRecipeDetails -> navigateToRecipeDetails(effect.id)
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
             AddRecipeTopBar(
-                onSaveClick = { },
+                onSaveClick = { event(AddRecipeEvent.OnSaveClicked) },
                 onCancelClick = { },
             )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { contentPadding ->
         Column(
             modifier = Modifier
