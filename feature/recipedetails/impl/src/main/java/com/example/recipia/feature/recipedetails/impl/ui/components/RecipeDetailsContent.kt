@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.R
-import com.example.recipia.core.ui.components.OutlinedButton
+import com.example.recipia.core.ui.components.AppOutlinedButton
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
@@ -72,7 +72,7 @@ fun RecipeDetailsContent(
                     .padding(bottom = 16.dp)
             )
 
-            OutlinedButton(
+            AppOutlinedButton(
                 text = stringResource(id = R.string.core_ui_start_cooking),
                 onClick = {},
                 leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),

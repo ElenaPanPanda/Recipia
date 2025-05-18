@@ -16,7 +16,8 @@ fun NavGraphBuilder.addRecipeScreen(navController: NavController) {
                 ) {
                     popUpTo<AddRecipeRoutingContract.AddRecipe> { inclusive = true }
                 }
-            }
+            },
+            navigateUp = { navController.popBackStack() }
         )
     }
 }

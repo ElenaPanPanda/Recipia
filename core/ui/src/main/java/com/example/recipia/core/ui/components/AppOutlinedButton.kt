@@ -23,7 +23,7 @@ import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.MediumTeal
 
 @Composable
-fun OutlinedButton(
+fun AppOutlinedButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -60,7 +60,7 @@ fun OutlinedButton(
 @Preview(showBackground = true)
 @Composable
 private fun OutlinedButtonPreview() {
-    OutlinedButton(
+    AppOutlinedButton(
         text = "Start Cooking",
         onClick = {},
         leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),

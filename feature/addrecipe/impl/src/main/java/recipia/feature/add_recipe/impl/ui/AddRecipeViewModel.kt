@@ -61,6 +61,7 @@ class AddRecipeViewModel @Inject constructor(
             is AddRecipeEvent.OnAddIngredientsGroupClicked -> addIngredientsGroup()
             is AddRecipeEvent.OnInstructionsInputChanged -> changeInstructionsInput(event.value)
             is AddRecipeEvent.OnSaveClicked -> saveRecipe()
+            is AddRecipeEvent.OpenExitDialog -> showExitDialog()
         }
     }
 
@@ -190,5 +191,9 @@ class AddRecipeViewModel @Inject constructor(
             e.printStackTrace()
             _uiEffect.emit(AddRecipeEffect.ShowSnackBar(stringProvider.getString(R.string.core_ui_common_error)))
         }
+    }
+
+    private fun showExitDialog() = viewModelScope.launch {
+        _uiEffect.emit(AddRecipeEffect.ShowExitDialog)
     }
 }

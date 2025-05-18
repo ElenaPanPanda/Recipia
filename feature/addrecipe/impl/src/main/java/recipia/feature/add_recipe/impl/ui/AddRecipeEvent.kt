@@ -26,4 +26,5 @@ sealed interface AddRecipeEvent {
     data object OnAddIngredientsGroupClicked : AddRecipeEvent
     data class OnInstructionsInputChanged(val value: String) : AddRecipeEvent
     data object OnSaveClicked : AddRecipeEvent
+    data object OpenExitDialog : AddRecipeEvent
 }

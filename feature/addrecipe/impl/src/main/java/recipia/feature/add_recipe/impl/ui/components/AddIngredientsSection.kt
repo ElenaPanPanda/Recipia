@@ -16,7 +16,7 @@ import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppTitle
-import com.example.recipia.core.ui.components.OutlinedButton
+import com.example.recipia.core.ui.components.AppOutlinedButton
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.feature.addrecipe.impl.R
 
@@ -52,7 +52,7 @@ fun AddIngredientsSection(
             )
         }
 
-        OutlinedButton(
+        AppOutlinedButton(
             text = stringResource(R.string.add_recipe_add_ingredients_group),
             onClick = onAddIngredientsGroupClicked,
             leadingIcon = ImageVector.vectorResource(Icons.add),

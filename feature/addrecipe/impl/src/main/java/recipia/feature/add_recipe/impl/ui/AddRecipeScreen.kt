@@ -1,5 +1,6 @@
 package recipia.feature.add_recipe.impl.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -12,14 +13,18 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.recipia.core.ui.components.AppAlertDialog
 import com.example.recipia.core.ui.components.AppInputField
 import com.example.recipia.feature.addrecipe.impl.R
 import recipia.feature.add_recipe.impl.ui.components.AddCategoriesSection
@@ -30,26 +35,47 @@ import recipia.feature.add_recipe.impl.ui.components.AddRecipeTopBar
 fun AddRecipeScreen(
     viewModel: AddRecipeViewModel = hiltViewModel(),
     navigateToRecipeDetails: (String) -> Unit,
+    navigateUp: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val event: (AddRecipeEvent) -> Unit = viewModel::obtainEvent
     val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
+    var showExitDialog by remember { mutableStateOf(false) }
+
+    BackHandler(enabled = true) { event(AddRecipeEvent.OpenExitDialog) }
 
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is AddRecipeEffect.ShowSnackBar -> snackbarHostState.showSnackbar(effect.message)
                 is AddRecipeEffect.NavigateToRecipeDetails -> navigateToRecipeDetails(effect.id)
+                is AddRecipeEffect.ShowExitDialog -> showExitDialog = true
             }
         }
+    }
+
+    if (showExitDialog) {
+        AppAlertDialog(
+            title = "Do you want to exit?",
+            onShowAlertDialog = { showExitDialog = false },
+            confirmButtonText = "Exit",
+            onConfirmButtonClick = {
+                focusManager.clearFocus()
+                showExitDialog = false
+                navigateUp()
+            },
+            dismissButtonText = "Cancel",
+            onDismissButtonClick = { showExitDialog = false },
+        )
     }
 
     Scaffold(
         topBar = {
             AddRecipeTopBar(
                 onSaveClick = { event(AddRecipeEvent.OnSaveClicked) },
-                onCancelClick = { },
+                onCancelClick = { event(AddRecipeEvent.OpenExitDialog)},
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
