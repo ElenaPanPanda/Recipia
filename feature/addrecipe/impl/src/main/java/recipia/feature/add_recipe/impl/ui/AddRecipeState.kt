@@ -8,6 +8,8 @@ import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
 data class AddRecipeState(
     val enabledSaveButton: Boolean = false,
     val titleInput: String = "",
+    val titleInputErrorState: Boolean = false,
+    val titleInputErrorText: String? = null,
     val categories: List<CategoryForChoose?> = RecipeCategory.entries.toList()
         .map { category ->
             if (category != RecipeCategory.ALL) CategoryForChoose(category, false)

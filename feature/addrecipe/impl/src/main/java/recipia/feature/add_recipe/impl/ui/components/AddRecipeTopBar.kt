@@ -1,11 +1,14 @@
 package recipia.feature.add_recipe.impl.ui.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -30,10 +33,13 @@ import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.BurntOrange
 import com.example.recipia.core.ui.theme.DarkTeal
 import com.example.recipia.core.ui.theme.LighterBeige
+import com.example.recipia.core.ui.theme.SheetHandle
 
 @Composable
 fun AddRecipeTopBar(
-    onSaveClick: () -> Unit,
+    saveEnabled: Boolean,
+    onSaveEnabledClick: () -> Unit,
+    onSaveDisabledClick: () -> Unit,
     onCancelClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -66,14 +72,14 @@ fun AddRecipeTopBar(
                 modifier = Modifier.weight(1f)
             )
             TextButton(
-                onClick = onSaveClick,
+                onClick = if (saveEnabled) onSaveEnabledClick else onSaveDisabledClick,
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(8.dp),
             ) {
                 Text(
                     text = stringResource(id = uiR.string.core_ui_save),
                     style = AppTypography().poppinsSemiBold.copy(fontSize = 16.sp),
-                    color = BurntOrange,
+                    color = if (saveEnabled) BurntOrange else SheetHandle
                 )
             }
         }
@@ -83,8 +89,23 @@ fun AddRecipeTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun AddRecipeTopBarPreview() {
-    AddRecipeTopBar(
-        onSaveClick = {},
-        onCancelClick = {},
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp)
+    ) {
+        AddRecipeTopBar(
+            saveEnabled = true,
+            onSaveEnabledClick = {},
+            onSaveDisabledClick = {},
+            onCancelClick = {},
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        AddRecipeTopBar(
+            saveEnabled = false,
+            onSaveEnabledClick = {},
+            onSaveDisabledClick = {},
+            onCancelClick = {},
+        )
+    }
 }

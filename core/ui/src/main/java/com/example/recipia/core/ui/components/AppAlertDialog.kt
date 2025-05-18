@@ -76,7 +76,7 @@ fun AppAlertDialog(
                         icon = null,
                         onClick = onDismissButtonClick,
                         contentColor = MediumTeal,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         modifier = Modifier.padding(end = 16.dp)
                     )
                 }

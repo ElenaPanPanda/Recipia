@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppAlertDialog
 import com.example.recipia.core.ui.components.AppInputField
 import com.example.recipia.feature.addrecipe.impl.R
@@ -58,15 +59,15 @@ fun AddRecipeScreen(
 
     if (showExitDialog) {
         AppAlertDialog(
-            title = "Do you want to exit?",
+            title = stringResource(id = uiR.string.core_ui_want_to_exit),
             onShowAlertDialog = { showExitDialog = false },
-            confirmButtonText = "Exit",
+            confirmButtonText = stringResource(uiR.string.core_ui_exit),
             onConfirmButtonClick = {
                 focusManager.clearFocus()
                 showExitDialog = false
                 navigateUp()
             },
-            dismissButtonText = "Cancel",
+            dismissButtonText = stringResource(uiR.string.core_ui_cancel),
             onDismissButtonClick = { showExitDialog = false },
         )
     }
@@ -74,8 +75,13 @@ fun AddRecipeScreen(
     Scaffold(
         topBar = {
             AddRecipeTopBar(
-                onSaveClick = { event(AddRecipeEvent.OnSaveClicked) },
-                onCancelClick = { event(AddRecipeEvent.OpenExitDialog)},
+                saveEnabled = state.enabledSaveButton,
+                onSaveEnabledClick = { event(AddRecipeEvent.OnSaveEnabledClicked) },
+                onSaveDisabledClick = {
+                    focusManager.clearFocus()
+                    event(AddRecipeEvent.OnSaveDisabledClicked)
+                },
+                onCancelClick = { event(AddRecipeEvent.OpenExitDialog) },
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -96,6 +102,8 @@ fun AddRecipeScreen(
                     imeAction = ImeAction.Next,
                     capitalization = KeyboardCapitalization.Sentences
                 ),
+                isError = state.titleInputErrorState,
+                supportingText = state.titleInputErrorText,
                 modifier = Modifier.padding(16.dp)
             )
             AddCategoriesSection(

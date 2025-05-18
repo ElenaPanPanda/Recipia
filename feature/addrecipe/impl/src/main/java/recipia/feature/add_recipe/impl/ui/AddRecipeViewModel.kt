@@ -6,8 +6,9 @@ import com.example.recipia.core.common.model.FullRecipe
 import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.core.common.string_res_provider.StringResProvider
-import com.example.recipia.core.ui.R
+import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.model.PlaceholderColor
+import com.example.recipia.feature.addrecipe.impl.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,17 +61,20 @@ class AddRecipeViewModel @Inject constructor(
             is AddRecipeEvent.OnRemoveIngredientsCardClicked -> removeIngredientsCard(event.ingredientsGroupIndex)
             is AddRecipeEvent.OnAddIngredientsGroupClicked -> addIngredientsGroup()
             is AddRecipeEvent.OnInstructionsInputChanged -> changeInstructionsInput(event.value)
-            is AddRecipeEvent.OnSaveClicked -> saveRecipe()
+            is AddRecipeEvent.OnSaveEnabledClicked -> saveRecipe()
+            is AddRecipeEvent.OnSaveDisabledClicked -> showEmptyTitleError()
             is AddRecipeEvent.OpenExitDialog -> showExitDialog()
         }
     }
 
     private fun changeTitleInput(value: String) {
-        _uiState.update { it.copy(titleInput = value) }
-        if (value.isNotEmpty()) {
-            _uiState.update { it.copy(enabledSaveButton = true) }
-        } else {
-            _uiState.update { it.copy(enabledSaveButton = false) }
+        _uiState.update {
+            it.copy(
+                titleInput = value,
+                enabledSaveButton = value.isNotEmpty(),
+                titleInputErrorState = false,
+                titleInputErrorText = null
+            )
         }
     }
 
@@ -180,7 +184,9 @@ class AddRecipeViewModel @Inject constructor(
             imageUrl = "",
             placeholderColor = PlaceholderColor.entries.random(),
             ingredients = _uiState.value.ingredients,
-            rawCategories = _uiState.value.categories.mapNotNull { it?.category },
+            rawCategories = _uiState.value.categories.mapNotNull {
+                if (it?.isSelected == true) it.category else null
+            },
             instructions = _uiState.value.instructionsInput
         )
 
@@ -189,7 +195,16 @@ class AddRecipeViewModel @Inject constructor(
             _uiEffect.emit(AddRecipeEffect.NavigateToRecipeDetails(newId))
         } catch (e: Exception) {
             e.printStackTrace()
-            _uiEffect.emit(AddRecipeEffect.ShowSnackBar(stringProvider.getString(R.string.core_ui_common_error)))
+            _uiEffect.emit(AddRecipeEffect.ShowSnackBar(stringProvider.getString(uiR.string.core_ui_common_error)))
+        }
+    }
+
+    private fun showEmptyTitleError() {
+        _uiState.update {
+            it.copy(
+                titleInputErrorState = true,
+                titleInputErrorText = stringProvider.getString(R.string.add_recipe_title_error)
+            )
         }
     }
 

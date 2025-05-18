@@ -9,4 +9,5 @@
     <string name="add_recipe_add_ingredient">Add Ingredient</string>
     <string name="add_recipe_ingredient_name_hint">Ingredient name</string>
     <string name="add_recipe_ingredient_amount_hint">Amount (e.g., 1 cup, 100g)</string>
+    <string name="add_recipe_title_error">Title can not be empty</string>
 </resources>

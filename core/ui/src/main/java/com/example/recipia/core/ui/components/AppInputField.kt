@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
+import com.example.recipia.core.ui.theme.DarkRed
 import com.example.recipia.core.ui.theme.DarkTeal
 import com.example.recipia.core.ui.theme.LightTeal
 import com.example.recipia.core.ui.theme.MediumTeal
@@ -46,7 +47,9 @@ fun AppInputField(
     keyboardOptions: KeyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     singleLine: Boolean = true,
-    minLines: Int = 1
+    minLines: Int = 1,
+    isError: Boolean = false,
+    supportingText: String? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
@@ -70,7 +73,9 @@ fun AppInputField(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = if (isFocused) MediumTeal else LightTeal,
+                    color = if (isError) DarkRed else {
+                        if (isFocused) MediumTeal else LightTeal
+                    },
                     shape = RoundedCornerShape(8.dp)
                 )
                 .shadow(
@@ -102,6 +107,15 @@ fun AppInputField(
                 }
             }
         )
+        if (supportingText != null)
+            Text(
+                text = supportingText,
+                style = AppTypography().poppinsMedium.copy(fontSize = 12.8.sp),
+                color = DarkRed,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 4.dp)
+            )
     }
 }
 
@@ -113,7 +127,6 @@ private fun AppInputFieldPreview() {
             value = "",
             onValueChange = {},
             hint = "Hint",
-            modifier = Modifier.padding(bottom = 8.dp)
         )
         AppInputField(
             value = "Input text",
@@ -121,6 +134,25 @@ private fun AppInputFieldPreview() {
             title = "Title",
             isMandatory = true,
             hint = "Hint",
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        AppInputField(
+            value = "",
+            onValueChange = {},
+            title = "Title",
+            isMandatory = true,
+            hint = "Hint",
+            isError = true,
+            supportingText = "Error text",
+            modifier = Modifier.padding(top = 48.dp)
+        )
+        AppInputField(
+            value = "",
+            onValueChange = {},
+            hint = "Hint",
+            isError = true,
+            supportingText = "Error text, very long and long error text, also known as supporting text",
+            modifier = Modifier.padding(top = 24.dp)
         )
     }
 }

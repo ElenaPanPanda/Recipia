@@ -6,6 +6,7 @@
     <string name="core_ui_selected">Selected</string>
     <string name="core_ui_edit">Edit</string>
     <string name="core_ui_save">Save</string>
+    <string name="core_ui_exit">Exit</string>
     <string name="core_ui_cancel">Cancel</string>
     <string name="core_ui_calendar">Calendar</string>
     <string name="core_ui_share">Share</string>
@@ -15,6 +16,8 @@
     <string name="core_ui_ingredients">Ingredients</string>
     <string name="core_ui_add_all">Add All</string>
     <string name="core_ui_instructions">Instructions</string>
+
+    <string name="core_ui_want_to_exit">Do you want to exit?</string>
 
     <string name="core_ui_common_error">Something went wrong</string>
     <string name="core_ui_recipe_not_found_error">Recipe not found</string>
