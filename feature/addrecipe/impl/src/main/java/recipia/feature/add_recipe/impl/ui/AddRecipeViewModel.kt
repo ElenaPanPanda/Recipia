@@ -36,6 +36,7 @@ class AddRecipeViewModel @Inject constructor(
     fun obtainEvent(event: AddRecipeEvent) {
         when (event) {
             is AddRecipeEvent.OnTitleInputChanged -> changeTitleInput(event.value)
+            is AddRecipeEvent.OnImageUrlInputChanged -> changeImageUrlInput(event.value)
             is AddRecipeEvent.OnCategorySelected -> changeCategoriesState(event.category)
             is AddRecipeEvent.OnIngredientTitleValueChange ->
                 changeIngredientTitleValue(event.value, event.index)
@@ -76,6 +77,10 @@ class AddRecipeViewModel @Inject constructor(
                 titleInputErrorText = null
             )
         }
+    }
+
+    private fun changeImageUrlInput(value: String) {
+        _uiState.update { it.copy(imageUrlInput = value) }
     }
 
     private fun changeCategoriesState(category: CategoryForChoose) {
@@ -181,7 +186,7 @@ class AddRecipeViewModel @Inject constructor(
             id = "",
             title = _uiState.value.titleInput,
             rating = 0,
-            imageUrl = "",
+            imageUrl = _uiState.value.imageUrlInput, // = "",
             placeholderColor = PlaceholderColor.entries.random(),
             ingredients = _uiState.value.ingredients,
             rawCategories = _uiState.value.categories.mapNotNull {

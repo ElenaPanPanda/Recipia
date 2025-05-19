@@ -106,6 +106,14 @@ fun AddRecipeScreen(
                 supportingText = state.titleInputErrorText,
                 modifier = Modifier.padding(16.dp)
             )
+            AppInputField(
+                value = state.imageUrlInput,
+                onValueChange = { value -> event(AddRecipeEvent.OnImageUrlInputChanged(value)) },
+                title = "Image URL (temporary)",
+                hint = "https://...",
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                modifier = Modifier.padding(16.dp)
+            )
             AddCategoriesSection(
                 categories = state.categories,
                 onSelectedCategory = { category -> event(AddRecipeEvent.OnCategorySelected(category)) },
