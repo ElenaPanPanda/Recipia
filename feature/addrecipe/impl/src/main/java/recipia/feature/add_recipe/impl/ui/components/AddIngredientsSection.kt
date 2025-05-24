@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.animation.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -32,21 +33,39 @@ fun AddIngredientsSection(
     onAddIngredientsGroupClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.animateContentSize()) {
         AppTitle(
             text = stringResource(id = uiR.string.core_ui_ingredients),
             modifier = Modifier.padding(bottom = 10.dp)
         )
 
         ingredients.forEachIndexed { index, ingredientSection ->
-            if (index > 0) Spacer(modifier = Modifier.height(24.dp))
-
+            if (index > 0) {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
             IngredientsSectionCard(
                 ingredientSection = ingredientSection,
                 onIngredientTitleValueChange = { onIngredientTitleValueChange(it, index) },
-                onIngredientNameValueChange = { value, ingredientIndex -> onIngredientNameValueChange(value, index, ingredientIndex) },
-                onIngredientAmountValueChange = { value, ingredientIndex -> onIngredientAmountValueChange(value, index, ingredientIndex) },
-                onIngredientRemoveClicked = { ingredientIndex -> onIngredientRemoveClicked(index, ingredientIndex) },
+                onIngredientNameValueChange = { value, ingredientIndex ->
+                    onIngredientNameValueChange(
+                        value,
+                        index,
+                        ingredientIndex
+                    )
+                },
+                onIngredientAmountValueChange = { value, ingredientIndex ->
+                    onIngredientAmountValueChange(
+                        value,
+                        index,
+                        ingredientIndex
+                    )
+                },
+                onIngredientRemoveClicked = { ingredientIndex ->
+                    onIngredientRemoveClicked(
+                        index,
+                        ingredientIndex
+                    )
+                },
                 onAddIngredientClicked = { onAddIngredientClicked(index) },
                 onRemoveCardClicked = { onRemoveIngredientsCardClicked(index) },
             )

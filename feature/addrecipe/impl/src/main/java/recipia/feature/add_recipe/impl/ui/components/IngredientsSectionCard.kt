@@ -42,7 +42,7 @@ fun IngredientsSectionCard(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clip(RoundedCornerShape(12.dp)),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = snowWhite),
         border = BorderStroke(1.dp, LightTeal),
@@ -70,7 +70,9 @@ fun IngredientsSectionCard(
                 .padding(bottom = 16.dp)
         )
         ingredientSection.ingredientsList.forEachIndexed { index, ingredient ->
-            if (index != 0) Spacer(modifier = Modifier.height(8.dp))
+            if (index != 0) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             IngredientsInputFieldsBlock(
                 ingredientValue = ingredient.name,
                 onIngredientValueChange = { onIngredientNameValueChange(it, index) },
