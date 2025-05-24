@@ -31,7 +31,8 @@ class RecipeListViewModel @Inject constructor(
     fun obtainEvent(event: RecipeListEvent) {
         when (event) {
             is RecipeListEvent.OnCategorySelected -> onSelectedCategory(event.category)
-            is RecipeListEvent.OnRecipeClick -> navigateToRecipeDetails(event.recipeId)
+            is RecipeListEvent.OnRecipeClicked -> navigateToRecipeDetails(event.recipeId)
+            is RecipeListEvent.OnAddRecipeClicked -> navigateToAddRecipe()
         }
     }
 
@@ -74,5 +75,9 @@ class RecipeListViewModel @Inject constructor(
 
     private fun navigateToRecipeDetails(recipeId: String) = viewModelScope.launch {
         _uiEffect.emit(RecipeListEffect.NavigateToRecipeDetails(recipeId))
+    }
+
+    private fun navigateToAddRecipe() = viewModelScope.launch {
+        _uiEffect.emit(RecipeListEffect.NavigateToAddRecipe)
     }
 }

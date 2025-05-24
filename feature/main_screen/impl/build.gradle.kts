@@ -16,7 +16,10 @@ dependencies {
     // Modules
     implementation(projects.core.ui)
     implementation(projects.feature.recipeList.recipeListImpl)
-    implementation(projects.feature.addrecipe.impl)
+    implementation(projects.feature.collections.impl)
+    implementation(projects.feature.calendar.impl)
+    implementation(projects.feature.groceries.impl)
+    implementation(projects.feature.addrecipe.api)
     implementation(projects.feature.recipedetails.api)
     api(projects.feature.mainScreen.api)
 

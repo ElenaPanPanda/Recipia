@@ -25,7 +25,9 @@ import com.example.recipia.core.ui.theme.DividerNavBarColor
 import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.snowWhite
 import com.example.recipia.core.ui.utils.NoRippleInteractionSource
-import recipia.feature.add_recipe.api.AddRecipeRoutingContract
+import com.example.recipia.feature.calendar.api.CalendarRoutingContract
+import com.example.recipia.feature.collections.api.CollectionsRoutingContract
+import com.example.recipia.feature.groceries.api.GroceriesRoutingContract
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
 
 @Composable
@@ -42,17 +44,17 @@ fun BottomNavBar(
         NavigationItem(
             title = "Collections",
             icon = Icons.bookmark,
-            screen = AddRecipeRoutingContract.AddRecipe
+            screen = CollectionsRoutingContract.Collections
         ),
         NavigationItem(
             title = "Calendar",
             icon = Icons.calendar,
-            screen = RecipeListRoutingContract.RecipeList
+            screen = CalendarRoutingContract.Calendar
         ),
         NavigationItem(
             title = "Groceries",
             icon = Icons.groceries,
-            screen = AddRecipeRoutingContract.AddRecipe
+            screen = GroceriesRoutingContract.Groceries
         )
     )
 

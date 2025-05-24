@@ -1,8 +1,8 @@
 package com.example.recipia.feature.recipedetails.impl.domain.di
 
 import com.example.recipia.feature.recipedetails.impl.data.repo.RecipeDetailsRepository
-import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeMapper
-import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeMapperImpl
+import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDetailedMapper
+import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDetailedMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCaseImpl
 import dagger.Module
@@ -14,11 +14,11 @@ import dagger.hilt.components.SingletonComponent
 @Module
 internal class RecipeDetailsDomainLayerModule {
     @Provides
-    fun provideRecipeDetailsMapper(): RecipeMapper = RecipeMapperImpl()
+    fun provideRecipeDetailsMapper(): RecipeToDetailedMapper = RecipeToDetailedMapperImpl()
 
     @Provides
     fun provideGetRecipeUseCase(
-        mapper: RecipeMapper,
+        mapper: RecipeToDetailedMapper,
         repository: RecipeDetailsRepository
     ): GetRecipeUseCase = GetRecipeUseCaseImpl(mapper, repository)
 }

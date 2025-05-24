@@ -11,7 +11,7 @@ data class DetailedRecipe(
     val rating: Int,
     val imageUrl: String,
     val placeholderColor: PlaceholderColor,
-    val ingredients: List<DetailedIngredient>,
+    val ingredients: List<DetailedIngredientSection>,
     val rawCategories: List<RecipeCategory>,
     val instructions: String,
 )

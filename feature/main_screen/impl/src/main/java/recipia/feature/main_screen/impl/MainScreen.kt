@@ -14,14 +14,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.recipia.feature.calendar.impl.calendarScreen
+import com.example.recipia.feature.collections.impl.collectionsScreen
+import com.examplerecipia.feature.groceries.impl.groceriesScreen
 import kotlinx.coroutines.launch
-import recipia.feature.add_recipe.impl.addRecipeScreen
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
 import recipia.feature.recipe_list_impl.navigation.recipeListScreen
 
 @Composable
 fun MainScreen(
-    navigateToRecipeDetails: (String) -> Unit
+    navigateToRecipeDetails: (String) -> Unit,
+    navigateToAddRecipe: () -> Unit,
 ) {
     val childNavController = rememberNavController()
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
@@ -58,9 +61,11 @@ fun MainScreen(
                     }
                 },
                 navigateToRecipeDetails = navigateToRecipeDetails,
-                childNavController,
+                navigateToAddRecipe = navigateToAddRecipe,
             )
-            addRecipeScreen(childNavController)
+            collectionsScreen()
+            calendarScreen()
+            groceriesScreen()
         }
     }
 }

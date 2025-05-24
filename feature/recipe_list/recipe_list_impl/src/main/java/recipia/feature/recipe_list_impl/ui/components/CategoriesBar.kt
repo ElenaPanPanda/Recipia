@@ -28,7 +28,7 @@ fun CategoriesBar(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             items(categories) { category ->
-                CategoryChip(
+                CategoryChipFilled(
                     text = stringResource(id = category.textId),
                     isSelected = category == selectedCategory,
                     onClick = { onCategorySelected(category) }

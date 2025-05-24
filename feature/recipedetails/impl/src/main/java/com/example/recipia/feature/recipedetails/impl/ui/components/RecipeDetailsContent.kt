@@ -23,7 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.R
-import com.example.recipia.core.ui.components.OutlinedButton
+import com.example.recipia.core.ui.components.AppOutlinedButton
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
@@ -72,8 +72,8 @@ fun RecipeDetailsContent(
                     .padding(bottom = 16.dp)
             )
 
-            OutlinedButton(
-                text = stringResource(id = R.string.core_ui_add_start_cooking),
+            AppOutlinedButton(
+                text = stringResource(id = R.string.core_ui_start_cooking),
                 onClick = {},
                 leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
                 modifier = Modifier
@@ -100,14 +100,16 @@ fun RecipeDetailsContent(
             }
 
             if (state.recipe.ingredients.isNotEmpty()) {
-                IngredientsSection(
-                    ingredients = state.recipe.ingredients,
-                    onAddIngredient = { },
-                    onAddAllIngredients = { },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp, end = 8.dp, bottom = 32.dp)
-                )
+                state.recipe.ingredients.forEach { detailedIngredientSection ->
+                    IngredientsSection(
+                        ingredients = detailedIngredientSection.ingredientsList,
+                        onAddIngredient = { },
+                        onAddAllIngredients = { },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 8.dp, bottom = 32.dp)
+                    )
+                }
             }
 
             if (state.recipe.instructions.isNotEmpty()) {
