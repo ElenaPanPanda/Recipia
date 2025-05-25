@@ -16,6 +16,8 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.core.common)
+    implementation(projects.core.ui)
     api(projects.feature.groceries.api)
 
     // Libs
@@ -25,6 +27,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // DI
     implementation(libs.hilt)
