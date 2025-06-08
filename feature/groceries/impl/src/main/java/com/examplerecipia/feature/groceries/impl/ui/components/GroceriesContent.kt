@@ -86,10 +86,24 @@ fun GroceriesContent(
             }
 
             if (state.shoppingList.isNotEmpty()) {
-                state.shoppingList.forEachIndexed { index, shoppingListItem ->
+                state.shoppingList.forEachIndexed { shoppingListItemIndex, shoppingListItem ->
                     ShoppingListSection(
                         shoppingListItem = shoppingListItem,
-                        onRemoveClicked = { event(GroceriesEvent.OnRemoveListBlock(index)) },
+                        onCheckChanged = { ingredientIndex ->
+                            event(
+                                GroceriesEvent.OnCheckChanged(
+                                    shoppingListItemIndex,
+                                    ingredientIndex
+                                )
+                            )
+                        },
+                        onRemoveClicked = {
+                            event(
+                                GroceriesEvent.OnRemoveListBlock(
+                                    shoppingListItemIndex
+                                )
+                            )
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)

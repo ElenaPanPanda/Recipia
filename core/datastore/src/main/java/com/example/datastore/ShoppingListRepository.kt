@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -25,16 +24,10 @@ class ShoppingListRepository @Inject constructor(
         }
     }
 
-    suspend fun addIngredientToItem(index: Int, item: ShoppingListIngredientDatastoreModel) {
-        val currentList = shoppingListFlow.first()
-
-        val updatedItem = currentList[index].copy(
-            ingredientsList = listOf(item) + currentList[index].ingredientsList
-        )
-
+    suspend fun updateItem(index: Int, item: ShoppingListItemDatastoreModel) {
         context.shoppingListDataStore.updateData { current ->
             val builder = current.toBuilder()
-            builder.setItems(index, updatedItem.toProto())
+            builder.setItems(index, item.toProto())
             builder.build()
         }
     }

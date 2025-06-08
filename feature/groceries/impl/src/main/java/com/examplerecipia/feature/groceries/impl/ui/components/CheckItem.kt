@@ -11,6 +11,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,7 @@ import com.example.recipia.core.ui.theme.DarkBlue
 import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.TextMuted
 import com.example.recipia.core.ui.theme.snowWhite
+import com.example.recipia.core.ui.utils.NoRippleInteractionSource
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
 
 @Composable
@@ -41,7 +43,8 @@ fun CheckItem(
                 checkedColor = MediumTeal,
                 uncheckedColor = MediumTeal,
                 checkmarkColor = snowWhite
-            )
+            ),
+            interactionSource = remember { NoRippleInteractionSource },
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(

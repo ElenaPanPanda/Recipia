@@ -34,6 +34,7 @@ import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 @Composable
 fun ShoppingListSection(
     shoppingListItem: ShoppingListItem,
+    onCheckChanged: (Int) -> Unit,
     onRemoveClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -72,7 +73,7 @@ fun ShoppingListSection(
                 shoppingListItem.ingredientsList.forEachIndexed { index, ingredient ->
                     CheckItem(
                         ingredient = ingredient,
-                        onCheckedChange = {}
+                        onCheckedChange = { onCheckChanged(index)}
                     )
                     if (index < shoppingListItem.ingredientsList.lastIndex) {
                         AppHorizontalDivider()
@@ -102,6 +103,7 @@ private fun ShoppingListSectionPreview1() {
                 ),
             )
         ),
+        onCheckChanged = {},
         onRemoveClicked = {},
         modifier = Modifier.padding(12.dp)
     )
@@ -126,6 +128,7 @@ private fun ShoppingListSectionPreview2() {
                 ),
             )
         ),
+        onCheckChanged = {},
         onRemoveClicked = {},
         modifier = Modifier.padding(12.dp)
     )

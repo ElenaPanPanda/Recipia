@@ -1,14 +1,14 @@
 package com.examplerecipia.feature.groceries.impl.domain.di
 
 import com.example.datastore.ShoppingListRepository
-import com.examplerecipia.feature.groceries.impl.domain.usecase.AddIngredientToListBlockUseCase
-import com.examplerecipia.feature.groceries.impl.domain.usecase.AddIngredientToListBlockUseCaseImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCaseImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCaseImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCaseImpl
+import com.examplerecipia.feature.groceries.impl.domain.usecase.UpdateListBlockUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.UpdateListBlockUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,8 +26,8 @@ internal class GroceriesDomainLayerModule {
         AddListBlockUseCaseImpl(repository)
 
     @Provides
-    fun provideAddIngredientToListBlockUseCase(repository: ShoppingListRepository): AddIngredientToListBlockUseCase =
-        AddIngredientToListBlockUseCaseImpl(repository)
+    fun updateListBlockUseCase(repository: ShoppingListRepository): UpdateListBlockUseCase =
+        UpdateListBlockUseCaseImpl(repository)
 
     @Provides
     fun removeListBlockUseCase(repository: ShoppingListRepository): RemoveListBlockUseCase =
