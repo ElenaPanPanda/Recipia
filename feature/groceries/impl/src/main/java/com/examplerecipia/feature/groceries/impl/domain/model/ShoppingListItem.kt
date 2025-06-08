@@ -20,7 +20,7 @@ fun ShoppingListItemDatastoreModel.toDomain(): ShoppingListItem =
         ingredientsList = ingredientsList.map { it.toDomain() }
     )
 
-private fun ShoppingListIngredientDatastoreModel.toDomain(): ShoppingListIngredient =
+fun ShoppingListIngredientDatastoreModel.toDomain(): ShoppingListIngredient =
     ShoppingListIngredient(
         amount = amount,
         name = name,
@@ -33,7 +33,7 @@ fun ShoppingListItem.toDatastoreModel(): ShoppingListItemDatastoreModel =
         ingredientsList = ingredientsList.map { it.toDatastoreModel() }
     )
 
-private fun ShoppingListIngredient.toDatastoreModel(): ShoppingListIngredientDatastoreModel =
+fun ShoppingListIngredient.toDatastoreModel(): ShoppingListIngredientDatastoreModel =
     ShoppingListIngredientDatastoreModel(
         amount = amount,
         name = name,

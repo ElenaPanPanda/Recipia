@@ -2,13 +2,12 @@ package com.examplerecipia.feature.groceries.impl.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.datastore.ShoppingListRepository
 import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.examplerecipia.feature.groceries.impl.R
-import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
-import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
-import com.examplerecipia.feature.groceries.impl.domain.model.toDatastoreModel
-import com.examplerecipia.feature.groceries.impl.domain.model.toDomain
+import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.AddIngredientToListBlockUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +21,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroceriesViewModel @Inject constructor(
-    private val shoppingListRepository: ShoppingListRepository,
     private val stringProvider: StringResProvider,
+    private val getShoppingListUseCase: GetShoppingListUseCase,
+    private val addListBlockUseCase: AddListBlockUseCase,
+    private val addIngredientToListBlock: AddIngredientToListBlockUseCase,
+    private val removeListBlockUseCase: RemoveListBlockUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<GroceriesState>(GroceriesState.Loading)
     val uiState: StateFlow<GroceriesState> = _uiState.asStateFlow()
@@ -45,10 +47,8 @@ class GroceriesViewModel @Inject constructor(
 
     private fun observeShoppingList() {
         viewModelScope.launch {
-            shoppingListRepository.shoppingListFlow.collect { list ->
-                val domainList = list.map { it.toDomain() }
-
-                _uiState.value = GroceriesState.Success(shoppingList = domainList)
+            getShoppingListUseCase.getShoppingList().collect { list ->
+                _uiState.value = GroceriesState.Success(shoppingList = list)
             }
         }
     }
@@ -69,34 +69,19 @@ class GroceriesViewModel @Inject constructor(
 
             if (currentState !is GroceriesState.Success) return@launch
 
-            if (
-                currentState.shoppingList.isNotEmpty() &&
-                currentState.shoppingList.first().title == stringProvider.getString(R.string.groceries_other_items)
-            ) {
-                // update existing item
-                val newIngredient = ShoppingListIngredient(
-                    amount = "",
-                    name = currentState.newItemValue,
-                    isCrossedOut = false
-                )
+            val manualAddingTitle = stringProvider.getString(R.string.groceries_other_items)
+            val newValue = currentState.newItemValue.trim()
 
-                val updatedItem = currentState.shoppingList.first().copy(
-                    ingredientsList = listOf(newIngredient) + currentState.shoppingList.first().ingredientsList
+            if (currentState.shoppingList.isNotEmpty() && currentState.shoppingList.first().title == manualAddingTitle) {
+                addIngredientToListBlock.updateListBlock(
+                    index = 0,
+                    newValue = newValue
                 )
-                shoppingListRepository.updateItem(0, updatedItem.toDatastoreModel())
             } else {
-                // add new item
-                val newItem = ShoppingListItem(
-                    title = stringProvider.getString(R.string.groceries_other_items),
-                    ingredientsList = listOf(
-                        ShoppingListIngredient(
-                            amount = "",
-                            name = currentState.newItemValue,
-                            isCrossedOut = false
-                        )
-                    )
+                addListBlockUseCase.addListBlock(
+                    newTitle = manualAddingTitle,
+                    newValue = newValue
                 )
-                shoppingListRepository.addItem(newItem.toDatastoreModel())
             }
         }
     }
@@ -106,7 +91,7 @@ class GroceriesViewModel @Inject constructor(
             val currentState = uiState.value
 
             if (currentState is GroceriesState.Success) {
-                shoppingListRepository.removeItem(index)
+                removeListBlockUseCase.removeListBlock(index)
             }
         }
     }

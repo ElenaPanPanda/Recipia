@@ -68,7 +68,7 @@ fun GroceriesContent(
                     hint = stringResource(uiR.string.core_ui_add_item_to_list),
                     modifier = Modifier.weight(1f),
                     keyboardActions = KeyboardActions(
-                        onDone = { event(GroceriesEvent.OnAddNewItem) }
+                        onDone = { if (state.newItemValue.isNotBlank()) event(GroceriesEvent.OnAddNewItem) }
                     )
                 )
                 Icon(
