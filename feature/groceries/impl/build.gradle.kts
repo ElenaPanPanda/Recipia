@@ -17,6 +17,7 @@ android {
 dependencies {
     // Modules
     implementation(projects.core.common)
+    implementation(projects.core.datastore)
     implementation(projects.core.ui)
     api(projects.feature.groceries.api)
 

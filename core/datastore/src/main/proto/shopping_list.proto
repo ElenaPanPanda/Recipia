@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_package = "com.example.datastore";
+option java_multiple_files = true;
+
+message ShoppingListIngredient {
+  string amount = 1;
+  string name = 2;
+  bool isCrossedOut = 3;
+}
+
+message ShoppingListItem {
+  string title = 1;
+  repeated ShoppingListIngredient ingredientsList = 2;
+}
+
+message ShoppingList {
+  repeated ShoppingListItem items = 1;
+}

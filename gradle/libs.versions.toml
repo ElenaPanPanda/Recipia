@@ -1,7 +1,9 @@
 [versions]
 #Global
 compileSdk = "35"
+datastore = "1.1.7"
 minSdk = "26"
+protobufJavalite = "3.25.1"
 targetSdk = "33"
 versionCode = "1"
 versionName = "1.0.0"
@@ -39,6 +41,7 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 
 [libraries]
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -61,6 +64,7 @@ androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "life
 # Libs
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 okHttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp" }
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobufJavalite" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging_interceptor" }

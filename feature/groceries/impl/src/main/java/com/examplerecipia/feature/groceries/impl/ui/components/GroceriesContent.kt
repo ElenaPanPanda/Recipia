@@ -31,9 +31,10 @@ import com.example.recipia.core.ui.theme.DarkBlue
 import com.example.recipia.core.ui.theme.DarkRed
 import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.snowWhite
+import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
+import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 import com.examplerecipia.feature.groceries.impl.ui.GroceriesEvent
 import com.examplerecipia.feature.groceries.impl.ui.GroceriesState
-import com.examplerecipia.feature.groceries.impl.ui.temporaryShoppingList
 
 @Composable
 fun GroceriesContent(
@@ -63,7 +64,7 @@ fun GroceriesContent(
                     hint = stringResource(uiR.string.core_ui_add_item_to_list),
                     modifier = Modifier.weight(1f),
                     keyboardActions = KeyboardActions(
-                        onDone = { event(GroceriesEvent.AddNewItem) }
+                        onDone = { event(GroceriesEvent.OnAddNewItem) }
                     )
                 )
                 Icon(
@@ -75,7 +76,7 @@ fun GroceriesContent(
                         .clip(RoundedCornerShape(8.dp))
                         .background(MediumTeal)
                         .padding(4.dp)
-                        .clickable(onClick = { event(GroceriesEvent.AddNewItem) })
+                        .clickable(onClick = { event(GroceriesEvent.OnAddNewItem) })
                         .size(24.dp)
                 )
             }
@@ -84,7 +85,7 @@ fun GroceriesContent(
                 state.shoppingList.forEachIndexed { index, shoppingListItem ->
                     ShoppingListSection(
                         shoppingListItem = shoppingListItem,
-                        onRemoveClicked = {},
+                        onRemoveClicked = { event(GroceriesEvent.OnRemoveListBlock(index)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
@@ -115,7 +116,80 @@ fun GroceriesContent(
 @Composable
 private fun GroceriesContentPreview() {
     GroceriesContent(
-        state = GroceriesState.Success(temporaryShoppingList),
+        state = GroceriesState.Success(
+            listOf(
+                ShoppingListItem(
+                    title = "Other Items",
+                    ingredientsList = listOf(
+                        ShoppingListIngredient(
+                            amount = "",
+                            name = "Apples",
+                            isCrossedOut = false,
+                        ),
+                    )
+                ),
+                ShoppingListItem(
+                    title = "Golden Chickpea & Spinach Curry",
+                    ingredientsList = listOf(
+                        ShoppingListIngredient(
+                            amount = "1 can (13.5 oz)",
+                            name = "Coconut milk (full-fat)",
+                            isCrossedOut = true,
+                        ),
+                        ShoppingListIngredient(
+                            amount = "2 tbsp",
+                            name = "Curry powder",
+                            isCrossedOut = false,
+                        ),
+                        ShoppingListIngredient(
+                            amount = "1 cup",
+                            name = "Spinach",
+                            isCrossedOut = false,
+                        ),
+                    )
+                ),
+                ShoppingListItem(
+                    title = "Spiced Pumpkin & Lentil Stew",
+                    ingredientsList = listOf(
+                        ShoppingListIngredient(
+                            amount = "1 cup",
+                            name = "Red lentils, rinsed",
+                            isCrossedOut = false,
+                        ),
+                        ShoppingListIngredient(
+                            amount = "3 cloves",
+                            name = "Garlic, minced",
+                            isCrossedOut = false,
+                        ),
+                        ShoppingListIngredient(
+                            amount = "1",
+                            name = "medium Butternut Pumpkin",
+                            isCrossedOut = false,
+                        ),
+                    )
+                ),
+                ShoppingListItem(
+                    title = "Spiced Pumpkin & Lentil Stew",
+                    ingredientsList = listOf(
+                        ShoppingListIngredient(
+                            amount = "1 cup",
+                            name = "Red lentils, rinsed",
+                            isCrossedOut = false,
+                        ),
+                        ShoppingListIngredient(
+                            amount = "3 cloves",
+                            name = "Garlic, minced",
+                            isCrossedOut = true,
+                        ),
+                        ShoppingListIngredient(
+                            amount = "1",
+                            name = "medium Butternut Pumpkin",
+                            isCrossedOut = false,
+                        ),
+                    )
+                ),
+            )
+        ),
         event = {},
     )
 }

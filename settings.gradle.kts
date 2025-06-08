@@ -25,6 +25,7 @@ rootProject.name = "Recipia"
 
 include(":app")
 include(":core:common")
+include(":core:datastore")
 include(":core:navigation")
 include(":core:network")
 include(":core:ui")
