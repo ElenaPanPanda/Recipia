@@ -24,6 +24,14 @@ class ShoppingListRepository @Inject constructor(
         }
     }
 
+    suspend fun updateItem(index: Int, item: ShoppingListItemDatastoreModel) {
+        context.shoppingListDataStore.updateData { current ->
+            val builder = current.toBuilder()
+            builder.setItems(index, item.toProto())
+            builder.build()
+        }
+    }
+
     suspend fun removeItem(index: Int) {
         context.shoppingListDataStore.updateData { current ->
             val builder = current.toBuilder()

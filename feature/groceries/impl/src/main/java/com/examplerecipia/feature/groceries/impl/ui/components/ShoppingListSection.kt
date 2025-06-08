@@ -1,5 +1,6 @@
 package com.examplerecipia.feature.groceries.impl.ui.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -36,10 +38,10 @@ fun ShoppingListSection(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
         color = snowWhite,
-        shadowElevation = 4.dp,
+        modifier = modifier
+            .shadow(elevation = 4.dp, shape = RoundedCornerShape(12.dp))
+            .animateContentSize(),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(

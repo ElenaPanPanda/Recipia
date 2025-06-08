@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="groceries_clear_checked">Clear Checked</string>
+    <string name="groceries_clear_all">Clear All</string>
+    <string name="groceries_empty_list">Your shopping list is empty. Add ingredients from the recipes or write them here</string>
+    <string name="groceries_other_items">Other Items</string>
+</resources>

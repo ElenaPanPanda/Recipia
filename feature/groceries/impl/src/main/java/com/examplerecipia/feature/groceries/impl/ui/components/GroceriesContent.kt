@@ -5,15 +5,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,16 +22,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppInputField
-import com.example.recipia.core.ui.components.AppOutlinedButton
 import com.example.recipia.core.ui.icons.Icons
+import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
-import com.example.recipia.core.ui.theme.DarkRed
 import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.snowWhite
+import com.examplerecipia.feature.groceries.impl.R
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 import com.examplerecipia.feature.groceries.impl.ui.GroceriesEvent
@@ -49,6 +52,7 @@ fun GroceriesContent(
         GroceriesTopBar(onShareClicked = { })
         Column(
             modifier = Modifier
+                .fillMaxHeight()
                 .verticalScroll(scrollState)
                 .padding(horizontal = 16.dp)
         ) {
@@ -91,21 +95,21 @@ fun GroceriesContent(
                             .padding(top = 16.dp)
                     )
                 }
-            }
-
-            Row(modifier = Modifier.padding(vertical = 24.dp)) {
-                AppOutlinedButton(
-                    text = "Clear Checked",
-                    onClick = { },
-                    contentColor = DarkBlue.copy(alpha = 0.7f),
-                    modifier = Modifier.weight(1f)
+                Spacer(modifier = Modifier.weight(1f))
+                ClearButtons(
+                    onClearCheckedClicked = { },
+                    onClearAllClicked = { },
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                AppOutlinedButton(
-                    text = "Clear All",
-                    onClick = { },
-                    contentColor = DarkRed.copy(alpha = 0.7f),
-                    modifier = Modifier.weight(1f)
+            } else {
+                Text(
+                    text = stringResource(R.string.groceries_empty_list),
+                    color = DarkBlue.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(24.dp),
+                    textAlign = TextAlign.Center,
+                    style = AppTypography().poppinsSemiBold.copy(
+                        fontSize = 16.sp,
+                        lineHeight = 24.sp
+                    )
                 )
             }
         }
@@ -160,26 +164,6 @@ private fun GroceriesContentPreview() {
                             amount = "3 cloves",
                             name = "Garlic, minced",
                             isCrossedOut = false,
-                        ),
-                        ShoppingListIngredient(
-                            amount = "1",
-                            name = "medium Butternut Pumpkin",
-                            isCrossedOut = false,
-                        ),
-                    )
-                ),
-                ShoppingListItem(
-                    title = "Spiced Pumpkin & Lentil Stew",
-                    ingredientsList = listOf(
-                        ShoppingListIngredient(
-                            amount = "1 cup",
-                            name = "Red lentils, rinsed",
-                            isCrossedOut = false,
-                        ),
-                        ShoppingListIngredient(
-                            amount = "3 cloves",
-                            name = "Garlic, minced",
-                            isCrossedOut = true,
                         ),
                         ShoppingListIngredient(
                             amount = "1",

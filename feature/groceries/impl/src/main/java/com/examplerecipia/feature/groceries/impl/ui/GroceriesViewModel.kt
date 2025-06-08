@@ -3,6 +3,8 @@ package com.examplerecipia.feature.groceries.impl.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.datastore.ShoppingListRepository
+import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.examplerecipia.feature.groceries.impl.R
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 import com.examplerecipia.feature.groceries.impl.domain.model.toDatastoreModel
@@ -21,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GroceriesViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
+    private val stringProvider: StringResProvider,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<GroceriesState>(GroceriesState.Loading)
     val uiState: StateFlow<GroceriesState> = _uiState.asStateFlow()
@@ -64,9 +67,27 @@ class GroceriesViewModel @Inject constructor(
         viewModelScope.launch {
             val currentState = uiState.value
 
-            if (currentState is GroceriesState.Success) {
+            if (currentState !is GroceriesState.Success) return@launch
+
+            if (
+                currentState.shoppingList.isNotEmpty() &&
+                currentState.shoppingList.first().title == stringProvider.getString(R.string.groceries_other_items)
+            ) {
+                // update existing item
+                val newIngredient = ShoppingListIngredient(
+                    amount = "",
+                    name = currentState.newItemValue,
+                    isCrossedOut = false
+                )
+
+                val updatedItem = currentState.shoppingList.first().copy(
+                    ingredientsList = listOf(newIngredient) + currentState.shoppingList.first().ingredientsList
+                )
+                shoppingListRepository.updateItem(0, updatedItem.toDatastoreModel())
+            } else {
+                // add new item
                 val newItem = ShoppingListItem(
-                    title = "Other Items",
+                    title = stringProvider.getString(R.string.groceries_other_items),
                     ingredientsList = listOf(
                         ShoppingListIngredient(
                             amount = "",
