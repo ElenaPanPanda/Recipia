@@ -95,21 +95,19 @@ fun RecipeDetailsContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .padding(top = 20.dp, bottom = 32.dp)
+                        .padding(top = 20.dp)
                 )
             }
 
             if (state.recipe.ingredients.isNotEmpty()) {
-                state.recipe.ingredients.forEach { detailedIngredientSection ->
-                    IngredientsSection(
-                        ingredients = detailedIngredientSection.ingredientsList,
-                        onAddIngredient = { },
-                        onAddAllIngredients = { },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 8.dp, bottom = 32.dp)
-                    )
-                }
+                IngredientsSection(
+                    ingredients = state.recipe.ingredients,
+                    onAddIngredient = { },
+                    onAddAllIngredients = { },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp, start = 16.dp, end = 8.dp)
+                )
             }
 
             if (state.recipe.instructions.isNotEmpty()) {
@@ -118,7 +116,7 @@ fun RecipeDetailsContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .padding(bottom = 40.dp)
+                        .padding(bottom = 40.dp, top = 32.dp)
                 )
             }
         }
