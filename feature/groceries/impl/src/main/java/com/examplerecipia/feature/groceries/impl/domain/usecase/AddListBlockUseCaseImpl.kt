@@ -1,13 +1,14 @@
 package com.examplerecipia.feature.groceries.impl.domain.usecase
 
 import com.example.datastore.ShoppingListRepository
+import com.examplerecipia.feature.groceries.impl.domain.mapper.ShoppingListItemMapper
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
-import com.examplerecipia.feature.groceries.impl.domain.model.toDatastoreModel
 import javax.inject.Inject
 
 internal class AddListBlockUseCaseImpl @Inject constructor(
-    private val shoppingListRepository: ShoppingListRepository
+    private val shoppingListRepository: ShoppingListRepository,
+    private val mapper: ShoppingListItemMapper,
 ) : AddListBlockUseCase {
     override suspend fun addListBlock(newTitle: String, newValue: String) {
         val newItem = ShoppingListItem(
@@ -20,6 +21,6 @@ internal class AddListBlockUseCaseImpl @Inject constructor(
                 )
             )
         )
-        shoppingListRepository.addItem(newItem.toDatastoreModel())
+        shoppingListRepository.addItem(mapper.convertToDatastoreModel(newItem))
     }
 }
