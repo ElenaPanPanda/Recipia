@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +28,8 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngre
 @Composable
 fun IngredientsSection(
     ingredients: List<DetailedIngredientSection>,
-    onAddIngredient: (Int) -> Unit,
+    isAllIngredientsChecked: Boolean,
+    onAddIngredient: (DetailedIngredient) -> Unit,
     onAddAllIngredients: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -43,16 +45,25 @@ fun IngredientsSection(
                 color = DarkTeal
             )
 
-            IconTextButton(
-                text = stringResource(id = uiR.string.core_ui_add_all),
-                icon = ImageVector.vectorResource(id = Icons.shoppingCartAdd),
-                onClick = onAddAllIngredients,
-            )
+            if (isAllIngredientsChecked) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = Icons.allDone),
+                    contentDescription = null,
+                    tint = DarkTeal,
+                    modifier = Modifier.padding(horizontal = 4.dp)
+                )
+            } else {
+                IconTextButton(
+                    text = stringResource(id = uiR.string.core_ui_add_all),
+                    icon = ImageVector.vectorResource(id = Icons.shoppingCartAdd),
+                    onClick = onAddAllIngredients,
+                )
+            }
         }
 
         ingredients.forEachIndexed { sectionIndex, ingredientSection ->
             Column {
-                if (ingredientSection.title != null) {
+                if (!ingredientSection.title.isNullOrEmpty()) {
                     Text(
                         text = ingredientSection.title,
                         style = AppTypography().playDisplayBold.copy(fontSize = 17.sp),
@@ -70,7 +81,7 @@ fun IngredientsSection(
                     }
                     IngredientItem(
                         ingredient = ingredient,
-                        onAddClick = { onAddIngredient(ingredients.hashCode()) }
+                        onAddClick = { onAddIngredient(ingredient) }
                     )
                     if (ingredientIndex < ingredientSection.ingredientsList.size - 1) {
                         AppHorizontalDivider()
@@ -117,6 +128,7 @@ private fun IngredientsSectionPreview() {
                 )
             )
         ),
+        isAllIngredientsChecked = false,
         onAddIngredient = {},
         onAddAllIngredients = {},
         modifier = Modifier.padding(16.dp)
@@ -157,6 +169,7 @@ private fun IngredientItemWithoutTitlesPreview() {
                 )
             )
         ),
+        isAllIngredientsChecked = false,
         onAddIngredient = {},
         onAddAllIngredients = {},
         modifier = Modifier.padding(16.dp)
@@ -198,6 +211,34 @@ private fun IngredientItemWithOnlySecondTitlePreview() {
                 )
             )
         ),
+        isAllIngredientsChecked = true,
+        onAddIngredient = {},
+        onAddAllIngredients = {},
+        modifier = Modifier.padding(16.dp)
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun IngredientItemWithOneSectionWithoutTitlePreview() {
+    IngredientsSection(
+        ingredients = listOf(
+            DetailedIngredientSection(
+                ingredientsList = listOf(
+                    DetailedIngredient(
+                        amount = "100g",
+                        ingredient = "Potatoes",
+                        addedToList = false,
+                    ),
+                    DetailedIngredient(
+                        amount = "1 medium",
+                        ingredient = "Butternut Pumpkin, peeled & cubed",
+                        addedToList = true,
+                    )
+                )
+            ),
+        ),
+        isAllIngredientsChecked = false,
         onAddIngredient = {},
         onAddAllIngredients = {},
         modifier = Modifier.padding(16.dp)

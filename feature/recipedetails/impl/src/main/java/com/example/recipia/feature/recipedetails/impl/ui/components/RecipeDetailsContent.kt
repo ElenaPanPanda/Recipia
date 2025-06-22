@@ -102,8 +102,23 @@ fun RecipeDetailsContent(
             if (state.recipe.ingredients.isNotEmpty()) {
                 IngredientsSection(
                     ingredients = state.recipe.ingredients,
-                    onAddIngredient = { },
-                    onAddAllIngredients = { },
+                    isAllIngredientsChecked = state.isAllIngredientsChecked,
+                    onAddIngredient = { ingredient ->
+                        event(
+                            RecipeDetailsEvent.OnAddIngredientClicked(
+                                recipeName = state.recipe.title,
+                                ingredient = ingredient
+                            )
+                        )
+                    },
+                    onAddAllIngredients = {
+                        event(
+                            RecipeDetailsEvent.OnAddAllIngredientsClicked(
+                                recipeName = state.recipe.title,
+                                ingredients = state.recipe.ingredients
+                            )
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 32.dp, start = 16.dp, end = 8.dp)
