@@ -1,5 +1,6 @@
 package com.example.recipia.feature.recipedetails.impl.ui
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -124,7 +125,8 @@ class RecipeDetailsViewModel @Inject constructor(
 
     private fun onDeleteClick(recipeId: String) {}
 
-    private fun addAllIngredientsToShoppingList(
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun addAllIngredientsToShoppingList(
         recipeName: String,
         ingredients: List<DetailedIngredientSection>
     ) = viewModelScope.launch {
