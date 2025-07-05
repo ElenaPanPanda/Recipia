@@ -5,6 +5,7 @@ datastore = "1.1.7"
 minSdk = "26"
 protobufJavalite = "3.25.1"
 targetSdk = "33"
+truth = "1.4.2"
 versionCode = "1"
 versionName = "1.0.0"
 
@@ -83,6 +84,7 @@ test-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test
 test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

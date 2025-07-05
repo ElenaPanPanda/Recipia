@@ -19,7 +19,7 @@ import com.example.recipia.feature.collections.impl.collectionsScreen
 import com.examplerecipia.feature.groceries.impl.groceriesScreen
 import kotlinx.coroutines.launch
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
-import recipia.feature.recipe_list_impl.navigation.recipeListScreen
+import recipia.feature.impl.navigation.recipeListScreen
 
 @Composable
 fun MainScreen(

@@ -74,6 +74,8 @@ class RecipeDetailsViewModelTest {
 
         val recipe = (uiState as RecipeDetailsState.Success).recipe
         assertEquals("Test Recipe", recipe.title)
+
+        coVerify(exactly = 1) { getRecipeUseCase.getRecipe("id") }
     }
 
     @Test
