@@ -18,6 +18,7 @@ android {
 dependencies {
     // Modules
     implementation(projects.core.common)
+    implementation(projects.core.datastore)
     implementation(projects.core.ui)
     api(projects.feature.recipedetails.api)
 
@@ -38,4 +39,10 @@ dependencies {
 
     // network
     implementation(libs.retrofit)
+
+    // Tests
+    implementation(libs.test.junit)
+    implementation(libs.test.mockk)
+    implementation(libs.test.coroutines.test)
+    implementation(libs.test.turbine)
 }

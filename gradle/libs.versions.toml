@@ -1,8 +1,11 @@
 [versions]
 #Global
 compileSdk = "35"
+datastore = "1.1.7"
 minSdk = "26"
+protobufJavalite = "3.25.1"
 targetSdk = "33"
+truth = "1.4.2"
 versionCode = "1"
 versionName = "1.0.0"
 
@@ -37,8 +40,11 @@ junit = "4.13.2"
 mockk = "1.13.4"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+coroutines = "1.10.1"
+turbine = "1.2.0"
 
 [libraries]
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -61,6 +67,7 @@ androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "life
 # Libs
 kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 okHttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp" }
+protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protobufJavalite" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 loggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging_interceptor" }
@@ -73,8 +80,11 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose"
 # Tests
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+test-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

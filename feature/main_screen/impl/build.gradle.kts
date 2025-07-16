@@ -15,7 +15,7 @@ android {
 dependencies {
     // Modules
     implementation(projects.core.ui)
-    implementation(projects.feature.recipeList.recipeListImpl)
+    implementation(projects.feature.recipelist.impl)
     implementation(projects.feature.collections.impl)
     implementation(projects.feature.calendar.impl)
     implementation(projects.feature.groceries.impl)

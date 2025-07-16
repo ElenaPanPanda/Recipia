@@ -1,24 +1,35 @@
 package com.examplerecipia.feature.groceries.impl.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.recipia.core.ui.components.ErrorScreen
+import com.example.recipia.core.ui.components.LoadingScreen
+import com.examplerecipia.feature.groceries.impl.ui.components.GroceriesContent
 
 @Composable
-fun GroceriesScreen() {
-    Scaffold { contentPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text(
-                text = "Here will be your shopping list",
-                modifier = Modifier
-                    .padding(contentPadding)
-                    .align(Alignment.Center)
-            )
+fun GroceriesScreen(
+    viewModel: GroceriesViewModel = hiltViewModel()
+) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val event: (GroceriesEvent) -> Unit = viewModel::obtainEvent
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEffect.collect { effect ->
+            when (effect) {
+                is GroceriesEffect.ShowSnackBar -> {}
+            }
         }
+    }
+
+    when (state) {
+        is GroceriesState.Loading -> LoadingScreen()
+        is GroceriesState.Error -> ErrorScreen((state as GroceriesState.Error).message)
+        is GroceriesState.Success -> GroceriesContent(
+            state = state as GroceriesState.Success,
+            event = event,
+        )
     }
 }

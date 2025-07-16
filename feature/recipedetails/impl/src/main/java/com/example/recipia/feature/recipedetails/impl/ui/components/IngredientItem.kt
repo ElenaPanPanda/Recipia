@@ -1,17 +1,18 @@
 package com.example.recipia.feature.recipedetails.impl.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,26 +47,32 @@ fun IngredientItem(
                 style = AppTypography().poppinsNormal.copy(fontSize = 14.4.sp),
                 color = DarkBlue
             )
-            Text(
-                text = ingredient.amount,
-                style = AppTypography().poppinsMedium.copy(fontSize = 13.6.sp),
-                color = DarkTeal
-            )
+            if (ingredient.amount.isNotEmpty())
+                Text(
+                    text = ingredient.amount,
+                    style = AppTypography().poppinsMedium.copy(fontSize = 13.6.sp),
+                    color = DarkTeal
+                )
         }
-        IconButton(
-            onClick = onAddClick,
-            modifier = Modifier.size(32.dp),
-            colors = IconButtonDefaults.iconButtonColors(contentColor = MediumTeal)
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(
-                    id = if (ingredient.addedToList) Icons.check
-                    else Icons.shoppingCartAdd
-                ),
-                contentDescription = "Add ${ingredient.ingredient}",
-                modifier = Modifier.size(20.dp)
-            )
-        }
+        Icon(
+            imageVector = ImageVector.vectorResource(
+                id = if (ingredient.addedToList) Icons.check
+                else Icons.shoppingCartAdd
+            ),
+            contentDescription = "Add ${ingredient.ingredient}",
+            tint = MediumTeal,
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape(8.dp))
+                .then(
+                    if (!ingredient.addedToList) {
+                        Modifier.clickable(onClick = onAddClick)
+                    } else {
+                        Modifier
+                    }
+                )
+                .padding(6.dp)
+                .size(20.dp)
+        )
     }
 }
 
@@ -83,7 +90,7 @@ private fun IngredientItemPreview() {
         )
         IngredientItem(
             ingredient = DetailedIngredient(
-                amount = "1 medium",
+                amount = "",
                 ingredient = "Butternut Pumpkin, peeled & cubed",
                 addedToList = true
             ),

@@ -5,5 +5,8 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecip
 sealed interface RecipeDetailsState {
     data object Loading : RecipeDetailsState
     data class Error(val message: String) : RecipeDetailsState
-    data class Success(val recipe: DetailedRecipe) : RecipeDetailsState
+    data class Success(
+        val recipe: DetailedRecipe,
+        val isAllIngredientsChecked: Boolean = false,
+    ) : RecipeDetailsState
 }

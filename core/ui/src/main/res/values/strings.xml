@@ -15,7 +15,10 @@
     <string name="core_ui_categories">Categories</string>
     <string name="core_ui_ingredients">Ingredients</string>
     <string name="core_ui_add_all">Add All</string>
+    <string name="core_ui_add">Add</string>
+    <string name="core_ui_add_item_to_list">Add item to list…</string>
     <string name="core_ui_instructions">Instructions</string>
+    <string name="core_ui_shopping_list">Shopping List</string>
 
     <string name="core_ui_want_to_exit">Do you want to exit?</string>
 
