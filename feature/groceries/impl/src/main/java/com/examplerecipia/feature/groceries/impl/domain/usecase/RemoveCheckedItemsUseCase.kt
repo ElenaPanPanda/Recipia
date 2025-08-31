@@ -1,8 +1,7 @@
 package com.examplerecipia.feature.groceries.impl.domain.usecase
 
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
-import kotlinx.coroutines.flow.Flow
 
-interface GetShoppingListUseCase {
-    suspend fun get(): Flow<List<ShoppingListItem>>
+interface RemoveCheckedItemsUseCase {
+    suspend fun remove(shoppingList: List<ShoppingListItem>)
 }

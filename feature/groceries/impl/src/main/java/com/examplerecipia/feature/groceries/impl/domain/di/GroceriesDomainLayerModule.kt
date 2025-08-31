@@ -7,8 +7,12 @@ import com.examplerecipia.feature.groceries.impl.domain.mapper.ShoppingListItemM
 import com.examplerecipia.feature.groceries.impl.domain.mapper.ShoppingListItemMapperImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCaseImpl
+import com.examplerecipia.feature.groceries.impl.domain.usecase.ClearShoppingListUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.ClearShoppingListUseCaseImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCaseImpl
+import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveCheckedItemsUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveCheckedItemsUseCaseImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCaseImpl
 import com.examplerecipia.feature.groceries.impl.domain.usecase.UpdateListBlockUseCase
@@ -50,4 +54,14 @@ internal class GroceriesDomainLayerModule {
     @Provides
     fun removeListBlockUseCase(repository: ShoppingListRepository): RemoveListBlockUseCase =
         RemoveListBlockUseCaseImpl(repository)
+
+    @Provides
+    fun removeCheckedItemsUseCase(
+        repository: ShoppingListRepository,
+        mapper: ShoppingListItemMapper
+    ): RemoveCheckedItemsUseCase = RemoveCheckedItemsUseCaseImpl(repository, mapper)
+
+    @Provides
+    fun clearShoppingListUseCase(repository: ShoppingListRepository): ClearShoppingListUseCase =
+        ClearShoppingListUseCaseImpl(repository)
 }

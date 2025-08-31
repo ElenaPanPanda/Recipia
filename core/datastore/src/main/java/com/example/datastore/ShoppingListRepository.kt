@@ -39,6 +39,14 @@ class ShoppingListRepository @Inject constructor(
             builder.build()
         }
     }
+
+    suspend fun clear() {
+        context.shoppingListDataStore.updateData { current ->
+            val builder = current.toBuilder()
+            builder.clearItems()
+            builder.build()
+        }
+    }
 }
 
 val Context.shoppingListDataStore: DataStore<ShoppingList> by dataStore(

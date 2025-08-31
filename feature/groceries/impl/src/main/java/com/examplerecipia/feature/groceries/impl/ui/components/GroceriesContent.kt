@@ -111,8 +111,8 @@ fun GroceriesContent(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 ClearButtons(
-                    onClearCheckedClicked = { },
-                    onClearAllClicked = { },
+                    onClearCheckedClicked = { event(GroceriesEvent.OnClearCheckedItems) },
+                    onClearAllClicked = { event(GroceriesEvent.OnClearAll) },
                 )
             } else {
                 Text(
