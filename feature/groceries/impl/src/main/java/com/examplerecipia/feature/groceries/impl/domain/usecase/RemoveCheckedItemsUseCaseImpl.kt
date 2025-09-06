@@ -13,11 +13,17 @@ internal class RemoveCheckedItemsUseCaseImpl @Inject constructor(
         shoppingList.forEachIndexed { index, shoppingListItem ->
             val remainingIngredients =
                 shoppingListItem.ingredientsList.filter { ingredient -> !ingredient.isCrossedOut }
-            val updated = shoppingListItem.copy(ingredientsList = remainingIngredients)
-            shoppingListRepository.updateItem(
-                index = index,
-                item = mapper.convertToDatastoreModel(updated)
-            )
+
+            if (remainingIngredients.isEmpty()) {
+                shoppingListRepository.removeItem(index)
+            } else {
+                val updated = shoppingListItem.copy(ingredientsList = remainingIngredients)
+
+                shoppingListRepository.updateItem(
+                    index = index,
+                    item = mapper.convertToDatastoreModel(updated)
+                )
+            }
         }
     }
 }

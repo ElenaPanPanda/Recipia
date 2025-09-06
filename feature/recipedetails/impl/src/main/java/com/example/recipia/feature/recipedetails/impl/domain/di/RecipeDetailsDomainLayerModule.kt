@@ -51,8 +51,9 @@ internal class RecipeDetailsDomainLayerModule {
     fun provideAddAllIngredientsToShoppingListUseCase(
         shoppingListRepository: ShoppingListRepository,
         mapper: DetailedIngredientMapper,
+        sectionMapper: DetailedIngredientSectionMapper,
     ): AddAllIngredientsToShoppingListUseCase =
-        AddAllIngredientsToShoppingListUseCaseImpl(shoppingListRepository, mapper)
+        AddAllIngredientsToShoppingListUseCaseImpl(shoppingListRepository, mapper, sectionMapper)
 
     @Provides
     fun provideUpdateShoppingListUseCase(
