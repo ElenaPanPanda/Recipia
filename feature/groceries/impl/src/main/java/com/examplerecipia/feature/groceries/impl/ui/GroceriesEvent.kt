@@ -11,4 +11,5 @@ sealed interface GroceriesEvent {
 
     data object OnClearCheckedItems : GroceriesEvent
     data object OnClearAll : GroceriesEvent
+    data object OnShareList : GroceriesEvent
 }

@@ -3,8 +3,10 @@ package com.examplerecipia.feature.groceries.impl.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.ui.R as CoreR
 import com.examplerecipia.feature.groceries.impl.R
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
+import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.ClearShoppingListUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCase
@@ -50,6 +52,7 @@ class GroceriesViewModel @Inject constructor(
 
             is GroceriesEvent.OnClearCheckedItems -> removeCheckedItems()
             is GroceriesEvent.OnClearAll -> clearList()
+            is GroceriesEvent.OnShareList -> shareShoppingList()
         }
     }
 
@@ -145,5 +148,43 @@ class GroceriesViewModel @Inject constructor(
                 clearShoppingListUseCase.clear()
             }
         }
+    }
+
+    private fun shareShoppingList() {
+        val currentState = uiState.value
+        if (currentState !is GroceriesState.Success || currentState.shoppingList.isEmpty()) {
+            viewModelScope.launch {
+                _uiEffect.emit(
+                    GroceriesEffect.ShowSnackBar(
+                        stringProvider.getString(R.string.groceries_empty_list_snackbar)
+                    )
+                )
+            }
+            return
+        }
+
+        val formattedText = formatShoppingListForSharing(currentState.shoppingList)
+
+        viewModelScope.launch {
+            _uiEffect.emit(GroceriesEffect.ShareList(formattedText))
+        }
+    }
+
+    private fun formatShoppingListForSharing(shoppingList: List<ShoppingListItem>): String {
+        val builder = StringBuilder()
+        val title = stringProvider.getString(CoreR.string.core_ui_shopping_list)
+        builder.append("$title\n\n")
+
+        shoppingList.reversed().forEach { listItem ->
+            builder.append("• ${listItem.title}\n")
+            listItem.ingredientsList.forEach { ingredient ->
+                val checkbox = if (ingredient.isCrossedOut) "\u2705" else "\u2610"
+                val amount = if (ingredient.amount.isNotBlank()) "${ingredient.amount} " else ""
+                builder.append("  $checkbox $amount${ingredient.name}\n")
+            }
+            builder.append("\n")
+        }
+
+        return builder.toString().trim()
     }
 }
