@@ -14,8 +14,8 @@ import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedI
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCaseImpl
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingList
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingListImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -58,5 +58,5 @@ internal class RecipeDetailsDomainLayerModule {
     fun provideUpdateShoppingListUseCase(
         shoppingListRepository: ShoppingListRepository,
         mapper: DetailedIngredientSectionMapper,
-    ): UpdateShoppingListUseCase = UpdateShoppingListUseCaseImpl(shoppingListRepository, mapper)
+    ): AddIngredientToShoppingList = AddIngredientToShoppingListImpl(shoppingListRepository, mapper)
 }

@@ -11,7 +11,7 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngre
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +30,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private val getRecipeUseCase: GetRecipeUseCase,
     private val checkAddedIngredientsInShoppingListUseCase: CheckAddedIngredientsInShoppingListUseCase,
     private val addAllIngredientsToShoppingListUseCase: AddAllIngredientsToShoppingListUseCase,
-    private val updateShoppingListUseCase: UpdateShoppingListUseCase,
+    private val addIngredientToShoppingList: AddIngredientToShoppingList,
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle["recipeId"]
         ?: throw IllegalStateException("recipeId is null")
@@ -86,19 +86,19 @@ class RecipeDetailsViewModel @Inject constructor(
 
         checkAddedIngredientsInShoppingListUseCase
             .getAddedIngredients(currentState.recipe.title)
-            .collect { checkedIngredients ->
+            .collect { addedIngredientsToShoppingList ->
                 val allIngredientsAmount = currentState.recipe.ingredients
                     .flatMap { it.ingredientsList }
                     .size
 
-                val addedNames = checkedIngredients.map { it.ingredient }.toSet()
-
                 val updatedIngredients = currentState.recipe.ingredients.map { section ->
                     section.copy(
                         ingredientsList = section.ingredientsList.map { ingredient ->
-                            ingredient.copy(
-                                addedToList = addedNames.contains(ingredient.ingredient)
-                            )
+                            val isIngredientAdded =
+                                addedIngredientsToShoppingList.any { addedIngredient ->
+                                    addedIngredient.ingredient == ingredient.ingredient && addedIngredient.amount == ingredient.amount
+                                }
+                            ingredient.copy(addedToList = isIngredientAdded)
                         }
                     )
                 }
@@ -108,7 +108,7 @@ class RecipeDetailsViewModel @Inject constructor(
                 _uiState.update {
                     currentState.copy(
                         recipe = updatedRecipe,
-                        isAllIngredientsChecked = checkedIngredients.size == allIngredientsAmount
+                        isAllIngredientsChecked = addedIngredientsToShoppingList.size == allIngredientsAmount
                     )
                 }
             }
@@ -140,6 +140,6 @@ class RecipeDetailsViewModel @Inject constructor(
         recipeName: String,
         ingredient: DetailedIngredient
     ) = viewModelScope.launch {
-        // TODO: add or update if recipe is already in shopping list
+        addIngredientToShoppingList.add(recipeName, ingredient)
     }
 }

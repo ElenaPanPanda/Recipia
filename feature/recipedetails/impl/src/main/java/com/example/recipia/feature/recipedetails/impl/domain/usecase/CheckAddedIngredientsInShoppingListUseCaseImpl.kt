@@ -11,6 +11,10 @@ internal class CheckAddedIngredientsInShoppingListUseCaseImpl @Inject constructo
     private val shoppingListRepository: ShoppingListRepository,
     private val mapper: DetailedIngredientMapper
 ) : CheckAddedIngredientsInShoppingListUseCase {
+
+    /**
+    Returns already added ingredients for the recipe
+     */
     override suspend fun getAddedIngredients(recipeName: String): Flow<List<DetailedIngredient>> {
         return shoppingListRepository.shoppingListFlow.map { list ->
             list
