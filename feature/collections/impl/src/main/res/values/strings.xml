@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="collections_screen_title">Collections</string>
+    <string name="collections_create_new">Create New Collection</string>
+    <string name="collections_amount_of_recipes">%s recipes</string>
+    <string name="collections_navigate_to_collection">Navigate to %s</string>
+</resources>

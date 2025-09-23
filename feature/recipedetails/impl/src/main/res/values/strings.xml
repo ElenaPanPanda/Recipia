@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recipe_details_save_to_collection">Save to collection</string>
+    <string name="recipe_details_create_collection_hint">Create a new collection</string>
+</resources>

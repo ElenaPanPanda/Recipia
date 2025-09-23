@@ -6,12 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.example.recipia.core.ui.R
+import com.example.recipia.feature.recipedetails.impl.domain.model.CollectionWithSelectedOption
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingList
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +25,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +36,9 @@ class RecipeDetailsViewModel @Inject constructor(
     private val checkAddedIngredientsInShoppingListUseCase: CheckAddedIngredientsInShoppingListUseCase,
     private val addAllIngredientsToShoppingListUseCase: AddAllIngredientsToShoppingListUseCase,
     private val addIngredientToShoppingList: AddIngredientToShoppingList,
+    private val getCollectionsUseCase: GetCollectionsUseCase,
+    private val createCollectionUseCase: CreateCollectionUseCase,
+    private val addRecipeToCollectionUseCase: AddRecipeToCollectionUseCase,
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle["recipeId"]
         ?: throw IllegalStateException("recipeId is null")
@@ -56,6 +64,13 @@ class RecipeDetailsViewModel @Inject constructor(
             is RecipeDetailsEvent.OnAddIngredientClicked -> addIngredientToShoppingList(
                 event.recipeName,
                 event.ingredient
+            )
+
+            is RecipeDetailsEvent.OnNewCollectionValueChange -> changeNewCollectionValue(event.value)
+            is RecipeDetailsEvent.OnSaveToCollectionClicked -> saveRecipeToCollection()
+            is RecipeDetailsEvent.OnCollectionSelectedChange -> changeCollectionSelection(
+                event.collectionId,
+                event.isSelected
             )
         }
     }
@@ -117,7 +132,91 @@ class RecipeDetailsViewModel @Inject constructor(
 
     private fun onEditClick(recipeId: String) {}
 
-    private fun onSaveClick(recipeId: String) {}
+    private fun onSaveClick(recipeId: String) {
+        _uiState.update { (it as RecipeDetailsState.Success).copy(recipeIdToSave = recipeId) }
+
+        getCollections()
+
+        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return
+        Timber.tag("RecipeDetailsViewModel").d("onSaveClick: currentState = $currentState")
+        if (currentState.collections != null) {
+            openCollectionsBottomSheet()
+        }
+    }
+
+    private fun getCollections() = viewModelScope.launch {
+        try {
+            val collections = getCollectionsUseCase.getCollections()
+
+            _uiState.update { (it as RecipeDetailsState.Success).copy(collections = collections) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            _uiState.update {
+                RecipeDetailsState.Error(
+                    message = stringProvider.getString(R.string.core_ui_collections_not_found_error)
+                )
+            }
+        }
+    }
+
+    private fun openCollectionsBottomSheet() = viewModelScope.launch {
+        _uiEffect.emit(RecipeDetailsEffect.OpenCollectionsBottomSheet)
+    }
+
+    private fun changeNewCollectionValue(value: String) {
+        _uiState.update {
+            (it as RecipeDetailsState.Success).copy(
+                newCollectionValue = value,
+            )
+        }
+        updateStateOfSaveToCollectionButton()
+    }
+
+    private fun updateStateOfSaveToCollectionButton() {
+        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return
+
+        _uiState.update {
+            currentState.copy(
+                saveRecipeInCollectionButtonIsEnabled = currentState.collections?.any { it.isSelected } == true ||
+                        currentState.newCollectionValue.isNotEmpty()
+            )
+        }
+    }
+
+    private fun saveRecipeToCollection() = viewModelScope.launch {
+        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return@launch
+        val recipeId = currentState.recipeIdToSave ?: return@launch
+
+        val createNewCollection = currentState.newCollectionValue.isNotEmpty()
+        if (createNewCollection) {
+            createCollectionUseCase.create(
+                collectionName = currentState.newCollectionValue,
+                recipeId = recipeId
+            )
+        }
+
+        val selectedCollections = currentState.collections?.filter { it.isSelected } ?: emptyList()
+        selectedCollections.forEach {
+            addRecipeToCollectionUseCase.add(it.collectionId, recipeId)
+        }
+    }
+
+    private fun changeCollectionSelection(collectionId: String, isSelected: Boolean) {
+        _uiState.update {
+            (it as RecipeDetailsState.Success).copy(
+                collections = it.collections?.map { collection ->
+                    if (collection.collectionId == collectionId) {
+                        collection.copy(isSelected = isSelected)
+                    } else {
+                        Timber.tag("While changing collection selection")
+                            .e("Collection with id $collectionId was not found")
+                        collection
+                    }
+                },
+            )
+        }
+        updateStateOfSaveToCollectionButton()
+    }
 
     private fun onCalendarClick(recipeId: String) {}
 
@@ -141,5 +240,25 @@ class RecipeDetailsViewModel @Inject constructor(
         ingredient: DetailedIngredient
     ) = viewModelScope.launch {
         addIngredientToShoppingList.add(recipeName, ingredient)
+    }
+
+    companion object {
+        val COLLECTIONS = listOf(
+            CollectionWithSelectedOption(
+                collectionId = "1",
+                collectionName = "Favorites",
+                recipes = emptyList()
+            ),
+            CollectionWithSelectedOption(
+                collectionId = "2",
+                collectionName = "Breakfast",
+                recipes = emptyList()
+            ),
+            CollectionWithSelectedOption(
+                collectionId = "3",
+                collectionName = "Lunch",
+                recipes = emptyList()
+            ),
+        )
     }
 }

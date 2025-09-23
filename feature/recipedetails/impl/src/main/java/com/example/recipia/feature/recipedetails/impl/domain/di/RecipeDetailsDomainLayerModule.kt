@@ -2,6 +2,8 @@ package com.example.recipia.feature.recipedetails.impl.domain.di
 
 import com.example.datastore.ShoppingListRepository
 import com.example.recipia.feature.recipedetails.impl.data.repo.RecipeDetailsRepository
+import com.example.recipia.feature.recipedetails.impl.domain.mapper.CollectionToCollectionWithSelectedOptionMapper
+import com.example.recipia.feature.recipedetails.impl.domain.mapper.CollectionToCollectionWithSelectedOptionMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.DetailedIngredientMapper
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.DetailedIngredientMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.DetailedIngredientSectionMapper
@@ -16,6 +18,12 @@ import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUs
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingList
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingListImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,6 +49,10 @@ internal class RecipeDetailsDomainLayerModule {
         DetailedIngredientSectionMapperImpl(detailedIngredientMapper)
 
     @Provides
+    fun provideCollectionToCollectionWithSelectedOptionMapper(): CollectionToCollectionWithSelectedOptionMapper =
+        CollectionToCollectionWithSelectedOptionMapperImpl()
+
+    @Provides
     fun provideCheckAddedIngredientsInShoppingListUseCase(
         shoppingListRepository: ShoppingListRepository,
         mapper: DetailedIngredientMapper,
@@ -60,4 +72,18 @@ internal class RecipeDetailsDomainLayerModule {
         shoppingListRepository: ShoppingListRepository,
         mapper: DetailedIngredientSectionMapper,
     ): AddIngredientToShoppingList = AddIngredientToShoppingListImpl(shoppingListRepository, mapper)
+
+    @Provides
+    fun provideGetCollectionsUseCase(
+        mapper: CollectionToCollectionWithSelectedOptionMapper,
+        repository: RecipeDetailsRepository,
+    ): GetCollectionsUseCase = GetCollectionsUseCaseImpl(mapper, repository)
+
+    @Provides
+    fun provideCreateCollectionUseCase(repository: RecipeDetailsRepository): CreateCollectionUseCase =
+        CreateCollectionUseCaseImpl(repository)
+
+    @Provides
+    fun provideAddRecipeToCollectionUseCase(repository: RecipeDetailsRepository): AddRecipeToCollectionUseCase =
+        AddRecipeToCollectionUseCaseImpl(repository)
 }
