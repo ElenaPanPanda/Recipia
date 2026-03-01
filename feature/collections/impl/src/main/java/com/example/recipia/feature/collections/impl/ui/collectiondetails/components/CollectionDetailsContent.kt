@@ -27,7 +27,7 @@ fun CollectionDetailsContent(
         ) {
             item { Spacer(modifier = Modifier.height(12.dp)) }
             items(collection.recipes, key = { recipe -> recipe.id }) {
-                RecipeItem
+                //RecipeItem()
             }
         }
     }
