@@ -9,9 +9,13 @@ import com.example.recipia.core.ui.R
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +25,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +34,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private val getRecipeUseCase: GetRecipeUseCase,
     private val checkAddedIngredientsInShoppingListUseCase: CheckAddedIngredientsInShoppingListUseCase,
     private val addAllIngredientsToShoppingListUseCase: AddAllIngredientsToShoppingListUseCase,
-    private val updateShoppingListUseCase: UpdateShoppingListUseCase,
+    private val collectionManager: RecipeDetailsCollectionsManager,
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle["recipeId"]
         ?: throw IllegalStateException("recipeId is null")
@@ -42,10 +45,21 @@ class RecipeDetailsViewModel @Inject constructor(
     private val _uiEffect = MutableSharedFlow<RecipeDetailsEffect>()
     val uiEffect: SharedFlow<RecipeDetailsEffect> = _uiEffect.asSharedFlow()
 
+    private fun updateSuccessState(updater: RecipeDetailsState.Success.() -> RecipeDetailsState.Success) {
+        _uiState.update { if (it is RecipeDetailsState.Success) it.updater() else it }
+    }
+
     fun obtainEvent(event: RecipeDetailsEvent) {
         when (event) {
             is RecipeDetailsEvent.OnEditClicked -> onEditClick(event.recipeId)
-            is RecipeDetailsEvent.OnSaveClicked -> onSaveClick(event.recipeId)
+            is RecipeDetailsEvent.OnSaveIconClicked -> {
+                collectionManager.getCollectionsForBottomSheets(
+                    scope = viewModelScope,
+                    updateState = ::updateSuccessState,
+                    emitEffect = { effect -> viewModelScope.launch { _uiEffect.emit(effect) } }
+                )
+            }
+
             is RecipeDetailsEvent.OnCalendarClicked -> onCalendarClick(event.recipeId)
             is RecipeDetailsEvent.OnShareClicked -> onShareClick(event.recipeId)
             is RecipeDetailsEvent.OnDeleteClicked -> onDeleteClick(event.recipeId)
@@ -58,6 +72,26 @@ class RecipeDetailsViewModel @Inject constructor(
                 event.recipeName,
                 event.ingredient
             )
+
+            is RecipeDetailsEvent.OnCollectionSelectedChange -> {
+                collectionManager.selectCollection(event.collectionId, ::updateSuccessState)
+            }
+
+            is RecipeDetailsEvent.OnNewCollectionValueChange -> {
+                collectionManager.changeNewCollectionValue(event.value, ::updateSuccessState)
+            }
+
+            is RecipeDetailsEvent.OnSaveToCollectionClicked -> {
+                val currentState = _uiState.value as? RecipeDetailsState.Success
+                if (currentState != null) {
+                    collectionManager.saveToCollection(
+                        recipeId = recipeId,
+                        currentState = currentState,
+                        emitEffect = { effect -> viewModelScope.launch { _uiEffect.emit(effect) } },
+                        scope = viewModelScope,
+                    )
+                }
+            }
         }
     }
 
@@ -115,94 +149,7 @@ class RecipeDetailsViewModel @Inject constructor(
             }
     }
 
-
     private fun onEditClick(recipeId: String) {}
-
-    private fun onSaveClick(recipeId: String) {
-        _uiState.update { (it as RecipeDetailsState.Success).copy(recipeIdToSave = recipeId) }
-
-        getCollections()
-
-        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return
-        Timber.tag("RecipeDetailsViewModel").d("onSaveClick: currentState = $currentState")
-        if (currentState.collections != null) {
-            openCollectionsBottomSheet()
-        }
-    }
-
-    private fun getCollections() = viewModelScope.launch {
-        try {
-            val collections = getCollectionsUseCase.getCollections()
-
-            _uiState.update { (it as RecipeDetailsState.Success).copy(collections = collections) }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            _uiState.update {
-                RecipeDetailsState.Error(
-                    message = stringProvider.getString(R.string.core_ui_collections_not_found_error)
-                )
-            }
-        }
-    }
-
-    private fun openCollectionsBottomSheet() = viewModelScope.launch {
-        _uiEffect.emit(RecipeDetailsEffect.OpenCollectionsBottomSheet)
-    }
-
-    private fun changeNewCollectionValue(value: String) {
-        _uiState.update {
-            (it as RecipeDetailsState.Success).copy(
-                newCollectionValue = value,
-            )
-        }
-        updateStateOfSaveToCollectionButton()
-    }
-
-    private fun updateStateOfSaveToCollectionButton() {
-        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return
-
-        _uiState.update {
-            currentState.copy(
-                saveRecipeInCollectionButtonIsEnabled = currentState.collections?.any { it.isSelected } == true ||
-                        currentState.newCollectionValue.isNotEmpty()
-            )
-        }
-    }
-
-    private fun saveRecipeToCollection() = viewModelScope.launch {
-        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return@launch
-        val recipeId = currentState.recipeIdToSave ?: return@launch
-
-        val createNewCollection = currentState.newCollectionValue.isNotEmpty()
-        if (createNewCollection) {
-            createCollectionUseCase.create(
-                collectionName = currentState.newCollectionValue,
-                recipeId = recipeId
-            )
-        }
-
-        val selectedCollections = currentState.collections?.filter { it.isSelected } ?: emptyList()
-        selectedCollections.forEach {
-            addRecipeToCollectionUseCase.add(it.collectionId, recipeId)
-        }
-    }
-
-    private fun changeCollectionSelection(collectionId: String, isSelected: Boolean) {
-        _uiState.update {
-            (it as RecipeDetailsState.Success).copy(
-                collections = it.collections?.map { collection ->
-                    if (collection.collectionId == collectionId) {
-                        collection.copy(isSelected = isSelected)
-                    } else {
-                        Timber.tag("While changing collection selection")
-                            .e("Collection with id $collectionId was not found")
-                        collection
-                    }
-                },
-            )
-        }
-        updateStateOfSaveToCollectionButton()
-    }
 
     private fun onCalendarClick(recipeId: String) {}
 

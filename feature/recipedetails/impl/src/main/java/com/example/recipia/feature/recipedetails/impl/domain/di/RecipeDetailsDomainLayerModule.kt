@@ -2,6 +2,8 @@ package com.example.recipia.feature.recipedetails.impl.domain.di
 
 import com.example.datastore.ShoppingListRepository
 import com.example.recipia.feature.recipedetails.impl.data.repo.RecipeDetailsRepository
+import com.example.recipia.feature.recipedetails.impl.domain.mapper.CollectionToCollectionWithSelectedOptionMapper
+import com.example.recipia.feature.recipedetails.impl.domain.mapper.CollectionToCollectionWithSelectedOptionMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.DetailedIngredientMapper
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.DetailedIngredientMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.DetailedIngredientSectionMapper
@@ -10,8 +12,14 @@ import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDeta
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDetailedMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCase
@@ -59,4 +67,24 @@ internal class RecipeDetailsDomainLayerModule {
         shoppingListRepository: ShoppingListRepository,
         mapper: DetailedIngredientSectionMapper,
     ): UpdateShoppingListUseCase = UpdateShoppingListUseCaseImpl(shoppingListRepository, mapper)
+
+    @Provides
+    fun provideCreateCollectionUseCase(
+        repository: RecipeDetailsRepository
+    ): CreateCollectionUseCase = CreateCollectionUseCaseImpl(repository)
+
+    @Provides
+    fun provideGetCollectionsUseCase(
+        repository: RecipeDetailsRepository,
+        mapper: CollectionToCollectionWithSelectedOptionMapper
+    ): GetCollectionsUseCase = GetCollectionsUseCaseImpl(mapper, repository)
+
+    @Provides
+    fun provideAddRecipeToCollectionUseCase(
+        repository: RecipeDetailsRepository
+    ): AddRecipeToCollectionUseCase = AddRecipeToCollectionUseCaseImpl(repository)
+
+    @Provides
+    fun provideCollectionToCollectionWithSelectedOptionMapper(): CollectionToCollectionWithSelectedOptionMapper =
+        CollectionToCollectionWithSelectedOptionMapperImpl()
 }

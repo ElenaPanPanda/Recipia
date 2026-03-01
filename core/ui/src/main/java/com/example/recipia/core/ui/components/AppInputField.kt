@@ -50,6 +50,7 @@ fun AppInputField(
     minLines: Int = 1,
     isError: Boolean = false,
     supportingText: String? = null,
+    enabled: Boolean = true,
 ) {
     var isFocused by remember { mutableStateOf(false) }
 
@@ -73,8 +74,11 @@ fun AppInputField(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = if (isError) DarkRed else {
-                        if (isFocused) MediumTeal else LightTeal
+                    color = when {
+                        !enabled -> TextMuted
+                        isError -> DarkRed
+                        isFocused -> MediumTeal
+                        else -> LightTeal
                     },
                     shape = RoundedCornerShape(8.dp)
                 )
@@ -89,6 +93,7 @@ fun AppInputField(
             cursorBrush = SolidColor(DarkTeal),
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
+            enabled = enabled,
             singleLine = singleLine,
             minLines = if (singleLine) 1 else minLines,
             decorationBox = { innerTextField ->

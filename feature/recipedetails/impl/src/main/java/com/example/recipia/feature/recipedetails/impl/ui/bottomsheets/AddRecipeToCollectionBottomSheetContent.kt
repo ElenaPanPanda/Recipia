@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,18 +28,27 @@ import com.example.recipia.core.ui.theme.DarkTeal
 import com.example.recipia.core.ui.theme.DeepRed
 import com.example.recipia.core.ui.R as CoreR
 import com.example.recipia.feature.recipedetails.impl.R
-import com.example.recipia.feature.recipedetails.impl.domain.model.CollectionWithSelectedOption
+import com.example.recipia.feature.recipedetails.impl.domain.model.CollectionInRecipeDetails
+import com.example.recipia.feature.recipedetails.impl.ui.SaveToCollectionOption
 
 @Composable
 fun AddRecipeToCollectionBottomSheetContent(
     onDismiss: () -> Unit,
-    collections: List<CollectionWithSelectedOption>,
-    onCollectionSelectedChange: (String, Boolean) -> Unit,
-    newCollectionValue: String,
+    collections: List<CollectionInRecipeDetails>,
+    onCollectionSelectedChange: (String) -> Unit,
     onNewCollectionValueChange: (String) -> Unit,
     saveButtonEnabled: Boolean,
+    saveToCollectionOption: SaveToCollectionOption?,
     onSave: () -> Unit,
 ) {
+    val (checkBoxesEnabled, textFieldEnabled) = remember(saveToCollectionOption) {
+        when (saveToCollectionOption) {
+            is SaveToCollectionOption.Existing -> true to false
+            is SaveToCollectionOption.New -> false to true
+            null -> true to true
+        }
+    }
+
     Column(
         modifier = Modifier
             .padding(horizontal = 24.dp)
@@ -59,12 +69,12 @@ fun AddRecipeToCollectionBottomSheetContent(
             collections.forEachIndexed { index, collection ->
                 CollectionCheckboxRow(
                     collectionName = collection.collectionName,
-                    collectionSize = collection.recipes.size,
-                    isSelected = collection.isSelected,
-                    onCheckedChange = { isChecked ->
+                    collectionSize = collection.recipesAmount,
+                    isSelected = (saveToCollectionOption as? SaveToCollectionOption.Existing)?.id == collection.collectionId,
+                    enabled = checkBoxesEnabled,
+                    onCheckedChange = {
                         onCollectionSelectedChange(
-                            collection.collectionId,
-                            isChecked
+                            collection.collectionId
                         )
                     },
                     modifier = Modifier.padding(vertical = 12.dp)
@@ -76,10 +86,11 @@ fun AddRecipeToCollectionBottomSheetContent(
             }
         }
         AppInputField(
-            value = newCollectionValue,
+            value = (saveToCollectionOption as? SaveToCollectionOption.New)?.name ?: "",
             onValueChange = onNewCollectionValueChange,
             hint = stringResource(R.string.recipe_details_create_collection_hint),
             modifier = Modifier.padding(vertical = 24.dp),
+            enabled = textFieldEnabled
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -105,54 +116,24 @@ fun AddRecipeToCollectionBottomSheetContent(
 @Preview(showBackground = true)
 @Composable
 private fun AddRecipeToCollectionBottomSheetContentPreview() {
-    val mockedRecipe = ShortRecipe(
-        id = "1",
-        title = "Recipe title",
-        imageUrl = "",
-        placeholderColor = PlaceholderColor.entries.random(),
-        rating = 5,
-        rawCategories = emptyList()
-    )
-
     AddRecipeToCollectionBottomSheetContent(
         onDismiss = {},
         collections = listOf(
-            CollectionWithSelectedOption(
-                collectionId = "1",
-                collectionName = "Collection name",
-                isSelected = true,
-                recipes = listOf(
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                    mockedRecipe,
-                )
-            ),
-            CollectionWithSelectedOption(
+            CollectionInRecipeDetails(
+                collectionId = "1", collectionName = "Collection name", recipesAmount = 1
+            ), CollectionInRecipeDetails(
                 collectionId = "2",
                 collectionName = "Collection very long very long very long very long name",
-                isSelected = false,
-                recipes = listOf()
-            ),
-            CollectionWithSelectedOption(
-                collectionId = "3",
-                collectionName = "Collection name",
-                isSelected = false,
-                recipes = listOf()
+                recipesAmount = 0
+            ), CollectionInRecipeDetails(
+                collectionId = "3", collectionName = "Collection name", recipesAmount = 15
             )
         ),
-        onCollectionSelectedChange = { _, _ -> },
-        newCollectionValue = "",
+        onCollectionSelectedChange = { _ -> },
         onNewCollectionValueChange = {},
         saveButtonEnabled = true,
         onSave = {},
+        saveToCollectionOption = SaveToCollectionOption.Existing(id = "1"),
     )
 }
 
@@ -162,10 +143,10 @@ private fun AddRecipeToCollectionBottomSheetContentWithoutCollectionsPreview() {
     AddRecipeToCollectionBottomSheetContent(
         onDismiss = {},
         collections = emptyList(),
-        onCollectionSelectedChange = { _, _ -> },
-        newCollectionValue = "",
+        onCollectionSelectedChange = { _ -> },
         onNewCollectionValueChange = {},
         saveButtonEnabled = false,
         onSave = {},
+        saveToCollectionOption = SaveToCollectionOption.New(name = "New collection"),
     )
 }

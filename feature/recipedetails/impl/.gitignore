@@ -1,1 +1,21 @@
+# Android Studio IDE files
+*.iml
+/.idea/
+
+# Gradle files
+.gradle
 /build
+/local.properties
+
+# Native build files
+/captures
+.externalNativeBuild
+.cxx
+
+# OS generated files
+.DS_Store
+
+# Ignore all JAR files...
+*.jar
+# ...except the Gradle wrapper!
+!gradle/wrapper/gradle-wrapper.jar

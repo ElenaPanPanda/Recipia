@@ -83,7 +83,7 @@ fun RecipeDetailsContent(
             )
             ActionToolbar(
                 onEditClicked = { event(RecipeDetailsEvent.OnEditClicked(state.recipe.id)) },
-                onSaveClicked = { event(RecipeDetailsEvent.OnSaveClicked(state.recipe.id)) },
+                onSaveClicked = { event(RecipeDetailsEvent.OnSaveIconClicked(state.recipe.id)) },
                 onCalendarClicked = { event(RecipeDetailsEvent.OnCalendarClicked(state.recipe.id)) },
                 onShareClicked = { event(RecipeDetailsEvent.OnShareClicked(state.recipe.id)) },
                 onDeleteClicked = { event(RecipeDetailsEvent.OnDeleteClicked(state.recipe.id)) }

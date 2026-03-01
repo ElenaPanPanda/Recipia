@@ -19,6 +19,7 @@ fun CollectionCheckboxRow(
     collectionName: String,
     collectionSize: Int,
     isSelected: Boolean,
+    enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -29,6 +30,7 @@ fun CollectionCheckboxRow(
         AppCheckbox(
             checked = isSelected,
             onCheckedChange = onCheckedChange,
+            enabled = enabled
         )
         Text(
             text = collectionName,

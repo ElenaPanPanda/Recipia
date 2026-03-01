@@ -5,7 +5,7 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngre
 
 sealed interface RecipeDetailsEvent {
     data class OnEditClicked(val recipeId: String) : RecipeDetailsEvent
-    data class OnSaveClicked(val recipeId: String) : RecipeDetailsEvent
+    data class OnSaveIconClicked(val recipeId: String) : RecipeDetailsEvent
     data class OnCalendarClicked(val recipeId: String) : RecipeDetailsEvent
     data class OnShareClicked(val recipeId: String) : RecipeDetailsEvent
     data class OnDeleteClicked(val recipeId: String) : RecipeDetailsEvent
@@ -13,8 +13,13 @@ sealed interface RecipeDetailsEvent {
         val recipeName: String,
         val ingredients: List<DetailedIngredientSection>
     ) : RecipeDetailsEvent
+
     data class OnAddIngredientClicked(
         val recipeName: String,
         val ingredient: DetailedIngredient
     ) : RecipeDetailsEvent
+
+    data class OnCollectionSelectedChange(val collectionId: String) : RecipeDetailsEvent
+    data class OnNewCollectionValueChange(val value: String) : RecipeDetailsEvent
+    data object OnSaveToCollectionClicked : RecipeDetailsEvent
 }

@@ -11,6 +11,11 @@ import javax.inject.Inject
 class ShoppingListRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
+    private val Context.shoppingListDataStore: DataStore<ShoppingList> by dataStore(
+        fileName = "shopping_list.pb",
+        serializer = ShoppingListSerializer
+    )
+
     val shoppingListFlow: Flow<List<ShoppingListItemDatastoreModel>> =
         context.shoppingListDataStore.data.map { proto ->
             proto.itemsList.map { it.toDatastoreModel() }
@@ -39,9 +44,12 @@ class ShoppingListRepository @Inject constructor(
             builder.build()
         }
     }
-}
 
-val Context.shoppingListDataStore: DataStore<ShoppingList> by dataStore(
-    fileName = "shopping_list.pb",
-    serializer = ShoppingListSerializer
-)
+    suspend fun clear() {
+        context.shoppingListDataStore.updateData { current ->
+            current.toBuilder()
+                .clearItems()
+                .build()
+        }
+    }
+}

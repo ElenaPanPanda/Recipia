@@ -55,27 +55,26 @@ fun RecipeDetailsScreen(
                 AddRecipeToCollectionBottomSheetContent(
                     onDismiss = { isBottomSheetVisible = false },
                     collections = collections,
-                    onCollectionSelectedChange = { collectionId, isSelected ->
+                    onCollectionSelectedChange = { collectionId ->
                         event(
                             RecipeDetailsEvent.OnCollectionSelectedChange(
-                                collectionId,
-                                isSelected
+                                collectionId
                             )
                         )
                     },
-                    newCollectionValue = currentState.newCollectionValue,
-                    onNewCollectionValueChange = { value ->
+                    onNewCollectionValueChange = { newCollectionValue: String ->
                         event(
                             RecipeDetailsEvent.OnNewCollectionValueChange(
-                                value
+                                newCollectionValue
                             )
                         )
                     },
                     saveButtonEnabled = currentState.saveRecipeInCollectionButtonIsEnabled,
+                    saveToCollectionOption = currentState.saveToCollectionOption,
                     onSave = {
                         isBottomSheetVisible = false
                         event(RecipeDetailsEvent.OnSaveToCollectionClicked)
-                    }
+                    },
                 )
             }
         )
