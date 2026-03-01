@@ -17,4 +17,6 @@ interface RecipeDetailsRepository {
         collectionId: String,
         recipeId: String
     ): AddRecipeToCollectionResponse
+
+    suspend fun deleteRecipe(id: String)
 }

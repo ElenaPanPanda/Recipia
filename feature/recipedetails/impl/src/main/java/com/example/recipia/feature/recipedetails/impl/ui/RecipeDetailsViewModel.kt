@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.example.recipia.core.ui.R
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsGroceriesManager
@@ -24,6 +25,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private val stringProvider: StringResProvider,
     savedStateHandle: SavedStateHandle,
     private val getRecipeUseCase: GetRecipeUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
     private val groceriesManager: RecipeDetailsGroceriesManager,
     private val collectionManager: RecipeDetailsCollectionsManager,
 ) : ViewModel() {
@@ -121,5 +123,19 @@ class RecipeDetailsViewModel @Inject constructor(
 
     private fun onShareClick(recipeId: String) {}
 
-    private fun onDeleteClick(recipeId: String) {}
+    private fun onDeleteClick(recipeId: String) {
+        viewModelScope.launch {
+            try {
+                deleteRecipeUseCase.delete(recipeId)
+                _uiEffect.emit(RecipeDetailsEffect.NavigateBack)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _uiState.update {
+                    RecipeDetailsState.Error(
+                        message = stringProvider.getString(R.string.core_ui_common_error)
+                    )
+                }
+            }
+        }
+    }
 }

@@ -17,7 +17,7 @@ fun NavigationHost() {
         startDestination = MainScreenRoutingContract.MainScreen
     ) {
         mainScreen(navController)
-        recipeDetailsScreen()
+        recipeDetailsScreen(onNavigateBack = { navController.popBackStack() })
         addRecipeScreen(navController)
     }
 }

@@ -34,4 +34,9 @@ internal class RecipeDetailsRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             api.addRecipeToCollection(collectionId, recipeId)
         }
+
+    override suspend fun deleteRecipe(id: String) =
+        withContext(Dispatchers.IO) {
+            api.deleteRecipe(id)
+        }
 }

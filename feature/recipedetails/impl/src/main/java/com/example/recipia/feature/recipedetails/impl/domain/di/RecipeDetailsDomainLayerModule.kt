@@ -20,6 +20,8 @@ import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedI
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
@@ -92,6 +94,11 @@ internal class RecipeDetailsDomainLayerModule {
     fun provideAddRecipeToCollectionUseCase(
         repository: RecipeDetailsRepository
     ): AddRecipeToCollectionUseCase = AddRecipeToCollectionUseCaseImpl(repository)
+
+    @Provides
+    fun provideDeleteRecipeUseCase(
+        repository: RecipeDetailsRepository
+    ): DeleteRecipeUseCase = DeleteRecipeUseCaseImpl(repository)
 
     @Provides
     fun provideCollectionToCollectionWithSelectedOptionMapper(): CollectionToCollectionWithSelectedOptionMapper =
