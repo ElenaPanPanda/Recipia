@@ -9,9 +9,5 @@ sealed interface RecipeDetailsState {
     data class Success(
         val recipe: DetailedRecipe,
         val isAllIngredientsChecked: Boolean = false,
-        val collections: List<CollectionWithSelectedOption>? = null,
-        val newCollectionValue: String = "",
-        val recipeIdToSave: String? = null,
-        val saveRecipeInCollectionButtonIsEnabled: Boolean = false,
     ) : RecipeDetailsState
 }

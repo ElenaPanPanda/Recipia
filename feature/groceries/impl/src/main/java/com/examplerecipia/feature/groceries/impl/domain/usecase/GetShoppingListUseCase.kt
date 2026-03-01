@@ -4,5 +4,5 @@ import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetShoppingListUseCase {
-    suspend fun get(): Flow<List<ShoppingListItem>>
+    suspend fun getShoppingList(): Flow<List<ShoppingListItem>>
 }

@@ -12,20 +12,8 @@ import javax.inject.Inject
 internal class RecipeDetailsRepositoryImpl @Inject constructor(
     private val api: RecipeDetailsNetworkApi
 ) : RecipeDetailsRepository {
-    override suspend fun getRecipe(id: String) = withContext(Dispatchers.IO) {
-        api.getRecipe(id)
-    }
-
-    override suspend fun getCollections(): GetCollectionsResponse = withContext(Dispatchers.IO) {
-        api.getCollections()
-    }
-
-    override suspend fun createCollection(body: CreateCollectionRequest): CreateCollectionResponse =
-        withContext(Dispatchers.IO) { api.createCollection(body) }
-
-    override suspend fun addRecipeToCollection(
-        collectionId: String,
-        recipeId: String
-    ): AddRecipeToCollectionResponse =
-        withContext(Dispatchers.IO) { api.addRecipeToCollection(collectionId, recipeId) }
+    override suspend fun getRecipe(id: String) =
+        withContext(Dispatchers.IO) {
+            api.getRecipe(id)
+        }
 }

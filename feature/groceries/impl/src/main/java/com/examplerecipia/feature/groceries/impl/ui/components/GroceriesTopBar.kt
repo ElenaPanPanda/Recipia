@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,8 +47,7 @@ fun GroceriesTopBar(
                 style = AppTypography().playDisplayBold.copy(fontSize = 22.sp),
                 color = DarkTeal,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f),
-                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = ImageVector.vectorResource(id = Icons.share),

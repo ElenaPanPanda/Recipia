@@ -23,5 +23,4 @@ object Icons {
     val check = R.drawable.ic_check
     val cancel = R.drawable.ic_close
     val allDone = R.drawable.ic_all_done
-    val chevronRight = R.drawable.ic_chevron_right
 }

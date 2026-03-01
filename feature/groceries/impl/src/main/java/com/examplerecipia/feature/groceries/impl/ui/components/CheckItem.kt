@@ -5,18 +5,24 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.recipia.core.ui.components.AppCheckbox
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
+import com.example.recipia.core.ui.theme.MediumTeal
 import com.example.recipia.core.ui.theme.TextMuted
+import com.example.recipia.core.ui.theme.snowWhite
+import com.example.recipia.core.ui.utils.NoRippleInteractionSource
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
 
 @Composable
@@ -29,9 +35,16 @@ fun CheckItem(
             .fillMaxWidth()
             .padding(vertical = 10.dp),
     ) {
-        AppCheckbox(
+        Checkbox(
             checked = ingredient.isCrossedOut,
             onCheckedChange = { onCheckedChange(ingredient) },
+            modifier = Modifier.size(20.dp),
+            colors = CheckboxDefaults.colors(
+                checkedColor = MediumTeal,
+                uncheckedColor = MediumTeal,
+                checkmarkColor = snowWhite
+            ),
+            interactionSource = remember { NoRippleInteractionSource },
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(

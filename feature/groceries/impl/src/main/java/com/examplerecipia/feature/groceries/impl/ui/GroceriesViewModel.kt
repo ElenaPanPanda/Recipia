@@ -3,14 +3,10 @@ package com.examplerecipia.feature.groceries.impl.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
-import com.example.recipia.core.ui.R as CoreR
 import com.examplerecipia.feature.groceries.impl.R
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
-import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListItem
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCase
-import com.examplerecipia.feature.groceries.impl.domain.usecase.ClearShoppingListUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCase
-import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveCheckedItemsUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.UpdateListBlockUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,8 +27,6 @@ class GroceriesViewModel @Inject constructor(
     private val addListBlockUseCase: AddListBlockUseCase,
     private val updateListBlockUseCase: UpdateListBlockUseCase,
     private val removeListBlockUseCase: RemoveListBlockUseCase,
-    private val removeCheckedItemsUseCase: RemoveCheckedItemsUseCase,
-    private val clearShoppingListUseCase: ClearShoppingListUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<GroceriesState>(GroceriesState.Loading)
     val uiState: StateFlow<GroceriesState> = _uiState.asStateFlow()
@@ -49,10 +43,6 @@ class GroceriesViewModel @Inject constructor(
                 event.shoppingListItemIndex,
                 event.ingredientIndex
             )
-
-            is GroceriesEvent.OnClearCheckedItems -> removeCheckedItems()
-            is GroceriesEvent.OnClearAll -> clearList()
-            is GroceriesEvent.OnShareList -> shareShoppingList()
         }
     }
 
@@ -62,7 +52,7 @@ class GroceriesViewModel @Inject constructor(
 
     private fun observeShoppingList() {
         viewModelScope.launch {
-            getShoppingListUseCase.get().collect { list ->
+            getShoppingListUseCase.getShoppingList().collect { list ->
                 _uiState.value = GroceriesState.Success(shoppingList = list)
             }
         }
@@ -131,60 +121,5 @@ class GroceriesViewModel @Inject constructor(
             )
             updateListBlockUseCase.updateListBlock(shoppingListItemIndex, newItem)
         }
-    }
-
-    private fun removeCheckedItems() {
-        val currentState = uiState.value
-        if (currentState !is GroceriesState.Success) return
-
-        viewModelScope.launch {
-            removeCheckedItemsUseCase.remove(shoppingList = currentState.shoppingList)
-        }
-    }
-
-    private fun clearList() {
-        viewModelScope.launch {
-            if (uiState.value is GroceriesState.Success) {
-                clearShoppingListUseCase.clear()
-            }
-        }
-    }
-
-    private fun shareShoppingList() {
-        val currentState = uiState.value
-        if (currentState !is GroceriesState.Success || currentState.shoppingList.isEmpty()) {
-            viewModelScope.launch {
-                _uiEffect.emit(
-                    GroceriesEffect.ShowSnackBar(
-                        stringProvider.getString(R.string.groceries_empty_list_snackbar)
-                    )
-                )
-            }
-            return
-        }
-
-        val formattedText = formatShoppingListForSharing(currentState.shoppingList)
-
-        viewModelScope.launch {
-            _uiEffect.emit(GroceriesEffect.ShareList(formattedText))
-        }
-    }
-
-    private fun formatShoppingListForSharing(shoppingList: List<ShoppingListItem>): String {
-        val builder = StringBuilder()
-        val title = stringProvider.getString(CoreR.string.core_ui_shopping_list)
-        builder.append("$title\n\n")
-
-        shoppingList.reversed().forEach { listItem ->
-            builder.append("• ${listItem.title}\n")
-            listItem.ingredientsList.forEach { ingredient ->
-                val checkbox = if (ingredient.isCrossedOut) "\u2705" else "\u2610"
-                val amount = if (ingredient.amount.isNotBlank()) "${ingredient.amount} " else ""
-                builder.append("  $checkbox $amount${ingredient.name}\n")
-            }
-            builder.append("\n")
-        }
-
-        return builder.toString().trim()
     }
 }

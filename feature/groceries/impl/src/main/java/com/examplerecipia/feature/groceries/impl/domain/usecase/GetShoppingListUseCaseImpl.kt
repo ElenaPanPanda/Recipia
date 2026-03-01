@@ -11,7 +11,7 @@ internal class GetShoppingListUseCaseImpl @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val mapper: ShoppingListItemMapper,
 ) : GetShoppingListUseCase {
-    override suspend fun get(): Flow<List<ShoppingListItem>> {
+    override suspend fun getShoppingList(): Flow<List<ShoppingListItem>> {
         return shoppingListRepository.shoppingListFlow.map { list ->
             list.map { mapper.convertToDomain(it) }
         }

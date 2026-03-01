@@ -13,14 +13,8 @@ sealed interface RecipeDetailsEvent {
         val recipeName: String,
         val ingredients: List<DetailedIngredientSection>
     ) : RecipeDetailsEvent
-
     data class OnAddIngredientClicked(
         val recipeName: String,
         val ingredient: DetailedIngredient
     ) : RecipeDetailsEvent
-
-    data class OnNewCollectionValueChange(val value: String) : RecipeDetailsEvent
-    data object OnSaveToCollectionClicked : RecipeDetailsEvent
-    data class OnCollectionSelectedChange(val collectionId: String, val isSelected: Boolean) :
-        RecipeDetailsEvent
 }

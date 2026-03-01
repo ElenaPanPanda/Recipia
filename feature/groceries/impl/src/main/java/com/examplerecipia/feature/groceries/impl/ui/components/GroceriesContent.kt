@@ -43,13 +43,13 @@ import com.examplerecipia.feature.groceries.impl.ui.GroceriesState
 fun GroceriesContent(
     state: GroceriesState.Success,
     event: (GroceriesEvent) -> Unit,
-    onShareClicked: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
 
-    Column(modifier = modifier) {
-        GroceriesTopBar(onShareClicked = onShareClicked)
+    Column(
+        modifier = Modifier
+    ) {
+        GroceriesTopBar(onShareClicked = { })
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -111,8 +111,8 @@ fun GroceriesContent(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 ClearButtons(
-                    onClearCheckedClicked = { event(GroceriesEvent.OnClearCheckedItems) },
-                    onClearAllClicked = { event(GroceriesEvent.OnClearAll) },
+                    onClearCheckedClicked = { },
+                    onClearAllClicked = { },
                 )
             } else {
                 Text(
@@ -189,6 +189,5 @@ private fun GroceriesContentPreview() {
             )
         ),
         event = {},
-        onShareClicked = {},
     )
 }
