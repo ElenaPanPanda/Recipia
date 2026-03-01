@@ -12,6 +12,8 @@ import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDeta
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDetailedMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingListUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
@@ -61,6 +63,13 @@ internal class RecipeDetailsDomainLayerModule {
         mapper: DetailedIngredientMapper,
     ): AddAllIngredientsToShoppingListUseCase =
         AddAllIngredientsToShoppingListUseCaseImpl(shoppingListRepository, mapper)
+
+    @Provides
+    fun provideAddIngredientToShoppingListUseCase(
+        shoppingListRepository: ShoppingListRepository,
+        mapper: DetailedIngredientSectionMapper,
+    ): AddIngredientToShoppingListUseCase =
+        AddIngredientToShoppingListUseCaseImpl(shoppingListRepository, mapper)
 
     @Provides
     fun provideUpdateShoppingListUseCase(
