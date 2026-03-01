@@ -27,9 +27,9 @@ import com.example.recipia.core.ui.theme.MediumTeal
 @Composable
 fun IconTextButton(
     text: String,
-    icon: ImageVector?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
     fontSize: TextUnit = 12.sp,
     contentColor: Color = BurntOrange
 ) {

@@ -1,5 +1,6 @@
 package com.example.recipia.feature.recipedetails.impl.ui
 
+import com.example.recipia.feature.recipedetails.impl.domain.model.CollectionWithSelectedOption
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecipe
 
 sealed interface RecipeDetailsState {

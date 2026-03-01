@@ -22,5 +22,5 @@ val StarEmpty = Color(0xFFd1ccc0) // Color for empty rating stars
 val dividerColor = Color(0xFFd1c5a2)
 
 val DisabledBackground = Color(0xFFe0e0e0)
-val DisabledText = Color(0xFFa0a0a0)
+val Disabled = Color(0xFFa0a0a0) // Color for disabled elements
 val DisabledBorder = Color(0xFFc0c0c0)

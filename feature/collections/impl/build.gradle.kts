@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -16,6 +17,8 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.core.common)
+    implementation(projects.core.ui)
     api(projects.feature.collections.api)
 
     // Libs
@@ -25,8 +28,13 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.kotlinx.serialization)
+    implementation(libs.coil.compose)
 
     // DI
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)
+
+    // network
+    implementation(libs.retrofit)
 }

@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.recipia.feature.calendar.impl.calendarScreen
-import com.example.recipia.feature.collections.impl.collectionsScreen
+import com.example.recipia.feature.collections.impl.navigation.collectionsScreen
 import com.examplerecipia.feature.groceries.impl.groceriesScreen
 import kotlinx.coroutines.launch
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
@@ -63,7 +63,7 @@ fun MainScreen(
                 navigateToRecipeDetails = navigateToRecipeDetails,
                 navigateToAddRecipe = navigateToAddRecipe,
             )
-            collectionsScreen()
+            collectionsScreen(navController = childNavController)
             calendarScreen()
             groceriesScreen()
         }

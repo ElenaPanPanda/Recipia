@@ -1,0 +1,11 @@
+package com.example.recipia.feature.collections.impl.data.dto
+
+import com.example.recipia.core.common.model.UserCollection
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class GetCollectionsResponse(
+    val collections: List<UserCollection>,
+    val message: String,
+    val success: Boolean
+)
