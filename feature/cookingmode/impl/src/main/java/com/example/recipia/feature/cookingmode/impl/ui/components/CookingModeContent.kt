@@ -19,7 +19,7 @@ fun CookingModeContent(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text("Cooking Mode Content")
+        Text(text = state.recipeId)
     }
 }
 

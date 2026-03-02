@@ -92,7 +92,7 @@ fun RecipeDetailsContent(
 
             AppOutlinedButton(
                 text = stringResource(id = CoreR.string.core_ui_start_cooking),
-                onClick = {},
+                onClick = { event(RecipeDetailsEvent.OnStartCookingClicked(state.recipe.id)) },
                 leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
                 modifier = Modifier
                     .fillMaxWidth()

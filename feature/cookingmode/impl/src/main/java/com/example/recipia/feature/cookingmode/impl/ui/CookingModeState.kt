@@ -4,6 +4,6 @@ sealed interface CookingModeState {
     data object Loading : CookingModeState
     data class Error(val message: String) : CookingModeState
     data class Success(
-        val isInitializing: Boolean = false
+        val recipeId: String = "",
     ) : CookingModeState
 }

@@ -11,6 +11,7 @@ import com.example.recipia.feature.cookingmode.impl.ui.components.CookingModeCon
 
 @Composable
 fun CookingModeScreen(
+    recipeId: String,
     viewModel: CookingModeViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()

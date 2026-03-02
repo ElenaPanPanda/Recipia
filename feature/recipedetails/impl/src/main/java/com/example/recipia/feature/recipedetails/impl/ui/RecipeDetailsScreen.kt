@@ -20,6 +20,7 @@ import com.example.recipia.feature.recipedetails.impl.ui.components.RecipeDetail
 fun RecipeDetailsScreen(
     recipeId: String,
     onNavigateBack: () -> Unit,
+    onNavigateToCookingMode: (String) -> Unit,
     viewModel: RecipeDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -34,6 +35,7 @@ fun RecipeDetailsScreen(
                 is RecipeDetailsEffect.ShowSnackBar -> snackbarHostState.showSnackbar(effect.message)
                 is RecipeDetailsEffect.OpenCollectionsBottomSheet -> isBottomSheetVisible = true
                 is RecipeDetailsEffect.NavigateBack -> onNavigateBack()
+                is RecipeDetailsEffect.NavigateToCookingMode -> onNavigateToCookingMode(effect.recipeId)
             }
         }
     }

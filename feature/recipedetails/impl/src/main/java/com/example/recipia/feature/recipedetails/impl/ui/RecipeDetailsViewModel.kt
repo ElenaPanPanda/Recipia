@@ -99,11 +99,10 @@ class RecipeDetailsViewModel @Inject constructor(
                     )
                 }
             }
-            is RecipeDetailsEvent.OnRatingChanged -> {
-                ratingFlow.tryEmit(event.recipeId to event.rating)
+            is RecipeDetailsEvent.OnRatingChanged -> changeRating(event.recipeId, event.rating)
+            is RecipeDetailsEvent.OnStartCookingClicked -> navigateToCookingMode(event.recipeId)
             }
         }
-    }
 
     init {
         viewModelScope.launch {
@@ -154,5 +153,13 @@ class RecipeDetailsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun changeRating(recipeId: String, newRating: Float) {
+        ratingFlow.tryEmit(recipeId to newRating)
+    }
+
+    private fun navigateToCookingMode(recipeId: String) = viewModelScope.launch {
+        _uiEffect.emit(RecipeDetailsEffect.NavigateToCookingMode(recipeId))
     }
 }

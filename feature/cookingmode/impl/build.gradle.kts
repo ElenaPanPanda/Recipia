@@ -1,43 +1,40 @@
 plugins {
     alias(libs.plugins.library)
     alias(libs.plugins.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
     namespace = "com.example.recipia.feature.collections.impl"
-    compileSdk = 35
 
-    defaultConfig {
-        minSdk = 26
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+    buildFeatures {
+        compose = true
     }
 }
 
 dependencies {
+    api(projects.feature.cookingmode.api)
+    implementation(projects.core.common)
+    implementation(projects.core.ui)
 
+    // Libs
     implementation(libs.coreKtx)
     implementation(libs.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.test.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.coil.compose)
+    implementation(libs.kotlinx.serialization)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+
+    // DI
+    implementation(libs.hilt)
+    ksp(libs.hilt.android.compiler)
+
+    // network
+    implementation(libs.retrofit)
 }
