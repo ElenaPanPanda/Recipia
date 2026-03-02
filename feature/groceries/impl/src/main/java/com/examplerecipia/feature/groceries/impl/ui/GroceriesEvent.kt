@@ -8,4 +8,6 @@ sealed interface GroceriesEvent {
         val shoppingListItemIndex: Int,
         val ingredientIndex: Int
     ) : GroceriesEvent
+    data object OnClearChecked : GroceriesEvent
+    data object OnClearAll : GroceriesEvent
 }

@@ -33,6 +33,7 @@ class RecipeListViewModel @Inject constructor(
             is RecipeListEvent.OnCategorySelected -> onSelectedCategory(event.category)
             is RecipeListEvent.OnRecipeClicked -> navigateToRecipeDetails(event.recipeId)
             is RecipeListEvent.OnAddRecipeClicked -> navigateToAddRecipe()
+            is RecipeListEvent.OnResume -> getRecipes()
         }
     }
 
@@ -42,7 +43,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun getRecipes() = viewModelScope.launch {
         try {
-            val recipes = getRecipesUseCase.getRecipes()
+            val recipes = getRecipesUseCase.getRecipes().reversed()
             _uiState.update {
                 it.copy(
                     isLoading = false,

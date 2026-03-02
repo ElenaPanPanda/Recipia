@@ -6,7 +6,9 @@ import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.examplerecipia.feature.groceries.impl.R
 import com.examplerecipia.feature.groceries.impl.domain.model.ShoppingListIngredient
 import com.examplerecipia.feature.groceries.impl.domain.usecase.AddListBlockUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.ClearShoppingListUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.GetShoppingListUseCase
+import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveCheckedItemsUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.RemoveListBlockUseCase
 import com.examplerecipia.feature.groceries.impl.domain.usecase.UpdateListBlockUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +29,8 @@ class GroceriesViewModel @Inject constructor(
     private val addListBlockUseCase: AddListBlockUseCase,
     private val updateListBlockUseCase: UpdateListBlockUseCase,
     private val removeListBlockUseCase: RemoveListBlockUseCase,
+    private val clearShoppingListUseCase: ClearShoppingListUseCase,
+    private val removeCheckedItemsUseCase: RemoveCheckedItemsUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<GroceriesState>(GroceriesState.Loading)
     val uiState: StateFlow<GroceriesState> = _uiState.asStateFlow()
@@ -43,6 +47,8 @@ class GroceriesViewModel @Inject constructor(
                 event.shoppingListItemIndex,
                 event.ingredientIndex
             )
+            is GroceriesEvent.OnClearChecked -> clearChecked()
+            is GroceriesEvent.OnClearAll -> clearAll()
         }
     }
 
@@ -120,6 +126,21 @@ class GroceriesViewModel @Inject constructor(
                 }
             )
             updateListBlockUseCase.updateListBlock(shoppingListItemIndex, newItem)
+        }
+    }
+
+    private fun clearChecked() {
+        val currentState = uiState.value
+        if (currentState is GroceriesState.Success) {
+            viewModelScope.launch {
+                removeCheckedItemsUseCase.remove(currentState.shoppingList)
+            }
+        }
+    }
+
+    private fun clearAll() {
+        viewModelScope.launch {
+            clearShoppingListUseCase.clear()
         }
     }
 }

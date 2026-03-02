@@ -43,7 +43,7 @@ class RecipeListViewModelTest {
     @Before
     fun setUp() {
         every { mockedStringProvider.getString(any()) } returns "Error"
-        coEvery { mockedGetRecipesUseCase.getRecipes() } returns expectedRecipes
+        coEvery { mockedGetRecipesUseCase.getRecipes() } returns expectedRecipes.reversed()
 
         viewModel = RecipeListViewModel(mockedStringProvider, mockedGetRecipesUseCase)
     }

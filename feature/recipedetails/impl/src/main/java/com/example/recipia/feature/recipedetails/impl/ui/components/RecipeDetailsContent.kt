@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -22,11 +23,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.recipia.core.ui.R
+import com.example.recipia.core.ui.R as CoreR
 import com.example.recipia.core.ui.components.AppOutlinedButton
+import com.example.recipia.core.ui.components.AppAlertDialog
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
+import com.example.recipia.feature.recipedetails.impl.R
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsState
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsEvent
 
@@ -39,6 +42,21 @@ fun RecipeDetailsContent(
     val scrollState = rememberScrollState()
 
     var rating by remember { mutableFloatStateOf(state.recipe.rating / 2.0f) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteDialog) {
+        AppAlertDialog(
+            title = stringResource(id = R.string.recipe_details_delete_dialog_title),
+            confirmButtonText = stringResource(id = CoreR.string.core_ui_delete),
+            onConfirmButtonClick = {
+                showDeleteDialog = false
+                event(RecipeDetailsEvent.OnDeleteClicked(state.recipe.id))
+            },
+            onShowAlertDialog = { showDeleteDialog = it },
+            dismissButtonText = stringResource(id = CoreR.string.core_ui_cancel),
+            onDismissButtonClick = { showDeleteDialog = false }
+        )
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -73,7 +91,7 @@ fun RecipeDetailsContent(
             )
 
             AppOutlinedButton(
-                text = stringResource(id = R.string.core_ui_start_cooking),
+                text = stringResource(id = CoreR.string.core_ui_start_cooking),
                 onClick = {},
                 leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
                 modifier = Modifier
@@ -86,7 +104,7 @@ fun RecipeDetailsContent(
                 onSaveClicked = { event(RecipeDetailsEvent.OnSaveIconClicked(state.recipe.id)) },
                 onCalendarClicked = { event(RecipeDetailsEvent.OnCalendarClicked(state.recipe.id)) },
                 onShareClicked = { event(RecipeDetailsEvent.OnShareClicked(state.recipe.id)) },
-                onDeleteClicked = { event(RecipeDetailsEvent.OnDeleteClicked(state.recipe.id)) }
+                onDeleteClicked = { showDeleteDialog = true }
             )
 
             if (state.recipe.rawCategories.isNotEmpty()) {
