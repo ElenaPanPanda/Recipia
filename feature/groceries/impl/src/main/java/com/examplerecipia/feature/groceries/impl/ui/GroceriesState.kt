@@ -8,5 +8,7 @@ sealed interface GroceriesState {
     data class Success(
         val shoppingList: List<ShoppingListItem> = emptyList(),
         val newItemValue: String = "",
+        val isClearCheckedEnabled: Boolean = false,
+        val isClearAllEnabled: Boolean = false,
     ) : GroceriesState
 }

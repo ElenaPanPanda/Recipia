@@ -16,6 +16,8 @@ import com.examplerecipia.feature.groceries.impl.R
 
 @Composable
 fun ClearButtons(
+    isClearCheckedEnabled: Boolean,
+    isClearAllEnabled: Boolean,
     onClearCheckedClicked: () -> Unit,
     onClearAllClicked: () -> Unit,
     modifier : Modifier = Modifier,
@@ -25,6 +27,7 @@ fun ClearButtons(
             text = stringResource(R.string.groceries_clear_checked),
             onClick = onClearCheckedClicked,
             contentColor = DarkBlue.copy(alpha = 0.6f),
+            enabled = isClearCheckedEnabled,
             modifier = Modifier.weight(1f)
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -32,6 +35,7 @@ fun ClearButtons(
             text = stringResource(R.string.groceries_clear_all),
             onClick = onClearAllClicked,
             contentColor = DarkRed.copy(alpha = 0.6f),
+            enabled = isClearAllEnabled,
             modifier = Modifier.weight(1f)
         )
     }
@@ -41,6 +45,8 @@ fun ClearButtons(
 @Composable
 private fun ClearButtonsPreview() {
     ClearButtons(
+        isClearCheckedEnabled = true,
+        isClearAllEnabled = true,
         onClearCheckedClicked = {},
         onClearAllClicked = {},
         modifier = Modifier.padding(horizontal = 16.dp)

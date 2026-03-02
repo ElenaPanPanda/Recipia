@@ -54,6 +54,11 @@ fun GroceriesContent(
     var showClearCheckedDialog by remember { mutableStateOf(false) }
     var showClearAllDialog by remember { mutableStateOf(false) }
 
+    val hasItems = state.shoppingList.isNotEmpty()
+    val hasCheckedItems = state.shoppingList.any { listBlock ->
+        listBlock.ingredientsList.any { ingredient -> ingredient.isCrossedOut }
+    }
+
     if (showClearCheckedDialog) {
         AppAlertDialog(
             title = stringResource(id = R.string.groceries_clear_checked_dialog_title),
@@ -114,9 +119,12 @@ fun GroceriesContent(
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(MediumTeal)
+                        .background(if (state.newItemValue.isNotBlank()) MediumTeal else MediumTeal.copy(alpha = 0.5f))
                         .padding(4.dp)
-                        .clickable(onClick = { event(GroceriesEvent.OnAddNewItem) })
+                        .clickable(
+                            enabled = state.newItemValue.isNotBlank(),
+                            onClick = { event(GroceriesEvent.OnAddNewItem) }
+                        )
                         .size(24.dp)
                 )
             }
@@ -147,6 +155,8 @@ fun GroceriesContent(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 ClearButtons(
+                    isClearCheckedEnabled = hasCheckedItems,
+                    isClearAllEnabled = hasItems,
                     onClearCheckedClicked = { showClearCheckedDialog = true },
                     onClearAllClicked = { showClearAllDialog = true },
                 )

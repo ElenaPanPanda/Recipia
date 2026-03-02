@@ -78,6 +78,8 @@ class GroceriesViewModel @Inject constructor(
         viewModelScope.launch {
             val manualAddingTitle = stringProvider.getString(R.string.groceries_other_items)
             val newValue = currentState.newItemValue.trim()
+            if (!validateNewItem(newValue)) return@launch
+
             val manualSectionExists =
                 currentState.shoppingList.isNotEmpty() && currentState.shoppingList.first().title == manualAddingTitle
 
@@ -99,6 +101,10 @@ class GroceriesViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun validateNewItem(value: String): Boolean {
+        return value.isNotBlank()
     }
 
     private fun removeListBlock(index: Int) {
