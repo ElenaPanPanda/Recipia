@@ -7,10 +7,10 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngre
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-internal class AddIngredientToShoppingListImpl @Inject constructor(
+internal class AddIngredientToShoppingListUseCaseImpl @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val mapper: DetailedIngredientSectionMapper,
-) : AddIngredientToShoppingList {
+) : AddIngredientToShoppingListUseCase {
     override suspend fun add(recipeName: String, ingredient: DetailedIngredient) {
         val currentShoppingList = shoppingListRepository.shoppingListFlow.first()
 

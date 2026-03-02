@@ -1,11 +1,13 @@
 package com.example.recipia.feature.recipedetails.impl.data.api
 
 import com.example.recipia.feature.recipedetails.impl.data.dto.AddRecipeToCollectionResponse
+import com.example.recipia.feature.recipedetails.impl.data.dto.AdjustRecipeRatingRequest
 import com.example.recipia.feature.recipedetails.impl.data.dto.CreateCollectionRequest
 import com.example.recipia.feature.recipedetails.impl.data.dto.CreateCollectionResponse
 import com.example.recipia.feature.recipedetails.impl.data.dto.GetCollectionsResponse
 import com.example.recipia.feature.recipedetails.impl.data.dto.GetRecipeResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -14,6 +16,9 @@ import retrofit2.http.Path
 internal interface RecipeDetailsNetworkApi {
     @GET("recipes/{id}")
     suspend fun getRecipe(@Path("id") id: String): GetRecipeResponse
+
+    @DELETE("recipes/{id}")
+    suspend fun deleteRecipe(@Path("id") id: String)
 
     @GET("/collections")
     suspend fun getCollections(): GetCollectionsResponse
@@ -26,4 +31,10 @@ internal interface RecipeDetailsNetworkApi {
         @Path("collectionId") collectionId: String,
         @Path("recipeId") recipeId: String
     ): AddRecipeToCollectionResponse
+
+    @PATCH("recipes/{id}/rating")
+    suspend fun adjustRecipeRating(
+        @Path("id") id: String,
+        @Body request: AdjustRecipeRatingRequest
+    )
 }

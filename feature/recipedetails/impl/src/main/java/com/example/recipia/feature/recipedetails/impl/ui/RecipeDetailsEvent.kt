@@ -22,4 +22,6 @@ sealed interface RecipeDetailsEvent {
     data class OnCollectionSelectedChange(val collectionId: String) : RecipeDetailsEvent
     data class OnNewCollectionValueChange(val value: String) : RecipeDetailsEvent
     data object OnSaveToCollectionClicked : RecipeDetailsEvent
+    data class OnRatingChanged(val recipeId: String, val rating: Float) : RecipeDetailsEvent
+    data class OnStartCookingClicked(val recipeId: String) : RecipeDetailsEvent
 }

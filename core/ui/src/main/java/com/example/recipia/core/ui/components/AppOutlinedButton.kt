@@ -1,6 +1,7 @@
 package com.example.recipia.core.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,10 @@ fun AppOutlinedButton(
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = contentColor,
         ),
-        border = BorderStroke(1.5.dp, contentColor),
+        border = BorderStroke(
+            width = 1.5.dp,
+            color = if (enabled) contentColor else contentColor.copy(alpha = 0.12f)
+        ),
         enabled = enabled,
     ) {
         if (leadingIcon != null) {
@@ -60,12 +64,24 @@ fun AppOutlinedButton(
 @Preview(showBackground = true)
 @Composable
 private fun OutlinedButtonPreview() {
-    AppOutlinedButton(
-        text = "Start Cooking",
-        onClick = {},
-        leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp)
-    )
+    Column {
+        AppOutlinedButton(
+            text = "Start Cooking",
+            onClick = {},
+            leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
+            enabled = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
+        )
+        AppOutlinedButton(
+            text = "Start Cooking",
+            onClick = {},
+            leadingIcon = ImageVector.vectorResource(id = Icons.cutlery),
+            enabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
+        )
+    }
 }

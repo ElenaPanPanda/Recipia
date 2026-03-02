@@ -38,6 +38,7 @@ dependencies {
     implementation(projects.feature.mainScreen.impl)
     implementation(projects.feature.recipedetails.impl)
     implementation(projects.feature.addrecipe.impl)
+    implementation(projects.feature.cookingmode.impl)
 
     // Libs
     implementation(libs.coreKtx)

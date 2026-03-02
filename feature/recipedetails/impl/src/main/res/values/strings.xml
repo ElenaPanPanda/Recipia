@@ -2,4 +2,5 @@
 <resources>
     <string name="recipe_details_save_to_collection">Save to collection</string>
     <string name="recipe_details_create_collection_hint">Create a new collection</string>
+    <string name="recipe_details_delete_dialog_title">Delete Recipe</string>
 </resources>

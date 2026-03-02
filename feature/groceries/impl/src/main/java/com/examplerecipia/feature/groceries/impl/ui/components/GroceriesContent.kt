@@ -16,6 +16,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppInputField
+import com.example.recipia.core.ui.components.AppAlertDialog
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
@@ -45,6 +50,42 @@ fun GroceriesContent(
     event: (GroceriesEvent) -> Unit,
 ) {
     val scrollState = rememberScrollState()
+
+    var showClearCheckedDialog by remember { mutableStateOf(false) }
+    var showClearAllDialog by remember { mutableStateOf(false) }
+
+    val hasItems = state.shoppingList.isNotEmpty()
+    val hasCheckedItems = state.shoppingList.any { listBlock ->
+        listBlock.ingredientsList.any { ingredient -> ingredient.isCrossedOut }
+    }
+
+    if (showClearCheckedDialog) {
+        AppAlertDialog(
+            title = stringResource(id = R.string.groceries_clear_checked_dialog_title),
+            confirmButtonText = stringResource(id = uiR.string.core_ui_delete),
+            onConfirmButtonClick = {
+                showClearCheckedDialog = false
+                event(GroceriesEvent.OnClearChecked)
+            },
+            onShowAlertDialog = { showClearCheckedDialog = it },
+            dismissButtonText = stringResource(id = uiR.string.core_ui_cancel),
+            onDismissButtonClick = { showClearCheckedDialog = false }
+        )
+    }
+
+    if (showClearAllDialog) {
+        AppAlertDialog(
+            title = stringResource(id = R.string.groceries_clear_all_dialog_title),
+            confirmButtonText = stringResource(id = uiR.string.core_ui_delete),
+            onConfirmButtonClick = {
+                showClearAllDialog = false
+                event(GroceriesEvent.OnClearAll)
+            },
+            onShowAlertDialog = { showClearAllDialog = it },
+            dismissButtonText = stringResource(id = uiR.string.core_ui_cancel),
+            onDismissButtonClick = { showClearAllDialog = false }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -78,9 +119,12 @@ fun GroceriesContent(
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(MediumTeal)
+                        .background(if (state.newItemValue.isNotBlank()) MediumTeal else MediumTeal.copy(alpha = 0.5f))
                         .padding(4.dp)
-                        .clickable(onClick = { event(GroceriesEvent.OnAddNewItem) })
+                        .clickable(
+                            enabled = state.newItemValue.isNotBlank(),
+                            onClick = { event(GroceriesEvent.OnAddNewItem) }
+                        )
                         .size(24.dp)
                 )
             }
@@ -111,8 +155,10 @@ fun GroceriesContent(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 ClearButtons(
-                    onClearCheckedClicked = { },
-                    onClearAllClicked = { },
+                    isClearCheckedEnabled = hasCheckedItems,
+                    isClearAllEnabled = hasItems,
+                    onClearCheckedClicked = { showClearCheckedDialog = true },
+                    onClearAllClicked = { showClearAllDialog = true },
                 )
             } else {
                 Text(

@@ -6,9 +6,16 @@ import androidx.navigation.toRoute
 import com.example.recipia.feature.recipedetails.api.RecipeDetailsRoutingContract
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsScreen
 
-fun NavGraphBuilder.recipeDetailsScreen() {
+fun NavGraphBuilder.recipeDetailsScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToCookingMode: (String) -> Unit
+) {
     composable<RecipeDetailsRoutingContract.RecipeDetails> {
         val route = it.toRoute<RecipeDetailsRoutingContract.RecipeDetails>()
-        RecipeDetailsScreen(recipeId = route.recipeId)
+        RecipeDetailsScreen(
+            recipeId = route.recipeId,
+            onNavigateBack = onNavigateBack,
+            onNavigateToCookingMode = onNavigateToCookingMode
+        )
     }
 }

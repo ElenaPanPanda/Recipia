@@ -1,21 +1,15 @@
 package com.example.recipia.feature.recipedetails.impl.ui
 
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
 import com.example.recipia.core.ui.R
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsEditManager
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsGroceriesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +17,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,9 +30,10 @@ class RecipeDetailsViewModel @Inject constructor(
     private val stringProvider: StringResProvider,
     savedStateHandle: SavedStateHandle,
     private val getRecipeUseCase: GetRecipeUseCase,
-    private val checkAddedIngredientsInShoppingListUseCase: CheckAddedIngredientsInShoppingListUseCase,
-    private val addAllIngredientsToShoppingListUseCase: AddAllIngredientsToShoppingListUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
+    private val groceriesManager: RecipeDetailsGroceriesManager,
     private val collectionManager: RecipeDetailsCollectionsManager,
+    private val editManager: RecipeDetailsEditManager,
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle["recipeId"]
         ?: throw IllegalStateException("recipeId is null")
@@ -45,13 +44,15 @@ class RecipeDetailsViewModel @Inject constructor(
     private val _uiEffect = MutableSharedFlow<RecipeDetailsEffect>()
     val uiEffect: SharedFlow<RecipeDetailsEffect> = _uiEffect.asSharedFlow()
 
+    private val ratingFlow = MutableSharedFlow<Pair<String, Float>>(extraBufferCapacity = 1)
+
     private fun updateSuccessState(updater: RecipeDetailsState.Success.() -> RecipeDetailsState.Success) {
         _uiState.update { if (it is RecipeDetailsState.Success) it.updater() else it }
     }
 
     fun obtainEvent(event: RecipeDetailsEvent) {
         when (event) {
-            is RecipeDetailsEvent.OnEditClicked -> onEditClick(event.recipeId)
+            is RecipeDetailsEvent.OnEditClicked -> editManager.onEditClick(event.recipeId)
             is RecipeDetailsEvent.OnSaveIconClicked -> {
                 collectionManager.getCollectionsForBottomSheets(
                     scope = viewModelScope,
@@ -63,15 +64,21 @@ class RecipeDetailsViewModel @Inject constructor(
             is RecipeDetailsEvent.OnCalendarClicked -> onCalendarClick(event.recipeId)
             is RecipeDetailsEvent.OnShareClicked -> onShareClick(event.recipeId)
             is RecipeDetailsEvent.OnDeleteClicked -> onDeleteClick(event.recipeId)
-            is RecipeDetailsEvent.OnAddAllIngredientsClicked -> addAllIngredientsToShoppingList(
-                event.recipeName,
-                event.ingredients
-            )
+            is RecipeDetailsEvent.OnAddAllIngredientsClicked -> {
+                groceriesManager.addAllIngredientsToShoppingList(
+                    event.recipeName,
+                    event.ingredients,
+                    viewModelScope
+                )
+            }
 
-            is RecipeDetailsEvent.OnAddIngredientClicked -> addIngredientToShoppingList(
-                event.recipeName,
-                event.ingredient
-            )
+            is RecipeDetailsEvent.OnAddIngredientClicked -> {
+                groceriesManager.addIngredientToShoppingList(
+                    event.recipeName,
+                    event.ingredient,
+                    viewModelScope
+                )
+            }
 
             is RecipeDetailsEvent.OnCollectionSelectedChange -> {
                 collectionManager.selectCollection(event.collectionId, ::updateSuccessState)
@@ -92,20 +99,32 @@ class RecipeDetailsViewModel @Inject constructor(
                     )
                 }
             }
+            is RecipeDetailsEvent.OnRatingChanged -> changeRating(event.recipeId, event.rating)
+            is RecipeDetailsEvent.OnStartCookingClicked -> navigateToCookingMode(event.recipeId)
+            }
         }
-    }
 
     init {
         viewModelScope.launch {
             loadRecipe(recipeId)
-            updateCheckedIngredients()
         }
+
+        ratingFlow
+            .debounce(1000L)
+            .distinctUntilChanged()
+            .onEach { (id, newRating) ->
+                editManager.submitRating(id, newRating, viewModelScope)
+            }
+            .launchIn(viewModelScope)
     }
 
     private suspend fun loadRecipe(recipeId: String) {
         try {
             val recipe = getRecipeUseCase.getRecipe(recipeId)
             _uiState.update { RecipeDetailsState.Success(recipe = recipe) }
+
+            // Update checked ingredients.
+            groceriesManager.observeCheckedIngredients(recipe, viewModelScope, ::updateSuccessState)
         } catch (e: Exception) {
             e.printStackTrace()
             _uiState.update {
@@ -116,62 +135,31 @@ class RecipeDetailsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun updateCheckedIngredients() {
-        val currentState = _uiState.value as? RecipeDetailsState.Success ?: return
-
-        checkAddedIngredientsInShoppingListUseCase
-            .getAddedIngredients(currentState.recipe.title)
-            .collect { checkedIngredients ->
-                val allIngredientsAmount = currentState.recipe.ingredients
-                    .flatMap { it.ingredientsList }
-                    .size
-
-                val addedNames = checkedIngredients.map { it.ingredient }.toSet()
-
-                val updatedIngredients = currentState.recipe.ingredients.map { section ->
-                    section.copy(
-                        ingredientsList = section.ingredientsList.map { ingredient ->
-                            ingredient.copy(
-                                addedToList = addedNames.contains(ingredient.ingredient)
-                            )
-                        }
-                    )
-                }
-
-                val updatedRecipe = currentState.recipe.copy(ingredients = updatedIngredients)
-
-                _uiState.update {
-                    currentState.copy(
-                        recipe = updatedRecipe,
-                        isAllIngredientsChecked = checkedIngredients.size == allIngredientsAmount
-                    )
-                }
-            }
-    }
-
-    private fun onEditClick(recipeId: String) {}
-
     private fun onCalendarClick(recipeId: String) {}
 
     private fun onShareClick(recipeId: String) {}
 
-    private fun onDeleteClick(recipeId: String) {}
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun addAllIngredientsToShoppingList(
-        recipeName: String,
-        ingredients: List<DetailedIngredientSection>
-    ) = viewModelScope.launch {
-        addAllIngredientsToShoppingListUseCase.add(
-            recipeName = recipeName,
-            ingredients = ingredients
-        )
+    private fun onDeleteClick(recipeId: String) {
+        viewModelScope.launch {
+            try {
+                deleteRecipeUseCase.delete(recipeId)
+                _uiEffect.emit(RecipeDetailsEffect.NavigateBack)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _uiState.update {
+                    RecipeDetailsState.Error(
+                        message = stringProvider.getString(R.string.core_ui_common_error)
+                    )
+                }
+            }
+        }
     }
 
-    private fun addIngredientToShoppingList(
-        recipeName: String,
-        ingredient: DetailedIngredient
-    ) = viewModelScope.launch {
-        // TODO: add or update if recipe is already in shopping list
+    private fun changeRating(recipeId: String, newRating: Float) {
+        ratingFlow.tryEmit(recipeId to newRating)
+    }
+
+    private fun navigateToCookingMode(recipeId: String) = viewModelScope.launch {
+        _uiEffect.emit(RecipeDetailsEffect.NavigateToCookingMode(recipeId))
     }
 }

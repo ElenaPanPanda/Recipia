@@ -6,10 +6,11 @@ import com.example.recipia.core.ui.model.PlaceholderColor
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
 import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecipe
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.UpdateShoppingListUseCase
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsEditManager
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsGroceriesManager
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -18,7 +19,9 @@ import io.mockk.just
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -28,9 +31,10 @@ class RecipeDetailsViewModelTest {
     private val stringProvider = mockk<StringResProvider>(relaxed = true)
     private val savedStateHandle = mockk<SavedStateHandle>(relaxed = true)
     private val getRecipeUseCase = mockk<GetRecipeUseCase>()
-    private val checkAddedIngredientsInShoppingListUseCase = mockk<CheckAddedIngredientsInShoppingListUseCase>()
-    private val addAllIngredientsToShoppingListUseCase = mockk<AddAllIngredientsToShoppingListUseCase>()
-    private val updateShoppingListUseCase = mockk<UpdateShoppingListUseCase>()
+    private val deleteRecipeUseCase = mockk<DeleteRecipeUseCase>()
+    private val groceriesManager = mockk<RecipeDetailsGroceriesManager>(relaxed = true)
+    private val collectionManager = mockk<RecipeDetailsCollectionsManager>(relaxed = true)
+    private val editManager = mockk<RecipeDetailsEditManager>(relaxed = true)
 
     private lateinit var viewModel: RecipeDetailsViewModel
 
@@ -53,17 +57,16 @@ class RecipeDetailsViewModelTest {
         every { savedStateHandle.get<String>("recipeId") } returns "id"
 
         coEvery { getRecipeUseCase.getRecipe("id") } returns testRecipe
-        coEvery { checkAddedIngredientsInShoppingListUseCase.getAddedIngredients("Test Recipe") } returns flowOf(listOf(detailedIngredient))
-        coEvery { addAllIngredientsToShoppingListUseCase.add(any(), any()) } just Runs
-        coEvery { updateShoppingListUseCase.update(any(), any()) } just Runs
+        coEvery { deleteRecipeUseCase.delete(any()) } just Runs
 
         viewModel = RecipeDetailsViewModel(
             stringProvider = stringProvider,
             savedStateHandle = savedStateHandle,
             getRecipeUseCase = getRecipeUseCase,
-            checkAddedIngredientsInShoppingListUseCase = checkAddedIngredientsInShoppingListUseCase,
-            addAllIngredientsToShoppingListUseCase = addAllIngredientsToShoppingListUseCase,
-            updateShoppingListUseCase = updateShoppingListUseCase
+            deleteRecipeUseCase = deleteRecipeUseCase,
+            groceriesManager = groceriesManager,
+            collectionManager = collectionManager,
+            editManager = editManager,
         )
     }
 
@@ -79,11 +82,39 @@ class RecipeDetailsViewModelTest {
     }
 
     @Test
-    fun `addAllIngredientsToShoppingList invokes use case`() = runTest {
+    fun `addAllIngredientsToShoppingList invokes groceriesManager`() = runTest {
         val recipeName = "Test Recipe"
         val ingredients = listOf(DetailedIngredientSection("Section", listOf(detailedIngredient)))
-        viewModel.addAllIngredientsToShoppingList(recipeName, ingredients)
 
-        coVerify(exactly = 1) { addAllIngredientsToShoppingListUseCase.add(recipeName, ingredients) }
+        viewModel.obtainEvent(
+            RecipeDetailsEvent.OnAddAllIngredientsClicked(
+                recipeName,
+                ingredients
+            )
+        )
+
+        coVerify(exactly = 1) {
+            groceriesManager.addAllIngredientsToShoppingList(
+                recipeName,
+                ingredients,
+                any()
+            )
+        }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `onDeleteClick invokes deleteRecipeUseCase and emits NavigateBack`() = runTest {
+        val effects = mutableListOf<RecipeDetailsEffect>()
+        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+            viewModel.uiEffect.collect { effects.add(it) }
+        }
+
+        viewModel.obtainEvent(RecipeDetailsEvent.OnDeleteClicked("id"))
+
+        coVerify(exactly = 1) { deleteRecipeUseCase.delete("id") }
+
+        assertEquals(1, effects.size)
+        assertEquals(RecipeDetailsEffect.NavigateBack, effects.first())
     }
 }
