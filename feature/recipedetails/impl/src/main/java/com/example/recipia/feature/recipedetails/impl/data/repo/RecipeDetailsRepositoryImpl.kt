@@ -2,6 +2,7 @@ package com.example.recipia.feature.recipedetails.impl.data.repo
 
 import com.example.recipia.feature.recipedetails.impl.data.api.RecipeDetailsNetworkApi
 import com.example.recipia.feature.recipedetails.impl.data.dto.AddRecipeToCollectionResponse
+import com.example.recipia.feature.recipedetails.impl.data.dto.AdjustRecipeRatingRequest
 import com.example.recipia.feature.recipedetails.impl.data.dto.CreateCollectionRequest
 import com.example.recipia.feature.recipedetails.impl.data.dto.CreateCollectionResponse
 import com.example.recipia.feature.recipedetails.impl.data.dto.GetCollectionsResponse
@@ -39,4 +40,10 @@ internal class RecipeDetailsRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             api.deleteRecipe(id)
         }
+
+    override suspend fun adjustRecipeRating(id: String, rating: Float) {
+        withContext(Dispatchers.IO) {
+            api.adjustRecipeRating(id, AdjustRecipeRatingRequest(rating))
+        }
+    }
 }

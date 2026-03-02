@@ -19,4 +19,6 @@ interface RecipeDetailsRepository {
     ): AddRecipeToCollectionResponse
 
     suspend fun deleteRecipe(id: String)
+
+    suspend fun adjustRecipeRating(id: String, rating: Float)
 }

@@ -86,7 +86,8 @@ fun RecipeListScreen(
                     imageUrl = recipe.imageUrl,
                     placeholderColor = recipe.placeholderColor.color,
                     rating = recipe.rating,
-                    onClick = { event(RecipeListEvent.OnRecipeClicked(recipe.id)) }
+                    onClick = { event(RecipeListEvent.OnRecipeClicked(recipe.id)) },
+                    modifier = Modifier.animateItem()
                 )
             }
             item {

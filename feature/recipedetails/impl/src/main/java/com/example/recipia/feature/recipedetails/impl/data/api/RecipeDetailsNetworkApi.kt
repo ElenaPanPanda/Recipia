@@ -1,6 +1,7 @@
 package com.example.recipia.feature.recipedetails.impl.data.api
 
 import com.example.recipia.feature.recipedetails.impl.data.dto.AddRecipeToCollectionResponse
+import com.example.recipia.feature.recipedetails.impl.data.dto.AdjustRecipeRatingRequest
 import com.example.recipia.feature.recipedetails.impl.data.dto.CreateCollectionRequest
 import com.example.recipia.feature.recipedetails.impl.data.dto.CreateCollectionResponse
 import com.example.recipia.feature.recipedetails.impl.data.dto.GetCollectionsResponse
@@ -30,4 +31,10 @@ internal interface RecipeDetailsNetworkApi {
         @Path("collectionId") collectionId: String,
         @Path("recipeId") recipeId: String
     ): AddRecipeToCollectionResponse
+
+    @PATCH("recipes/{id}/rating")
+    suspend fun adjustRecipeRating(
+        @Path("id") id: String,
+        @Body request: AdjustRecipeRatingRequest
+    )
 }

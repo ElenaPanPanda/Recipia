@@ -12,6 +12,8 @@ import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDeta
 import com.example.recipia.feature.recipedetails.impl.domain.mapper.RecipeToDetailedMapperImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddAllIngredientsToShoppingListUseCaseImpl
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AdjustRecipeRatingUseCase
+import com.example.recipia.feature.recipedetails.impl.domain.usecase.AdjustRecipeRatingUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingListUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddIngredientToShoppingListUseCaseImpl
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
@@ -99,6 +101,11 @@ internal class RecipeDetailsDomainLayerModule {
     fun provideDeleteRecipeUseCase(
         repository: RecipeDetailsRepository
     ): DeleteRecipeUseCase = DeleteRecipeUseCaseImpl(repository)
+
+    @Provides
+    fun provideAdjustRecipeRatingUseCase(
+        repository: RecipeDetailsRepository
+    ): AdjustRecipeRatingUseCase = AdjustRecipeRatingUseCaseImpl(repository)
 
     @Provides
     fun provideCollectionToCollectionWithSelectedOptionMapper(): CollectionToCollectionWithSelectedOptionMapper =

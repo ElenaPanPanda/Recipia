@@ -9,6 +9,7 @@ import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedRecip
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsEditManager
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsGroceriesManager
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -33,6 +34,7 @@ class RecipeDetailsViewModelTest {
     private val deleteRecipeUseCase = mockk<DeleteRecipeUseCase>()
     private val groceriesManager = mockk<RecipeDetailsGroceriesManager>(relaxed = true)
     private val collectionManager = mockk<RecipeDetailsCollectionsManager>(relaxed = true)
+    private val editManager = mockk<RecipeDetailsEditManager>(relaxed = true)
 
     private lateinit var viewModel: RecipeDetailsViewModel
 
@@ -64,6 +66,7 @@ class RecipeDetailsViewModelTest {
             deleteRecipeUseCase = deleteRecipeUseCase,
             groceriesManager = groceriesManager,
             collectionManager = collectionManager,
+            editManager = editManager,
         )
     }
 

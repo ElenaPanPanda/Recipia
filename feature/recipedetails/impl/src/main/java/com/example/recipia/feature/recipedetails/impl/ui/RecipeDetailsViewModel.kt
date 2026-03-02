@@ -8,6 +8,7 @@ import com.example.recipia.core.ui.R
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
+import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsEditManager
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsGroceriesManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,6 +17,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +33,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private val deleteRecipeUseCase: DeleteRecipeUseCase,
     private val groceriesManager: RecipeDetailsGroceriesManager,
     private val collectionManager: RecipeDetailsCollectionsManager,
+    private val editManager: RecipeDetailsEditManager,
 ) : ViewModel() {
     private val recipeId: String = savedStateHandle["recipeId"]
         ?: throw IllegalStateException("recipeId is null")
@@ -38,13 +44,15 @@ class RecipeDetailsViewModel @Inject constructor(
     private val _uiEffect = MutableSharedFlow<RecipeDetailsEffect>()
     val uiEffect: SharedFlow<RecipeDetailsEffect> = _uiEffect.asSharedFlow()
 
+    private val ratingFlow = MutableSharedFlow<Pair<String, Float>>(extraBufferCapacity = 1)
+
     private fun updateSuccessState(updater: RecipeDetailsState.Success.() -> RecipeDetailsState.Success) {
         _uiState.update { if (it is RecipeDetailsState.Success) it.updater() else it }
     }
 
     fun obtainEvent(event: RecipeDetailsEvent) {
         when (event) {
-            is RecipeDetailsEvent.OnEditClicked -> onEditClick(event.recipeId)
+            is RecipeDetailsEvent.OnEditClicked -> editManager.onEditClick(event.recipeId)
             is RecipeDetailsEvent.OnSaveIconClicked -> {
                 collectionManager.getCollectionsForBottomSheets(
                     scope = viewModelScope,
@@ -91,6 +99,9 @@ class RecipeDetailsViewModel @Inject constructor(
                     )
                 }
             }
+            is RecipeDetailsEvent.OnRatingChanged -> {
+                ratingFlow.tryEmit(event.recipeId to event.rating)
+            }
         }
     }
 
@@ -98,6 +109,14 @@ class RecipeDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             loadRecipe(recipeId)
         }
+
+        ratingFlow
+            .debounce(1000L)
+            .distinctUntilChanged()
+            .onEach { (id, newRating) ->
+                editManager.submitRating(id, newRating, viewModelScope)
+            }
+            .launchIn(viewModelScope)
     }
 
     private suspend fun loadRecipe(recipeId: String) {
@@ -116,8 +135,6 @@ class RecipeDetailsViewModel @Inject constructor(
             }
         }
     }
-
-    private fun onEditClick(recipeId: String) {}
 
     private fun onCalendarClick(recipeId: String) {}
 
