@@ -1,10 +1,10 @@
-package recipia.feature.add_recipe.impl.data.dto
+package com.example.recipia.core.network.dto
 
 import com.example.recipia.core.common.model.FullRecipe
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetRecipeResponse(
+data class FullRecipeResponse(
     val recipe: FullRecipe,
     val message: String,
     val success: Boolean

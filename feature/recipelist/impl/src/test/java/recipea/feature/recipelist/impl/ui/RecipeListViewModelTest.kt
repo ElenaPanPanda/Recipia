@@ -1,4 +1,4 @@
-package recipea.feature.impl.ui
+package recipea.feature.recipelist.impl.ui
 
 import com.example.recipia.core.common.model.RecipeCategory
 import com.example.recipia.core.common.model.ShortRecipe

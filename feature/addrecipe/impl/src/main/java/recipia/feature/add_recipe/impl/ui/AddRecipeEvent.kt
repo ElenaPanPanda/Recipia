@@ -1,6 +1,6 @@
 package recipia.feature.add_recipe.impl.ui
 
-import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
+import recipia.feature.add_recipe.impl.model.CategoryForChoose
 
 sealed interface AddRecipeEvent {
     data class OnTitleInputChanged(val value: String) : AddRecipeEvent

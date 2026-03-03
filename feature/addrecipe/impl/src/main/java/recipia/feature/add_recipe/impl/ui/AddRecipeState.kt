@@ -3,7 +3,7 @@ package recipia.feature.add_recipe.impl.ui
 import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.core.common.model.RecipeCategory
-import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
+import recipia.feature.add_recipe.impl.model.CategoryForChoose
 
 data class AddRecipeState(
     val enabledSaveButton: Boolean = false,
