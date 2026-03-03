@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.model.RecipeCategory
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.domain.recipes.usecase.GetRecipesUseCase
 import com.example.recipia.core.ui.R as uiR
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,7 +15,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import recipia.feature.impl.domain.usecase.GetRecipesUseCase
 import javax.inject.Inject
 
 @HiltViewModel

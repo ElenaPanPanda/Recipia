@@ -3,6 +3,7 @@ package recipea.feature.impl.ui
 import com.example.recipia.core.common.model.RecipeCategory
 import com.example.recipia.core.common.model.ShortRecipe
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.domain.recipes.usecase.GetRecipesUseCase
 import com.example.recipia.core.ui.model.PlaceholderColor
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import recipia.feature.impl.domain.usecase.GetRecipesUseCase
 import recipia.feature.impl.ui.RecipeListEvent
 import recipia.feature.impl.ui.RecipeListViewModel
 
