@@ -21,75 +21,68 @@ class RecipeListViewModelTest {
     private val mockedStringProvider = mockk<StringResProvider>()
     private val mockedGetRecipesUseCase = mockk<GetRecipesUseCase>()
     private lateinit var viewModel: RecipeListViewModel
-    private val expectedRecipes = listOf(
-        ShortRecipe(
-            id = "id",
-            title = "title",
-            rating = 3,
-            imageUrl = "url",
-            placeholderColor = PlaceholderColor.DARK_RED,
-            rawCategories = listOf(RecipeCategory.DESSERT)
-        ),
-        ShortRecipe(
-            id = "id1",
-            title = "title1",
-            rating = 3,
-            imageUrl = "url1",
-            placeholderColor = PlaceholderColor.DARK_TEAL,
-            rawCategories = listOf(RecipeCategory.MEAT)
-        )
-    )
 
     @Before
     fun setUp() {
         every { mockedStringProvider.getString(any()) } returns "Error"
-        coEvery { mockedGetRecipesUseCase.getRecipes() } returns expectedRecipes.reversed()
+        coEvery { mockedGetRecipesUseCase.getRecipes() } returns RECIPES.reversed()
 
         viewModel = RecipeListViewModel(mockedStringProvider, mockedGetRecipesUseCase)
     }
 
     @Test
-    fun `getRecipes should update UI state correctly`() = runTest {
+    fun getRecipes_updatesUiStateCorrectly() = runTest {
         val uiState = viewModel.uiState.value
 
         val recipes = uiState.recipes
-        assertThat(recipes).isEqualTo(expectedRecipes)
 
+        assertThat(recipes).isEqualTo(RECIPES)
         coVerify(exactly = 1) { mockedGetRecipesUseCase.getRecipes() }
     }
 
     @Test
-    fun `onSelectedCategory updates filteredRecipes correctly`() = runTest {
-        // passed category
+    fun onSelectedCategory_filtersRecipesCorrectly() = runTest {
         val category = RecipeCategory.DESSERT
-        val expectedFilteredRecipes = listOf(
-            ShortRecipe(
-                id = "id",
-                title = "title",
-                rating = 3,
-                imageUrl = "url",
-                placeholderColor = PlaceholderColor.DARK_RED,
-                rawCategories = listOf(RecipeCategory.DESSERT)
-            )
-        )
-        // call the function
+        val expectedFilteredRecipes = listOf(createShortRecipe())
+
         viewModel.obtainEvent(RecipeListEvent.OnCategorySelected(category))
 
         val uiState = viewModel.uiState.first()
-
         assertThat(uiState.selectedCategory).isEqualTo(category)
         assertThat(uiState.filteredRecipes).isEqualTo(expectedFilteredRecipes)
     }
 
     @Test
-    fun `onSelectedCategory with ALL category updates filteredRecipes correctly`() = runTest {
-        // passed category
+    fun onSelectedCategory_withALLCategory_updatesFilteredRecipesCorrectly() = runTest {
         val category = RecipeCategory.ALL
-        // call the function
-        viewModel.obtainEvent(RecipeListEvent.OnCategorySelected(category))
-        val uiState = viewModel.uiState.first()
 
+        viewModel.obtainEvent(RecipeListEvent.OnCategorySelected(category))
+
+        val uiState = viewModel.uiState.first()
         assertThat(uiState.selectedCategory).isEqualTo(category)
-        assertThat(uiState.filteredRecipes).isEqualTo(expectedRecipes)
+        assertThat(uiState.filteredRecipes).isEqualTo(RECIPES)
+    }
+
+    private companion object {
+        val RECIPES = listOf(
+            createShortRecipe(),
+            createShortRecipe("id1", "title1", 1, "url1", PlaceholderColor.DARK_TEAL, emptyList())
+        )
+
+        private fun createShortRecipe(
+            id: String = "id",
+            title: String = "title",
+            rating: Int = 3,
+            imageUrl: String = "url",
+            placeholderColor: PlaceholderColor = PlaceholderColor.DARK_RED,
+            rawCategories: List<RecipeCategory> = listOf(RecipeCategory.DESSERT)
+        ) = ShortRecipe(
+            id = id,
+            title = title,
+            rating = rating,
+            imageUrl = imageUrl,
+            placeholderColor = placeholderColor,
+            rawCategories = rawCategories
+        )
     }
 }

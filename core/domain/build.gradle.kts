@@ -22,4 +22,11 @@ dependencies {
 
     // Libs
     implementation(libs.kotlinx.serialization)
+
+    // Tests
+    implementation(libs.test.junit)
+    implementation(libs.test.mockk)
+    implementation(libs.test.coroutines.test)
+    implementation(libs.test.turbine)
+    testImplementation(libs.truth)
 }
