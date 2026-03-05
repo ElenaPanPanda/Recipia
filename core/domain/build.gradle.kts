@@ -13,8 +13,9 @@ android {
 dependencies {
     // Modules
     implementation(projects.core.common)
-    implementation(projects.core.ui)
+    implementation(projects.core.datastore)
     implementation(projects.core.network)
+    implementation(projects.core.ui)
 
     // DI
     implementation(libs.hilt)
