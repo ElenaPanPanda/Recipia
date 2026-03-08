@@ -14,17 +14,16 @@ internal class RemoveCheckedGroceriesItemsUseCaseImpl @Inject constructor(
     private val mapper: GroceriesItemMapper,
 ) : RemoveCheckedGroceriesItemsUseCase {
     override suspend operator fun invoke(groceriesList: List<GroceriesItem>) {
-        groceriesList.forEachIndexed { index, groceriesItem ->
-            val remainingItem =
-                groceriesItem.ingredientsList.filter { ingredient -> !ingredient.isCrossedOut }
+        for (index in groceriesList.indices.reversed()) {
+            val groceriesItem = groceriesList[index]
+            val remainingIngredients = groceriesItem.ingredientsList.filter { !it.isCrossedOut }
 
-            if (remainingItem.isEmpty()) {
+            if (remainingIngredients.isEmpty()) {
                 repository.removeItem(index)
-            } else {
-                val updated = groceriesItem.copy(ingredientsList = remainingItem)
-                repository.updateItem(index, mapper.convertToDto(updated))
+            } else if (remainingIngredients.size < groceriesItem.ingredientsList.size) {
+                val updatedItem = groceriesItem.copy(ingredientsList = remainingIngredients)
+                repository.updateItem(index, mapper.convertToDto(updatedItem))
             }
-
         }
     }
 }

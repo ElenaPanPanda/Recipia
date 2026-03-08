@@ -43,7 +43,7 @@ class RecipeListViewModel @Inject constructor(
 
     private fun getRecipes() = viewModelScope.launch {
         try {
-            val recipes = getRecipesUseCase.getRecipes().reversed()
+            val recipes = getRecipesUseCase().reversed()
             _uiState.update {
                 it.copy(
                     isLoading = false,

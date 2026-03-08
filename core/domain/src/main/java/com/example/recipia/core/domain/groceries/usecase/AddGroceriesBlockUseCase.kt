@@ -15,16 +15,20 @@ internal class AddGroceriesBlockUseCaseImpl @Inject constructor(
     private val mapper: GroceriesItemMapper,
 ) : AddGroceriesBlockUseCase {
     override suspend operator fun invoke(newTitle: String, newValue: String) {
-        val newItem = GroceriesItem(
-            title = newTitle,
+        val newGroceriesItem = createGroceriesItem(newTitle, newValue)
+        repository.addItem(mapper.convertToDto(newGroceriesItem))
+    }
+
+    private fun createGroceriesItem(title: String, ingredientName: String): GroceriesItem {
+        return GroceriesItem(
+            title = title,
             ingredientsList = listOf(
                 GroceriesIngredient(
                     amount = "",
-                    name = newValue,
+                    name = ingredientName,
                     isCrossedOut = false
                 )
             )
         )
-        repository.addItem(mapper.convertToDto(newItem))
     }
 }

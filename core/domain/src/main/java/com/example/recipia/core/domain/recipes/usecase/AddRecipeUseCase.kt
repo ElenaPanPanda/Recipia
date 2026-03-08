@@ -5,11 +5,11 @@ import com.example.recipia.core.network.repository.RecipeRepository
 import javax.inject.Inject
 
 interface AddRecipeUseCase {
-    suspend fun addRecipe(recipe: FullRecipe): String
+    suspend operator fun invoke(recipe: FullRecipe): String
 }
 
 internal class AddRecipeUseCaseImpl @Inject constructor(
     private val repository: RecipeRepository
 ) : AddRecipeUseCase {
-    override suspend fun addRecipe(recipe: FullRecipe) = repository.addRecipe(recipe).recipe.id
+    override suspend operator fun invoke(recipe: FullRecipe) = repository.addRecipe(recipe).recipe.id
 }

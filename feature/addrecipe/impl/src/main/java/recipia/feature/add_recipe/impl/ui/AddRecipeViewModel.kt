@@ -196,7 +196,7 @@ class AddRecipeViewModel @Inject constructor(
         )
 
         try {
-            val newId = addRecipeUseCase.addRecipe(recipe)
+            val newId = addRecipeUseCase(recipe)
             _uiEffect.emit(AddRecipeEffect.NavigateToRecipeDetails(newId))
         } catch (e: Exception) {
             e.printStackTrace()
