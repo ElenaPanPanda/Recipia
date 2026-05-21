@@ -16,20 +16,20 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recipia.core.common.model.Ingredient
+import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.core.ui.components.AppHorizontalDivider
 import com.example.recipia.core.ui.components.IconTextButton
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkTeal
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
 
 @Composable
 fun IngredientsSection(
-    ingredients: List<DetailedIngredientSection>,
+    ingredients: List<IngredientSection>,
     isAllIngredientsChecked: Boolean,
-    onAddIngredient: (DetailedIngredient) -> Unit,
+    onAddIngredient: (Ingredient) -> Unit,
     onAddAllIngredients: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -65,7 +65,7 @@ fun IngredientsSection(
             Column {
                 if (!ingredientSection.title.isNullOrEmpty()) {
                     Text(
-                        text = ingredientSection.title,
+                        text = ingredientSection.title ?: "Null title",
                         style = AppTypography().playDisplayBold.copy(fontSize = 17.sp),
                         color = DarkTeal,
                         modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
@@ -97,33 +97,29 @@ fun IngredientsSection(
 private fun IngredientsSectionPreview() {
     IngredientsSection(
         ingredients = listOf(
-            DetailedIngredientSection(
+            IngredientSection(
                 title = "For cake",
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Potatoes",
-                        addedToList = false,
+                        name = "Potatoes",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             ),
-            DetailedIngredientSection(
+            IngredientSection(
                 title = "For butter",
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Potatoes",
-                        addedToList = false,
+                        name = "Potatoes",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             )
@@ -140,31 +136,27 @@ private fun IngredientsSectionPreview() {
 private fun IngredientItemWithoutTitlesPreview() {
     IngredientsSection(
         ingredients = listOf(
-            DetailedIngredientSection(
+            IngredientSection(
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Apples (Granny Smith or Honeycrisp), peeled, cored, and sliced",
-                        addedToList = false,
+                        name = "Apples (Granny Smith or Honeycrisp), peeled, cored, and sliced",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             ),
-            DetailedIngredientSection(
+            IngredientSection(
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Potatoes",
-                        addedToList = false,
+                        name = "Potatoes",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             )
@@ -181,32 +173,28 @@ private fun IngredientItemWithoutTitlesPreview() {
 private fun IngredientItemWithOnlySecondTitlePreview() {
     IngredientsSection(
         ingredients = listOf(
-            DetailedIngredientSection(
+            IngredientSection(
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Potatoes",
-                        addedToList = false,
+                        name = "Potatoes",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             ),
-            DetailedIngredientSection(
+            IngredientSection(
                 title = "For cake",
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Apples (Granny Smith or Honeycrisp), peeled, cored, and sliced",
-                        addedToList = false,
+                        name = "Apples (Granny Smith or Honeycrisp), peeled, cored, and sliced",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             )
@@ -223,17 +211,15 @@ private fun IngredientItemWithOnlySecondTitlePreview() {
 private fun IngredientItemWithOneSectionWithoutTitlePreview() {
     IngredientsSection(
         ingredients = listOf(
-            DetailedIngredientSection(
+            IngredientSection(
                 ingredientsList = listOf(
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "100g",
-                        ingredient = "Potatoes",
-                        addedToList = false,
+                        name = "Potatoes",
                     ),
-                    DetailedIngredient(
+                    Ingredient(
                         amount = "1 medium",
-                        ingredient = "Butternut Pumpkin, peeled & cubed",
-                        addedToList = true,
+                        name = "Butternut Pumpkin, peeled & cubed",
                     )
                 )
             ),

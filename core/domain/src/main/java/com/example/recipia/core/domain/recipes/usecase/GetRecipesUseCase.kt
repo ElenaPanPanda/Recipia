@@ -2,7 +2,7 @@ package com.example.recipia.core.domain.recipes.usecase
 
 import com.example.recipia.core.common.model.ShortRecipe
 import com.example.recipia.core.domain.recipes.mappers.RecipeListMapper
-import com.example.recipia.core.network.repository.RecipeRepository
+import com.example.recipia.core.network.recipes.RecipeRepository
 import javax.inject.Inject
 
 interface GetRecipesUseCase {

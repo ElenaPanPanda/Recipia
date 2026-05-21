@@ -1,7 +1,7 @@
 package com.example.recipia.core.network.repository
 
-import com.example.recipia.core.network.api.RecipesNetworkApi
-import com.example.recipia.core.network.dto.RecipeListResponse
+import com.example.recipia.core.network.recipes.RecipesNetworkApi
+import com.example.recipia.core.network.dto.RecipeListDto
 import com.example.recipia.core.network.dto.ShortRecipeDto
 import com.example.recipia.core.ui.model.PlaceholderColor
 import com.google.common.truth.Truth.assertThat
@@ -11,7 +11,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import com.example.recipia.core.common.model.FullRecipe
-import com.example.recipia.core.network.dto.FullRecipeResponse
+import com.example.recipia.core.network.dto.FullRecipeDto
+import com.example.recipia.core.network.recipes.RecipeRepositoryImpl
 
 class RecipeRepositoryTest {
     private val mockedApi = mockk<RecipesNetworkApi>()
@@ -19,7 +20,7 @@ class RecipeRepositoryTest {
 
     @Test
     fun getRecipes_returnsRecipes() = runTest {
-        val expectedResponse = RecipeListResponse(createShortRecipeList())
+        val expectedResponse = RecipeListDto(createShortRecipeList())
 
         // Rule: mocked api should return expected response.
         coEvery { mockedApi.getRecipes() } returns expectedResponse
@@ -32,7 +33,7 @@ class RecipeRepositoryTest {
     @Test
     fun addRecipe_returnsFullRecipeResponse() = runTest {
         val recipe = createFullRecipe()
-        val expectedResponse = FullRecipeResponse(recipe, "", true)
+        val expectedResponse = FullRecipeDto(recipe, "", true)
 
         // Rule: mocked api should return expected response.
         coEvery { mockedApi.addRecipe(recipe) } returns expectedResponse

@@ -1,9 +1,9 @@
 package com.example.recipia.feature.recipedetails.impl.ui.managers
 
-import com.example.recipia.feature.recipedetails.impl.domain.model.CollectionInRecipeDetails
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.AddRecipeToCollectionUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.CreateCollectionUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetCollectionsUseCase
+import com.example.recipia.core.common.model.UserCollectionOverview
+import com.example.recipia.core.domain.collections.usecase.AddRecipeToCollectionUseCase
+import com.example.recipia.core.domain.collections.usecase.CreateCollectionUseCase
+import com.example.recipia.core.domain.collections.usecase.GetCollectionsOverviewsUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsEffect
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsState
 import com.example.recipia.feature.recipedetails.impl.ui.SaveToCollectionOption
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RecipeDetailsCollectionsManager @Inject constructor(
-    private val getCollectionsUseCase: GetCollectionsUseCase,
+    private val getCollectionsUseCase: GetCollectionsOverviewsUseCase,
     private val createCollectionUseCase: CreateCollectionUseCase,
     private val addRecipeToCollectionUseCase: AddRecipeToCollectionUseCase
 ) {
@@ -112,23 +112,23 @@ class RecipeDetailsCollectionsManager @Inject constructor(
     }
 
     companion object {
-        val COLLECTIONS: List<CollectionInRecipeDetails> = listOf(
-            CollectionInRecipeDetails(
+        val COLLECTIONS: List<UserCollectionOverview> = listOf(
+            UserCollectionOverview(
                 collectionId = "1",
                 collectionName = "Collection 1",
                 recipesAmount = 0
             ),
-            CollectionInRecipeDetails(
+            UserCollectionOverview(
                 collectionId = "2",
                 collectionName = "Collection 2",
                 recipesAmount = 1
             ),
-            CollectionInRecipeDetails(
+            UserCollectionOverview(
                 collectionId = "3",
                 collectionName = "Collection 3",
                 recipesAmount = 15
             ),
-            CollectionInRecipeDetails(
+            UserCollectionOverview(
                 collectionId = "4",
                 collectionName = "Collection 4",
                 recipesAmount = 100

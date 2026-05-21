@@ -3,8 +3,8 @@ package com.example.recipia.core.domain.recipes.usecase
 import com.example.recipia.core.domain.recipes.RecipesDomainTestHelper.createShortRecipeDtoList
 import com.example.recipia.core.domain.recipes.RecipesDomainTestHelper.createShortRecipeList
 import com.example.recipia.core.domain.recipes.mappers.RecipeListMapper
-import com.example.recipia.core.network.dto.RecipeListResponse
-import com.example.recipia.core.network.repository.RecipeRepository
+import com.example.recipia.core.network.dto.RecipeListDto
+import com.example.recipia.core.network.recipes.RecipeRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +22,7 @@ class GetRecipesUseCaseTest {
     @Test
     fun getRecipesUseCase_returnsMappedRecipes() = runTest {
         val expectedShortRecipeList = createShortRecipeList()
-        val response = RecipeListResponse(createShortRecipeDtoList())
+        val response = RecipeListDto(createShortRecipeDtoList())
 
         // Rule: repo should return this response.
         coEvery { mockedRepo.getRecipes() } returns response

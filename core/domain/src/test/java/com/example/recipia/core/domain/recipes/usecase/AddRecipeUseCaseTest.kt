@@ -1,8 +1,8 @@
 package com.example.recipia.core.domain.recipes.usecase
 
 import com.example.recipia.core.domain.recipes.RecipesDomainTestHelper.createFullRecipe
-import com.example.recipia.core.network.dto.FullRecipeResponse
-import com.example.recipia.core.network.repository.RecipeRepository
+import com.example.recipia.core.network.dto.FullRecipeDto
+import com.example.recipia.core.network.recipes.RecipeRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,7 +17,7 @@ class AddRecipeUseCaseTest {
     @Test
     fun addRecipeUseCase_returnsRecipeId() = runTest {
         val recipe = createFullRecipe(id = ID)
-        val expectedResponse = FullRecipeResponse(recipe, "", true)
+        val expectedResponse = FullRecipeDto(recipe, "", true)
 
         coEvery { mockedRepository.addRecipe(recipe) } returns expectedResponse
 

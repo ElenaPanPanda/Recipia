@@ -17,24 +17,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.recipia.core.common.model.ShortRecipe
+import com.example.recipia.core.common.model.UserCollectionOverview
 import com.example.recipia.core.ui.components.AppFilledButton
 import com.example.recipia.core.ui.components.AppHorizontalDivider
 import com.example.recipia.core.ui.components.AppInputField
 import com.example.recipia.core.ui.components.IconTextButton
-import com.example.recipia.core.ui.model.PlaceholderColor
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkTeal
 import com.example.recipia.core.ui.theme.DeepRed
 import com.example.recipia.core.ui.R as CoreR
 import com.example.recipia.feature.recipedetails.impl.R
-import com.example.recipia.feature.recipedetails.impl.domain.model.CollectionInRecipeDetails
 import com.example.recipia.feature.recipedetails.impl.ui.SaveToCollectionOption
 
 @Composable
 fun AddRecipeToCollectionBottomSheetContent(
     onDismiss: () -> Unit,
-    collections: List<CollectionInRecipeDetails>,
+    collections: List<UserCollectionOverview>,
     onCollectionSelectedChange: (String) -> Unit,
     onNewCollectionValueChange: (String) -> Unit,
     saveButtonEnabled: Boolean,
@@ -119,13 +117,13 @@ private fun AddRecipeToCollectionBottomSheetContentPreview() {
     AddRecipeToCollectionBottomSheetContent(
         onDismiss = {},
         collections = listOf(
-            CollectionInRecipeDetails(
+            UserCollectionOverview(
                 collectionId = "1", collectionName = "Collection name", recipesAmount = 1
-            ), CollectionInRecipeDetails(
+            ), UserCollectionOverview(
                 collectionId = "2",
                 collectionName = "Collection very long very long very long very long name",
                 recipesAmount = 0
-            ), CollectionInRecipeDetails(
+            ), UserCollectionOverview(
                 collectionId = "3", collectionName = "Collection name", recipesAmount = 15
             )
         ),

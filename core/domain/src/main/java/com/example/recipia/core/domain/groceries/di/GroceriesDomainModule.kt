@@ -2,8 +2,16 @@ package com.example.recipia.core.domain.groceries.di
 
 import com.example.datastore.ShoppingListRepository
 import com.example.recipia.core.domain.groceries.mappers.GroceriesItemMapper
+import com.example.recipia.core.domain.groceries.mappers.IngredientMapper
+import com.example.recipia.core.domain.groceries.mappers.IngredientSectionMapper
+import com.example.recipia.core.domain.groceries.usecase.AddAllIngredientsToGroceriesUseCase
+import com.example.recipia.core.domain.groceries.usecase.AddAllIngredientsToGroceriesUseCaseImpl
 import com.example.recipia.core.domain.groceries.usecase.AddGroceriesBlockUseCase
 import com.example.recipia.core.domain.groceries.usecase.AddGroceriesBlockUseCaseImpl
+import com.example.recipia.core.domain.groceries.usecase.AddIngredientToGroceriesUseCase
+import com.example.recipia.core.domain.groceries.usecase.AddIngredientToGroceriesUseCaseImpl
+import com.example.recipia.core.domain.groceries.usecase.CheckAddedIngredientsInGroceriesUseCase
+import com.example.recipia.core.domain.groceries.usecase.CheckAddedIngredientsInGroceriesUseCaseImpl
 import com.example.recipia.core.domain.groceries.usecase.ClearGroceriesUseCase
 import com.example.recipia.core.domain.groceries.usecase.ClearGroceriesUseCaseImpl
 import com.example.recipia.core.domain.groceries.usecase.GetGroceriesListUseCase
@@ -56,4 +64,25 @@ internal class GroceriesDomainModule {
         mapper: GroceriesItemMapper
     ): RemoveCheckedGroceriesItemsUseCase =
         RemoveCheckedGroceriesItemsUseCaseImpl(repository, mapper)
+
+    @Provides
+    fun provideAddIngredientToGroceriesUseCase(
+        repository: ShoppingListRepository,
+        mapper: IngredientSectionMapper
+    ): AddIngredientToGroceriesUseCase =
+        AddIngredientToGroceriesUseCaseImpl(repository, mapper)
+
+    @Provides
+    fun provideAddAllIngredientsToGroceriesUseCase(
+        repository: ShoppingListRepository,
+        mapper: IngredientMapper
+    ): AddAllIngredientsToGroceriesUseCase =
+        AddAllIngredientsToGroceriesUseCaseImpl(repository, mapper)
+
+    @Provides
+    fun provideCheckAddedIngredientsInGroceriesUseCase(
+        repository: ShoppingListRepository,
+        mapper: IngredientMapper
+    ): CheckAddedIngredientsInGroceriesUseCase =
+        CheckAddedIngredientsInGroceriesUseCaseImpl(repository, mapper)
 }
