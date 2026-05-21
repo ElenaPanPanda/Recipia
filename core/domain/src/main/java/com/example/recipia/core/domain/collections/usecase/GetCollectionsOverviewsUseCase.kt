@@ -1,7 +1,7 @@
 package com.example.recipia.core.domain.collections.usecase
 
 import com.example.recipia.core.common.model.UserCollectionOverview
-import com.example.recipia.core.domain.collections.mappers.CollectionOverviewMapper
+import com.example.recipia.core.domain.collections.mappers.CollectionsOverviewMapper
 import com.example.recipia.core.network.collections.CollectionsRepository
 import javax.inject.Inject
 
@@ -11,9 +11,8 @@ interface GetCollectionsOverviewsUseCase {
 
 internal class GetCollectionsOverviewsUseCaseImpl @Inject constructor(
     private val repository: CollectionsRepository,
-    private val mapper: CollectionOverviewMapper,
+    private val mapper: CollectionsOverviewMapper,
 ) : GetCollectionsOverviewsUseCase {
-    override suspend fun invoke(): List<UserCollectionOverview> {
-        return mapper.convert(repository.getCollections())
-    }
+    override suspend fun invoke(): List<UserCollectionOverview> =
+        mapper.convert(repository.getCollections())
 }
