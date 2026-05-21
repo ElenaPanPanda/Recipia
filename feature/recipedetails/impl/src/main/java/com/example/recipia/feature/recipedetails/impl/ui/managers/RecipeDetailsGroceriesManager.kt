@@ -5,14 +5,14 @@ import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.core.domain.groceries.usecase.AddAllIngredientsToGroceriesUseCase
 import com.example.recipia.core.domain.groceries.usecase.AddIngredientToGroceriesUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.CheckAddedIngredientsInShoppingListUseCase
+import com.example.recipia.core.domain.groceries.usecase.CheckAddedIngredientsInGroceriesUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.RecipeDetailsState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class RecipeDetailsGroceriesManager @Inject constructor(
-    private val checkAddedIngredientsInShoppingListUseCase: CheckAddedIngredientsInShoppingListUseCase,
+    private val checkAddedIngredientsInGroceriesUseCase: CheckAddedIngredientsInGroceriesUseCase,
     private val addAllIngredientsToGroceriesUseCase: AddAllIngredientsToGroceriesUseCase,
     private val addIngredientToGroceriesUseCase: AddIngredientToGroceriesUseCase,
 ) {
