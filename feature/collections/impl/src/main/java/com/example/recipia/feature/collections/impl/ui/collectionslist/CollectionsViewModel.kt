@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.model.UserCollection
 import com.example.recipia.core.common.string_res_provider.StringResProvider
-import com.example.recipia.feature.collections.impl.domain.usecase.GetCollectionsUseCase
+import com.example.recipia.core.domain.collections.usecase.GetCollectionsOverviewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CollectionsViewModel @Inject constructor(
     private val stringProvider: StringResProvider,
-    private val getCollectionsListUseCase: GetCollectionsUseCase,
+    private val getCollectionsListUseCase: GetCollectionsOverviewsUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<CollectionsState>(CollectionsState.Loading)
     val uiState: StateFlow<CollectionsState> = _uiState.asStateFlow()
