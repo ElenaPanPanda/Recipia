@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.domain.collections.usecase.GetCollectionByIdUseCase
 import com.example.recipia.core.ui.R as CoreR
-import com.example.recipia.feature.collections.impl.domain.usecase.GetCollectionByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +35,7 @@ class CollectionDetailsViewModel @Inject constructor(
 
     private fun loadCollection(id: String) = viewModelScope.launch {
         try {
-            val collection = getCollectionByIdUseCase.get(id)
+            val collection = getCollectionByIdUseCase(id)
             _uiState.update { CollectionDetailsState.Success(collection = collection) }
         } catch (e: Exception) {
             e.printStackTrace()

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 android {
@@ -16,6 +17,8 @@ android {
 dependencies {
     implementation(libs.coreKtx)
     implementation(libs.appcompat)
+    implementation(projects.core.common)
+    implementation(projects.core.ui)
 
     // Network
     implementation(libs.retrofit)
@@ -27,4 +30,11 @@ dependencies {
     // DI
     implementation(libs.hilt)
     ksp(libs.hilt.android.compiler)
+
+    // Tests
+    implementation(libs.test.junit)
+    implementation(libs.test.mockk)
+    implementation(libs.test.coroutines.test)
+    implementation(libs.test.turbine)
+    testImplementation(libs.truth)
 }

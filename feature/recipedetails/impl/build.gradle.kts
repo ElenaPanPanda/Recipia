@@ -19,6 +19,8 @@ dependencies {
     // Modules
     implementation(projects.core.common)
     implementation(projects.core.datastore)
+    implementation(projects.core.domain)
+    implementation(projects.core.network)
     implementation(projects.core.ui)
     api(projects.feature.recipedetails.api)
 

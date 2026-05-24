@@ -1,6 +1,5 @@
 package com.example.recipia.feature.recipedetails.impl.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,16 +17,16 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.ui.icons.Icons
 import com.example.recipia.core.ui.theme.AppTypography
 import com.example.recipia.core.ui.theme.DarkBlue
 import com.example.recipia.core.ui.theme.DarkTeal
 import com.example.recipia.core.ui.theme.MediumTeal
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
 
 @Composable
 fun IngredientItem(
-    ingredient: DetailedIngredient,
+    ingredient: Ingredient,
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -43,7 +42,7 @@ fun IngredientItem(
                 .padding(end = 8.dp)
         ) {
             Text(
-                text = ingredient.ingredient,
+                text = ingredient.name,
                 style = AppTypography().poppinsNormal.copy(fontSize = 14.4.sp),
                 color = DarkBlue
             )
@@ -56,20 +55,21 @@ fun IngredientItem(
         }
         Icon(
             imageVector = ImageVector.vectorResource(
-                id = if (ingredient.addedToList) Icons.check
-                else Icons.shoppingCartAdd
+                id = //if (ingredient.addedToList) Icons.check
+               // else
+                    Icons.shoppingCartAdd
             ),
-            contentDescription = "Add ${ingredient.ingredient}",
+            contentDescription = "Add ${ingredient.name}",
             tint = MediumTeal,
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(8.dp))
-                .then(
+                /*.then(
                     if (!ingredient.addedToList) {
                         Modifier.clickable(onClick = onAddClick)
                     } else {
                         Modifier
                     }
-                )
+                )*/
                 .padding(6.dp)
                 .size(20.dp)
         )
@@ -81,18 +81,16 @@ fun IngredientItem(
 private fun IngredientItemPreview() {
     Column(modifier = Modifier.padding(16.dp)) {
         IngredientItem(
-            ingredient = DetailedIngredient(
+            ingredient = Ingredient(
                 amount = "100g",
-                ingredient = "Potatoes",
-                addedToList = false
+                name = "Potatoes",
             ),
             onAddClick = {}
         )
         IngredientItem(
-            ingredient = DetailedIngredient(
+            ingredient = Ingredient(
                 amount = "",
-                ingredient = "Butternut Pumpkin, peeled & cubed",
-                addedToList = true
+                name = "Butternut Pumpkin, peeled & cubed",
             ),
             onAddClick = {}
         )

@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.domain.recipes.usecase.DeleteRecipeUseCase
+import com.example.recipia.core.domain.recipes.usecase.GetRecipeUseCase
 import com.example.recipia.core.ui.R
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.DeleteRecipeUseCase
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.GetRecipeUseCase
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsCollectionsManager
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsEditManager
 import com.example.recipia.feature.recipedetails.impl.ui.managers.RecipeDetailsGroceriesManager
@@ -120,7 +120,7 @@ class RecipeDetailsViewModel @Inject constructor(
 
     private suspend fun loadRecipe(recipeId: String) {
         try {
-            val recipe = getRecipeUseCase.getRecipe(recipeId)
+            val recipe = getRecipeUseCase(recipeId)
             _uiState.update { RecipeDetailsState.Success(recipe = recipe) }
 
             // Update checked ingredients.
@@ -142,7 +142,7 @@ class RecipeDetailsViewModel @Inject constructor(
     private fun onDeleteClick(recipeId: String) {
         viewModelScope.launch {
             try {
-                deleteRecipeUseCase.delete(recipeId)
+                deleteRecipeUseCase(recipeId)
                 _uiEffect.emit(RecipeDetailsEffect.NavigateBack)
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -6,6 +6,7 @@ import com.example.recipia.core.common.model.FullRecipe
 import com.example.recipia.core.common.model.Ingredient
 import com.example.recipia.core.common.model.IngredientSection
 import com.example.recipia.core.common.string_res_provider.StringResProvider
+import com.example.recipia.core.domain.recipes.usecase.AddRecipeUseCase
 import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.model.PlaceholderColor
 import com.example.recipia.feature.addrecipe.impl.R
@@ -18,8 +19,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
-import recipia.feature.add_recipe.impl.domain.usecase.AddRecipeUseCase
+import recipia.feature.add_recipe.impl.model.CategoryForChoose
 import javax.inject.Inject
 
 @HiltViewModel
@@ -196,7 +196,7 @@ class AddRecipeViewModel @Inject constructor(
         )
 
         try {
-            val newId = addRecipeUseCase.addRecipe(recipe)
+            val newId = addRecipeUseCase(recipe)
             _uiEffect.emit(AddRecipeEffect.NavigateToRecipeDetails(newId))
         } catch (e: Exception) {
             e.printStackTrace()

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.recipia.core.common.model.RecipeCategory
 import com.example.recipia.core.ui.R as uiR
 import com.example.recipia.core.ui.components.AppTitle
-import recipia.feature.add_recipe.impl.domain.model.CategoryForChoose
+import recipia.feature.add_recipe.impl.model.CategoryForChoose
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

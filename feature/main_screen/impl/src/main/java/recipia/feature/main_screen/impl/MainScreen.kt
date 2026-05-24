@@ -16,7 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.recipia.feature.calendar.impl.calendarScreen
 import com.example.recipia.feature.collections.impl.navigation.collectionsScreen
-import com.examplerecipia.feature.groceries.impl.groceriesScreen
+import com.examplerecipia.feature.groceries.impl.navigation.groceriesScreen
 import kotlinx.coroutines.launch
 import recipia.feature.recipe_list_api.RecipeListRoutingContract
 import recipia.feature.impl.navigation.recipeListScreen

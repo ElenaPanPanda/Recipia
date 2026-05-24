@@ -1,7 +1,7 @@
 package com.example.recipia.feature.recipedetails.impl.ui
 
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredient
-import com.example.recipia.feature.recipedetails.impl.domain.model.DetailedIngredientSection
+import com.example.recipia.core.common.model.Ingredient
+import com.example.recipia.core.common.model.IngredientSection
 
 sealed interface RecipeDetailsEvent {
     data class OnEditClicked(val recipeId: String) : RecipeDetailsEvent
@@ -11,12 +11,12 @@ sealed interface RecipeDetailsEvent {
     data class OnDeleteClicked(val recipeId: String) : RecipeDetailsEvent
     data class OnAddAllIngredientsClicked(
         val recipeName: String,
-        val ingredients: List<DetailedIngredientSection>
+        val ingredients: List<IngredientSection>
     ) : RecipeDetailsEvent
 
     data class OnAddIngredientClicked(
         val recipeName: String,
-        val ingredient: DetailedIngredient
+        val ingredient: Ingredient
     ) : RecipeDetailsEvent
 
     data class OnCollectionSelectedChange(val collectionId: String) : RecipeDetailsEvent

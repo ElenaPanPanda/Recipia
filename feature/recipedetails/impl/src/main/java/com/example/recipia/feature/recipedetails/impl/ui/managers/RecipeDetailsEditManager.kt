@@ -1,6 +1,6 @@
 package com.example.recipia.feature.recipedetails.impl.ui.managers
 
-import com.example.recipia.feature.recipedetails.impl.domain.usecase.AdjustRecipeRatingUseCase
+import com.example.recipia.core.domain.recipes.usecase.AdjustRecipeRatingUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +16,7 @@ class RecipeDetailsEditManager @Inject constructor(
     fun submitRating(recipeId: String, newRating: Float, scope: CoroutineScope) {
         scope.launch {
             try {
-                adjustRecipeRatingUseCase.adjustRating(recipeId, newRating)
+                adjustRecipeRatingUseCase(recipeId, newRating)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
