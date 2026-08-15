@@ -8,7 +8,7 @@ import com.example.recipia.core.network.dto.ShortRecipeDto
 import com.example.recipia.core.ui.model.PlaceholderColor
 
 object RecipesDomainTestHelper {
-    private const val ID = "id"
+    const val ID = "id"
     private const val ID_1 = "id_1"
     private const val TITLE = "title"
     private const val TITLE_1 = "title_1"

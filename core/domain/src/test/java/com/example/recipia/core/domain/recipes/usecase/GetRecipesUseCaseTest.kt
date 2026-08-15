@@ -23,16 +23,13 @@ class GetRecipesUseCaseTest {
     fun getRecipesUseCase_returnsMappedRecipes() = runTest {
         val expectedShortRecipeList = createShortRecipeList()
         val response = RecipeListDto(createShortRecipeDtoList())
-
-        // Rule: repo should return this response.
         coEvery { mockedRepo.getRecipes() } returns response
-        // Rule: mapper should return this data.
         every { mockedMapper.convert(response) } returns expectedShortRecipeList
-        // Call usecase and compare the result.
-        assertThat(getRecipesUseCase()).isEqualTo(expectedShortRecipeList)
-        // Verify that the mapper was called.
-        verify(exactly = 1) { mockedMapper.convert(response) }
-        // Verify that the usecase calls the repo once.
+
+        val recipes = getRecipesUseCase()
+
+        assertThat(recipes).isEqualTo(expectedShortRecipeList)
         coVerify(exactly = 1) { mockedRepo.getRecipes() }
+        verify(exactly = 1) { mockedMapper.convert(response) }
     }
 }

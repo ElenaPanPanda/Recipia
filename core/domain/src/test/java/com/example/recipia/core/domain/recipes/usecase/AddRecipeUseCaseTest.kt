@@ -18,13 +18,12 @@ class AddRecipeUseCaseTest {
     fun addRecipeUseCase_returnsRecipeId() = runTest {
         val recipe = createFullRecipe(id = ID)
         val expectedResponse = FullRecipeDto(recipe, "", true)
-
         coEvery { mockedRepository.addRecipe(recipe) } returns expectedResponse
 
         val resultId = addRecipeUseCase(recipe)
 
-        assertThat(resultId).isEqualTo(ID)
         coVerify(exactly = 1) { mockedRepository.addRecipe(recipe) }
+        assertThat(resultId).isEqualTo(ID)
     }
 
     private companion object {
